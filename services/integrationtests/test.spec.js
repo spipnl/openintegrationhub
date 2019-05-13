@@ -170,6 +170,24 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
+	// patch here
+
+	test('--- START FLOW BY ID ---', async (done) => { 
+		const startFlowById = {
+				method: 'POST',
+					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
+					json:	true,
+					headers: {
+						"Authorization" : " Bearer " + tokenAdmin, 
+					}
+		};
+		const response = await request(startFlowById);
+		
+		console.log(JSON.stringify(response.body)); // status = starting 
+
+		expect(response.statusCode).toEqual(200);
+		done();
+	});
 
 	test('--- PATCH FLOW BY ID ---', async (done) => { 
 		process.env.IAM_AUTH_TYPE = 'basic';
@@ -203,24 +221,6 @@ describe('User Routes', () => {
 		done();
 	});
 
-	test('--- START FLOW BY ID ---', async (done) => { 
-		const startFlowById = {
-				method: 'POST',
-					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
-					json:	true,
-					headers: {
-						"Authorization" : " Bearer " + tokenAdmin, 
-					}
-		};
-		const response = await request(startFlowById);
-		
-		console.log(JSON.stringify(response.body)); // status = starting 
-
-		expect(response.statusCode).toEqual(200);
-		done();
-	});
-
-
 	//Test('check if flow is active', async)
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
@@ -244,7 +244,7 @@ describe('User Routes', () => {
 	     
 		const getFlowStatus = async res => {
 				try {
-					status = await Promise.resolve(res.body);
+					status = await Promise.resolve(res.body.data.status);
 				}
 				catch (error) {
 					console.log(error);
