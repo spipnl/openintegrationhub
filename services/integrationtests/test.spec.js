@@ -222,7 +222,7 @@ describe('User Routes', () => {
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
-        	const startFlowById = {
+        	const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
 					json:	true,
