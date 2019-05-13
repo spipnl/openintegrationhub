@@ -60,17 +60,28 @@ describe('User Routes', () => {
     test('--- ADD NEW FLOW ---', async (done) => { 
 		process.env.IAM_AUTH_TYPE = 'basic';
 		const createdFlow = {
-        	"name": "Added test flow",
+			"status": "inactive",
+        		"name": "Added test flow",
   			"description": "My test Flow",
   			"graph": {
     				"nodes": [
       				{
         				"id": "integration-tests",
-        				"componentId": "string",
-        				"command": "string",
-        				"name": "string",
-        				"description": "string",
+        				"componentId": "dunno",
+        				"command": "elasticio/timer:timer@ca9a6fea391ffa8f7c8593bd2a04143212ab63f6",
+        				"name": "pavels timer",
+        				"description": "timing time",
         				"fields": {}
+      				 },
+				{
+        				"id": "integration-tests_2",
+        				"componentId": "dunno2",
+        				"command": "elasticio/code-component:execute@7bc2535df2f8a35c3653455e5becc701b010d681",
+        				"name": "pavels timer2",
+        				"description": "timing time2",
+        				"fields": {
+						"code": "function* run() {console.log('Calling external URL');yield request.post({uri: 'http://requestbin.fullcontact.com/14dkr0v1', body: msg, json: true});}"
+					}
       				 }
     				],
     				"edges": [
@@ -80,16 +91,16 @@ describe('User Routes', () => {
           					"condition": "string",
           					"mapper": {}
         				},
-        				"source": "string",
-        				"target": "string"
+        				"source": "integration-tests",
+        				"target": "integration-tests_2"
       				}
     				]
   			},
-          	"type": "ordinary",
+          		"type": "ordinary",
   			"owners": [
     			{
       				"id": "string",
-      				"type": "string"
+      				"type": "user"
     			}
   			]
 		};    
