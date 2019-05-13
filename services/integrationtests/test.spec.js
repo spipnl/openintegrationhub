@@ -222,13 +222,13 @@ describe('User Routes', () => {
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
-        	const stopFlowById = {
-        		method: 'POST',
-        		uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
-        		json: true,
-			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-			}	
+        	const startFlowById = {
+				method: 'POST',
+					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
+					json:	true,
+					headers: {
+						"Authorization" : " Bearer " + tokenAdmin, 
+					}
 		};
 		const response = await request(stopFlowById);
 	     	console.log("einmal alles nach stop call" + response.body);
