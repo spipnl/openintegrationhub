@@ -11,9 +11,9 @@ let flowName = null;
 let flowStatus = null;
 
 describe('User Routes', () => {
-	//beforeEach(() => {
-	//	jest.setTimeout(10000);
-	//});
+	beforeEach(() => {
+		jest.setTimeout(10000);
+	});
 
     test('--- LOGIN & TOKEN ---', async (done) => {
 		process.env.IAM_AUTH_TYPE = 'basic';
@@ -186,6 +186,9 @@ describe('User Routes', () => {
 		const newName = "new given name " + flowName;
 
 		response.body.data.name = newName;
+		
+		//try workaround setting status manually to "active"
+		response.body.data.status = "active";
 
 		const patchFlow = {
         		method: 'PATCH',
@@ -224,16 +227,16 @@ describe('User Routes', () => {
 		console.log(flowID); // correct id
 		process.env.IAM_AUTH_TYPE = 'basic';
 
-		setTimeout(function() {
-			console.log("Callback Funktion wird aufgerufen");
-		}, 10000);
+		//setTimeout(function() {
+		//	console.log("Callback Funktion wird aufgerufen");
+		//}, 10000);
 		
         	const stopFlowById = {
         		method: 'POST',
         		uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
         		json: true,
 				headers: {
-                	"Authorization" : " Bearer " + tokenAdmin, 
+                			"Authorization" : " Bearer " + tokenAdmin, 
 				}	
 		};
 
@@ -250,7 +253,7 @@ describe('User Routes', () => {
 		};
 		flowStatus = await getFlowStatus(response); 
 		
-		console.log(flowStatus); // = null / undefined 	
+		console.log("flowstatus after call stop: " + flowStatus); // = null / undefined 	
 		
 		expect(response.statusCode).toEqual(200);
     	done();
