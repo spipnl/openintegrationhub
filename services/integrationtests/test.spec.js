@@ -190,7 +190,6 @@ describe('User Routes', () => {
 	});
 
 	test('--- PATCH FLOW BY ID ---', async (done) => { 
-		process.env.IAM_AUTH_TYPE = 'basic';
 		const getFlowData = {
 			method: 'GET',
 			uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -206,7 +205,7 @@ describe('User Routes', () => {
 		response.body.data.name = newName;
 		
 		//try workaround setting status manually to "active"
-		response.body.data.status = "active";
+		response.body.data.status = "active"; //works
 
 		const patchFlow = {
         		method: 'PATCH',
@@ -214,7 +213,7 @@ describe('User Routes', () => {
         		json: true,
 				headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
-            	},
+            		},
         		body: response 		
 		};
 		console.log("flowstatus after patch and set manually to active: " + response.body.data.status); // = null / undefine
@@ -222,15 +221,7 @@ describe('User Routes', () => {
 		done();
 	});
 
-	//Test('check if flow is active', async)
-
 	test('--- STOP FLOW BY ID ---', async (done) => { 
-		process.env.IAM_AUTH_TYPE = 'basic';
-
-		//setTimeout(function() {
-		//	console.log("Callback Funktion wird aufgerufen");
-		//}, 10000);
-		
         	const stopFlowById = {
         		method: 'POST',
         		uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
@@ -240,7 +231,7 @@ describe('User Routes', () => {
 			}	
 		};
 		const response = await request(stopFlowById);
-	     
+	     	console.log("einmal alles nach stop call" + response.body);
 		const getFlowStatus = async res6 => {
 				try {
 					status_flow = await Promise.resolve(res6.body);
