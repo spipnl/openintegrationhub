@@ -225,7 +225,6 @@ describe('User Routes', () => {
 	//Test('check if flow is active', async)
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
-		console.log(flowID); // correct id
 		process.env.IAM_AUTH_TYPE = 'basic';
 
 		//setTimeout(function() {
@@ -240,22 +239,20 @@ describe('User Routes', () => {
                 		"Authorization" : " Bearer " + tokenAdmin, 
 			}	
 		};
-
 		const response = await request(stopFlowById);
 	     
-		const getFlowStatus = async res => {
+		const getFlowStatus = async res6 => {
 				try {
-					status = await Promise.resolve(res.body.data.status);
+					status_flow = await Promise.resolve(res6.body);
 				}
 				catch (error) {
 					console.log(error);
 				}
-				return status; 
+			return status_flow; 
 		};
 		flowStatus = await getFlowStatus(response); 
 		
 		console.log("flowstatus after call stop: " + flowStatus); // = null / undefined 	
-		
 		expect(response.statusCode).toEqual(200);
     	done();
 	});
