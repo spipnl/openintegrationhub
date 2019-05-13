@@ -69,16 +69,16 @@ describe('User Routes', () => {
         				"id": "integration-tests",
         				"componentId": "dunno",
         				"command": "elasticio/timer:timer@ca9a6fea391ffa8f7c8593bd2a04143212ab63f6",
-        				"name": "pavels timer",
-        				"description": "timing time",
+        				"name": "timer",
+        				"description": "desctimer",
         				"fields": {}
       				 },
 				{
         				"id": "integration-tests_2",
         				"componentId": "dunno2",
         				"command": "elasticio/code-component:execute@7bc2535df2f8a35c3653455e5becc701b010d681",
-        				"name": "pavels timer2",
-        				"description": "timing time2",
+        				"name": "timer2",
+        				"description": "desctimer2",
         				"fields": {
 						"code": "function* run() {console.log('Calling external URL');yield request.post({uri: 'http://requestbin.fullcontact.com/14dkr0v1', body: msg, json: true});}"
 					}
@@ -217,6 +217,7 @@ describe('User Routes', () => {
             	},
         		body: response 		
 		};
+		console.log("flowstatus after patch and set manually to active: " + response.body.data.status); // = null / undefine
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
@@ -235,9 +236,9 @@ describe('User Routes', () => {
         		method: 'POST',
         		uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
         		json: true,
-				headers: {
-                			"Authorization" : " Bearer " + tokenAdmin, 
-				}	
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+			}	
 		};
 
 		const response = await request(stopFlowById);
