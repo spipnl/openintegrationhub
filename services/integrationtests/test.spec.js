@@ -220,14 +220,16 @@ describe('User Routes', () => {
 	test('--- STOP FLOW BY ID ---', async (done) => { 
         	
 		async function requestFlowStop() {
-			const stopFlowById = {
+		};
+		setTimeout(requestFlowStop, 5000);	
+		const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
 					json:	true,
 					headers: {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
-			};
+		};
 			const response = await request(stopFlowById);
 		
 			const getFlowStatus = async res6 => {
@@ -241,16 +243,17 @@ describe('User Routes', () => {
 			};
 			flowStatus = await getFlowStatus(response); 
 		
-			//console.log("flowstatus after call stop: " + flowStatus); // = null / undefined 	
+			 	
 			expect(response.statusCode).toEqual(200);
-		};
-		setTimeout(requestFlowStop, 5000);
+			console.log("flowstatus after call stop: " + flowStatus); // = null / undefined
     		done();
 	});
 
 	test('--- DELETE FLOW BY ID ---', async (done) => { 
-		async function requestDelete() {	
-			const deleteFlowById = {
+		async function requestDelete() {
+		};
+		setTimeout(requestDelete, 5000);
+		const deleteFlowById = {
 				method: 'DELETE',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
 					json:	true,
@@ -260,8 +263,7 @@ describe('User Routes', () => {
 			};
 			const response = await request(deleteFlowById);
 			expect(response.statusCode).toEqual(200);
-		}
-		setTimeout(requestDelete, 5000);
+		
 		done();
 	});
 	
