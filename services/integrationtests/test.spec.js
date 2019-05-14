@@ -292,30 +292,29 @@ describe('User Routes', () => {
 	test('--- ADD LOG ---', async (done) => { 
 		process.env.IAM_AUTH_TYPE = 'basic';
 		const createdFlow = {
-        	"service": "MyService",
+        		"service": "MyService",
   			"timeStamp": "1234567",
   			"nameSpace": "outerSpace",
   			"payload": {
-    			"tenant": "1",
-    			"source": "SomeSource",
-    			"object": "SomeObject",
-    			"action": "foo",
-    			"subject": "Test Subject",
-    			"details": "A human-readable detailed description"
+    				"tenant": "1",
+    				"source": "SomeSource",
+    				"object": "SomeObject",
+    				"action": "foo",
+    				"subject": "Test Subject",
+    				"details": "A human-readable detailed description"
   			}
 		};    
-        const addLog = {
-        	method: 'POST',
-        	uri: `http://auditlog.openintegrationhub.com/logs`,
-        	json: true,
+        	const addLog = {
+        		method: 'POST',
+        		uri: `http://auditlog.openintegrationhub.com/logs`,
+        		json: true,
 			headers: {
-                	"Authorization" : " Bearer " + tokenAdmin, 
-            },
-        	body: createdFlow		
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: createdFlow		
 		};
 		const response = await request(addLog);
-
-		expect(response.statusCode).toEqual(200);
-    	done();
+		expect(response.statusCode).toEqual(201);
+    		done();
 	});
 });
