@@ -9,10 +9,14 @@ let tokenAdmin = null;
 let flowID = null;
 let flowName = null;
 let flowStatus = null;
+var today = new Date();
+var clock = today.getDate();
 
 describe('User Routes', () => {
 	beforeEach(() => {
-		jest.setTimeout(10000);
+		jest.setTimeout(20000);
+		var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+		console.log(utc);
 	});
 
     test('--- LOGIN & TOKEN ---', async (done) => {
@@ -219,9 +223,9 @@ describe('User Routes', () => {
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
         	
-		async function requestFlowStop() {
-		};
-		setTimeout(requestFlowStop, 5000);	
+		//async function requestFlowStop() {
+		//};
+		//setTimeout(requestFlowStop, 5000);	
 		const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
@@ -250,9 +254,9 @@ describe('User Routes', () => {
 	});
 
 	test('--- DELETE FLOW BY ID ---', async (done) => { 
-		async function requestDelete() {
-		};
-		setTimeout(requestDelete, 5000);
+		//async function requestDelete() {
+		//};
+		//setTimeout(requestDelete, 5000);
 		const deleteFlowById = {
 				method: 'DELETE',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
