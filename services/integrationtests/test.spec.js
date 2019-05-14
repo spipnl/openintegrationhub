@@ -212,7 +212,7 @@ describe('User Routes', () => {
             		},
         		body: response 		
 		};
-		console.log("flowstatus after patch: " + response.body.data.status); // = null / undefine
+		//console.log("flowstatus after patch: " + response.body.data.status); // = null / undefine
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
@@ -229,7 +229,6 @@ describe('User Routes', () => {
 					}
 			};
 			const response = await request(stopFlowById);
-			console.log("einmal alles nach stop call" + JSON.stringify(response));
 		
 			const getFlowStatus = async res6 => {
 				try {
@@ -242,7 +241,7 @@ describe('User Routes', () => {
 			};
 			flowStatus = await getFlowStatus(response); 
 		
-			console.log("flowstatus after call stop: " + flowStatus); // = null / undefined 	
+			//console.log("flowstatus after call stop: " + flowStatus); // = null / undefined 	
 			expect(response.statusCode).toEqual(200);
 		};
 		setTimeout(requestFlowStop, 5000);
@@ -265,11 +264,6 @@ describe('User Routes', () => {
 		setTimeout(requestDelete, 5000);
 		done();
 	});
-
-	
-	
-	
-	
 	
 	//--------------------------------------------------------------------------------------
 	
