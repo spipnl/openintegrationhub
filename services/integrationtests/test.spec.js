@@ -222,35 +222,31 @@ describe('User Routes', () => {
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
         	
-		async function testWaiting() {
- 			console.log("Vor der sleep-Funktion");
- 			await Sleep(3000); // Pausiert die Funktion für 3 Sekunden
- 			console.log("Nach der Sleep Funktion");
-		}
-		
-		const stopFlowById = {
+		function requestFlowStop() {
+			const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
 					json:	true,
 					headers: {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
-		};
+			};
+
+			const response = await request(stopFlowById);
+		     	console.log("einmal alles nach stop call" + JSON.stringify(response));
 		
-		const response = await request(stopFlowById);
-	     	console.log("einmal alles nach stop call" + JSON.stringify(response));
-		
-		const getFlowStatus = async res6 => {
+			const getFlowStatus = async res6 => {
 				try {
 					status_flow = await Promise.resolve(res6.body);
 				}
 				catch (error) {
 					console.log(error);
 				}
-			return status_flow; 
-		};
-		flowStatus = await getFlowStatus(response); 
-		
+				return status_flow; 
+			};
+			flowStatus = await getFlowStatus(response); 
+		}
+		setTimeout(requestFlowStop, 5000);
 		
 		console.log("flowstatus after call stop: " + flowStatus); // = null / undefined 	
 		expect(response.statusCode).toEqual(200);
