@@ -9,14 +9,14 @@ let tokenAdmin = null;
 let flowID = null;
 let flowName = null;
 let flowStatus = null;
-var today = new Date();
-var clock = today.getDate();
+var today = new Date.now();
+
 
 describe('User Routes', () => {
 	beforeEach(() => {
-		jest.setTimeout(20000);
+		jest.setTimeout(10000);
 		var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
-		console.log(utc);
+		console.log(utc/1000);
 	});
 
     test('--- LOGIN & TOKEN ---', async (done) => {
