@@ -231,11 +231,13 @@ describe('User Routes', () => {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 			};
-
-			const response = await request(stopFlowById);
-		     	console.log("einmal alles nach stop call" + JSON.stringify(response));
+		}
+		setTimeout(requestFlowStop, 5000);
 		
-			const getFlowStatus = async res6 => {
+		const response = await request(stopFlowById);
+		console.log("einmal alles nach stop call" + JSON.stringify(response));
+		
+		const getFlowStatus = async res6 => {
 				try {
 					status_flow = await Promise.resolve(res6.body);
 				}
@@ -243,14 +245,12 @@ describe('User Routes', () => {
 					console.log(error);
 				}
 				return status_flow; 
-			};
-			flowStatus = await getFlowStatus(response); 
-		}
-		setTimeout(requestFlowStop, 5000);
+		};
+		flowStatus = await getFlowStatus(response); 
 		
 		console.log("flowstatus after call stop: " + flowStatus); // = null / undefined 	
 		expect(response.statusCode).toEqual(200);
-    	done();
+    		done();
 	});
 
 	test('--- DELETE FLOW BY ID ---', async (done) => { 
