@@ -246,13 +246,12 @@ describe('User Routes', () => {
 			expect(response.statusCode).toEqual(200);
 		};
 		setTimeout(requestFlowStop, 5000);
-
     		done();
 	});
 
 	test('--- DELETE FLOW BY ID ---', async (done) => { 
-		
-		const deleteFlowById = {
+		async function requestDelete() {	
+			const deleteFlowById = {
 				method: 'DELETE',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
 					json:	true,
@@ -260,11 +259,18 @@ describe('User Routes', () => {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 			};
-		const response = await request(deleteFlowById);
-		expect(response.statusCode).toEqual(200);
+			const response = await request(deleteFlowById);
+			expect(response.statusCode).toEqual(200);
+		}
+		setTimeout(requestDelete, 5000);
 		done();
 	});
 
+	
+	
+	
+	
+	
 	//--------------------------------------------------------------------------------------
 	
 	// This will only return logs that pertain to the current user's tenant -> zuweisbar über Token?
