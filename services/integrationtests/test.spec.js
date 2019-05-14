@@ -9,13 +9,13 @@ let tokenAdmin = null;
 let flowID = null;
 let flowName = null;
 let flowStatus = null;
-var today = new Date.now();
+var utc = new Date();
 
 
 describe('User Routes', () => {
 	beforeEach(() => {
 		jest.setTimeout(10000);
-		var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+		utc = Date.now().toJSON().slice(0,10).replace(/-/g,'/');
 		console.log(utc/1000);
 	});
 
