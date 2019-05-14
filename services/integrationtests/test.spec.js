@@ -205,7 +205,7 @@ describe('User Routes', () => {
 
 		const patchFlow = {
         		method: 'PATCH',
-        		uri: `http://flow-repository.openintegrationhub.com/flows`,
+        		uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
         		json: true,
 				headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
