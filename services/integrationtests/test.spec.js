@@ -212,14 +212,14 @@ describe('User Routes', () => {
             		},
         		body: response 		
 		};
-		console.log("flowstatus after patch and set manually to active: " + response.body.data.status); // = null / undefine
+		console.log("flowstatus after patch: " + response.body.data.status); // = null / undefine
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
         	
-		//function requestFlowStop() {
+		function requestFlowStop() {
 			const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
@@ -228,10 +228,11 @@ describe('User Routes', () => {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 			};
-		//}
-		setTimeout(stopFlowById, 5000);
+			const response = await request(stopFlowById);
+		}
+		setTimeout(requestFlowStop, 5000);
 		
-		const response = await request(stopFlowById);
+		
 		console.log("einmal alles nach stop call" + JSON.stringify(response));
 		
 		const getFlowStatus = async res6 => {
