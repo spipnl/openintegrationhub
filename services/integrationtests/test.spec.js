@@ -229,13 +229,9 @@ describe('User Routes', () => {
 					}
 			};
 			const response = await request(stopFlowById);
-		}
-		setTimeout(requestFlowStop, 5000);
+			console.log("einmal alles nach stop call" + JSON.stringify(response));
 		
-		
-		console.log("einmal alles nach stop call" + JSON.stringify(response));
-		
-		const getFlowStatus = async res6 => {
+			const getFlowStatus = async res6 => {
 				try {
 					status_flow = await Promise.resolve(res6.body);
 				}
@@ -243,11 +239,14 @@ describe('User Routes', () => {
 					console.log(error);
 				}
 				return status_flow; 
-		};
-		flowStatus = await getFlowStatus(response); 
+			};
+			flowStatus = await getFlowStatus(response); 
 		
-		console.log("flowstatus after call stop: " + flowStatus); // = null / undefined 	
-		expect(response.statusCode).toEqual(200);
+			console.log("flowstatus after call stop: " + flowStatus); // = null / undefined 	
+			expect(response.statusCode).toEqual(200);
+		};
+		setTimeout(requestFlowStop, 5000);
+
     		done();
 	});
 
