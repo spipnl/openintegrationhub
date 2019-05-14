@@ -2,7 +2,7 @@ process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
 const username = process.env.username;
 const password = process.env.password;
-let conf = null;
+//let conf = null;
 
 let tokenUser = null; 
 let tokenAdmin = null;
@@ -11,15 +11,14 @@ let flowName = null;
 let flowStatus = null;
 
 describe('User Routes', () => {
-	//beforeEach(() => {
-	//	jest.setTimeout(10000);
-	//});
+	beforeEach(() => {
+		jest.setTimeout(10000);
+	});
 
     test('--- LOGIN & TOKEN ---', async (done) => {
-		process.env.IAM_AUTH_TYPE = 'basic';
         const jsonPayload = {
         	username,
-        	password,
+        	password
 		};
         const Login = {
         	method: 'POST',
