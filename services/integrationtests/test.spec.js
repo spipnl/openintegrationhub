@@ -222,7 +222,14 @@ describe('User Routes', () => {
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
-        	const stopFlowById = {
+        	
+		async function testWaiting() {
+ 			console.log("Vor der sleep-Funktion");
+ 			await Sleep(3000); // Pausiert die Funktion für 3 Sekunden
+ 			console.log("Nach der Sleep Funktion");
+		}
+		
+		const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
 					json:	true,
@@ -230,8 +237,10 @@ describe('User Routes', () => {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 		};
+		
 		const response = await request(stopFlowById);
-	     	console.log("einmal alles nach stop call" + response.body);
+	     	console.log("einmal alles nach stop call" + response);
+		
 		const getFlowStatus = async res6 => {
 				try {
 					status_flow = await Promise.resolve(res6.body);
@@ -243,12 +252,14 @@ describe('User Routes', () => {
 		};
 		flowStatus = await getFlowStatus(response); 
 		
+		
 		console.log("flowstatus after call stop: " + flowStatus); // = null / undefined 	
 		expect(response.statusCode).toEqual(200);
     	done();
 	});
 
 	test('--- DELETE FLOW BY ID ---', async (done) => { 
+		
 		const deleteFlowById = {
 				method: 'DELETE',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
