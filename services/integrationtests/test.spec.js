@@ -219,7 +219,7 @@ describe('User Routes', () => {
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
         	
-		function requestFlowStop() {
+		async function requestFlowStop() {
 			const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
