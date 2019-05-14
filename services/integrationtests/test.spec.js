@@ -238,7 +238,7 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(stopFlowById);
-	     	console.log("einmal alles nach stop call" + response);
+	     	console.log("einmal alles nach stop call" + JSON.stringify(response));
 		
 		const getFlowStatus = async res6 => {
 				try {
