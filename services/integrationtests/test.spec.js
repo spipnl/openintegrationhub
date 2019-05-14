@@ -11,9 +11,9 @@ let flowName = null;
 let flowStatus = null;
 
 describe('User Routes', () => {
-	beforeEach(() => {
-		jest.setTimeout(10000);
-	});
+	//beforeEach(() => {
+	//	jest.setTimeout(10000);
+	//});
 
     test('--- LOGIN & TOKEN ---', async (done) => {
 		process.env.IAM_AUTH_TYPE = 'basic';
