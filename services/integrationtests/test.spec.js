@@ -202,9 +202,6 @@ describe('User Routes', () => {
 		const newName = "new given name " + flowName;
 
 		response.body.data.name = newName;
-		
-		//try workaround setting status manually to "active"
-		response.body.data.status = "active"; //works
 
 		const patchFlow = {
         		method: 'PATCH',
@@ -222,7 +219,7 @@ describe('User Routes', () => {
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
         	
-		function requestFlowStop() {
+		//function requestFlowStop() {
 			const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
@@ -231,8 +228,8 @@ describe('User Routes', () => {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 			};
-		}
-		setTimeout(requestFlowStop, 5000);
+		//}
+		setTimeout(stopFlowById, 5000);
 		
 		const response = await request(stopFlowById);
 		console.log("einmal alles nach stop call" + JSON.stringify(response));
