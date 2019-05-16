@@ -14,7 +14,7 @@ var start = Date.now();
 
 describe('User Routes', () => {
 	beforeEach(() => {
-		jest.setTimeout(10000);
+		jest.setTimeout(15000);
 		var timePassed = Date.now() - start;
 		console.log(Math.floor(timePassed/1000));
 	});
@@ -63,10 +63,9 @@ describe('User Routes', () => {
     test('--- ADD NEW FLOW ---', async (done) => { 
 		process.env.IAM_AUTH_TYPE = 'basic';
 		const createdFlow = {
-    "data": {
-        "status": "inactive",
-        "name": "Pavels timer",
-        "graph": {
+       				 "status": "inactive",
+       				 "name": "Pavels timer",
+       				 "graph": {
             "nodes": [
                 {
                     "id": "step_1",
@@ -100,8 +99,9 @@ describe('User Routes', () => {
         		"updatedAt": "2019-05-14T13:21:22.400Z",
         		"id": "5c9244fc62278a001ad3a831"
     		},
-    		"meta": {}
+    		"meta": {
 		}
+	};
         	const addFlow = {
         	method: 'POST',
         	uri: `http://flow-repository.openintegrationhub.com/flows`,
