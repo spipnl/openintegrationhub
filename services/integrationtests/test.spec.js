@@ -70,8 +70,8 @@ describe('User Routes', () => {
       						{
         						"id": "step_1",
                     					"componentId": "5cb87489df763a001a54c7de",
-                    					"function": "timer"
-							"name": "step_1"
+                    					"function": "timer",
+							"name": "step_1",
 							"description": "string",
 							"fields": {
 									"intervall": "minute"
