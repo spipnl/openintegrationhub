@@ -87,11 +87,12 @@ describe('User Routes', () => {
                 				}
             					],
             					"edges": [
+							{
                 					"id": "string",
         							"config": {
           								"condition": "string",
           								"mapper": {}
-        						},	
+        							},	
                     					"source": "step_1",
                     					"target": "step_2"
                 					}
