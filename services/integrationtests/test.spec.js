@@ -63,45 +63,51 @@ describe('User Routes', () => {
     test('--- ADD NEW FLOW ---', async (done) => { 
 		process.env.IAM_AUTH_TYPE = 'basic';
 		const createdFlow = {
-       				 "status": "inactive",
-       				 "name": "Pavels timer",
-       				 "graph": {
-            "nodes": [
-                {
-                    "id": "step_1",
-                    "componentId": "5cb87489df763a001a54c7de",
-                    "function": "timer"
-                },
-                {
-                    "id": "step_2",
-                    "componentId": "5cdaba4d6474a5001a8b2588",
-                    "function": "execute",
-                    "fields": {
-                        "code": "function* run() {console.log('Calling external URL');yield request.post({uri: 'http://requestbin.fullcontact.com/12os6ec1', body: msg, json: true});}"
-                    }
-                }
-            ],
-            "edges": [
-                {
-                    "source": "step_1",
-                    "target": "step_2"
-                }
-            ]
-        },
-        "cron": "*/2 * * * *",
-        	"owners": [
-           	 	{
-                	"id": "5bcee3048bbfec0010367bd7",
-               		 "type": "user"
-            		}
-        	],
-        		"createdAt": "2019-03-20T13:49:48.185Z",
-        		"updatedAt": "2019-05-14T13:21:22.400Z",
-        		"id": "5c9244fc62278a001ad3a831"
-    		},
-    		"meta": {
-		}
-	};
+					"name": "Mein neuer Testflow",
+  				 	"description": "This flow takes actions at regular invervals based on a set timer.",
+  					"graph": {
+   						"nodes": [
+      						{
+        						"id": "step_1",
+                    					"componentId": "5cb87489df763a001a54c7de",
+                    					"function": "timer"
+							"name": "step_1"
+							"description": "string",
+							"fields": {
+									"intervall": "minute"
+							}
+                				},
+                				{
+                    					"id": "step_2",
+                    					"componentId": "5cdaba4d6474a5001a8b2588",
+                    					"function": "execute",
+                    					"fields": {
+                        					"code": "function* run() {console.log('Calling external URL');yield request.post({uri: 'http://requestbin.fullcontact.com/12os6ec1', body: msg, json: true});}"
+                    					}
+                				}
+            					],
+            					"edges": [
+                					"id": "string",
+        							"config": {
+          								"condition": "string",
+          								"mapper": {}
+        						},	
+                    					"source": "step_1",
+                    					"target": "step_2"
+                					}
+            					]
+        				},
+					"type": "ordinary",
+        				"cron": "*/2 * * * *",
+        				"owners": [
+           	 				{
+                				"id": "5bcee3048bbfec0010367bd7",
+               		 			"type": "user"
+            					}
+        				],
+    			"meta": {
+			}
+		};
         	const addFlow = {
         	method: 'POST',
         	uri: `http://flow-repository.openintegrationhub.com/flows`,
