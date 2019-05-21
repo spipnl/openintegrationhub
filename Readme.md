@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/openintegrationhub/openintegrationhub/blob/updateReadme/Assets/medium-oih-einzeilig-zentriert.jpg" alt="Sublime's custom image" width="400"/>
+  <img src="https://github.com/openintegrationhub/openintegrationhub/blob/deployOnNewNamespace/Assets/medium-oih-einzeilig-zentriert.jpg" alt="Sublime's custom image" width="400"/>
 </p>
 
 [![CircleCI](https://circleci.com/gh/openintegrationhub/openintegrationhub/tree/master.svg?style=svg)](https://circleci.com/gh/openintegrationhub/openintegrationhub/tree/master)
