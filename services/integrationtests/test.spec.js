@@ -63,7 +63,7 @@ describe('User Routes', () => {
     test('--- ADD NEW FLOW ---', async (done) => { 
 		process.env.IAM_AUTH_TYPE = 'basic';
 		const createdFlow = {
-					"name": "Mein neuer Testflow",
+					"name": "Mein neuer Testflow " + start,
   				 	"description": "This flow takes actions at regular invervals based on a set timer.",
   					"graph": {
    						"nodes": [
