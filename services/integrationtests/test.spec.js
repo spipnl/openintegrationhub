@@ -28,7 +28,7 @@ describe('User Routes', () => {
 
 		const getToken = async res => {
 			try {
-				token = await Promise.resolve(res.body.token);
+				const token = await Promise.resolve(res.body.token);
 			}
 			catch (error) {
 				console.log(error);
@@ -116,7 +116,7 @@ describe('User Routes', () => {
 	     
 		const getFlowId = async res => {
 			try {
-				id = await Promise.resolve(res.body.data.id);
+				const id = await Promise.resolve(res.body.data.id);
 			}
 			catch (error) {
 				console.log(error);
@@ -127,7 +127,7 @@ describe('User Routes', () => {
 
 		const getFlowName = async res2 => {
 			try {
-				name = await Promise.resolve(res2.body.data.name);
+				const name = await Promise.resolve(res2.body.data.name);
 			}
 			catch (error) {
 				console.log(error);
@@ -136,7 +136,7 @@ describe('User Routes', () => {
 		};
 		const getFlowStatus = async res3 => {
 			try {
-				status = await Promise.resolve(res3.body.data.status);
+				const status = await Promise.resolve(res3.body.data.status);
 			}
 			catch (error) {
 				console.log(error);
@@ -205,7 +205,7 @@ describe('User Routes', () => {
 		
 			const getFlowStatus = async res6 => {
 				try {
-					status_flow = await Promise.resolve(res6.body);
+					const status_flow = await Promise.resolve(res6.body);
 				}
 				catch (error) {
 					console.log(error);
