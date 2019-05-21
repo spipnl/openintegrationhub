@@ -9,6 +9,12 @@ let tokenAdmin = null;
 let flowID = null;
 let flowName = null;
 let flowStatus = null;
+let token = null;
+let id = null;
+let name = null;
+let status = null;
+let status_flow = null;
+
 var start = Date.now();
 
 
@@ -27,7 +33,6 @@ describe('User Routes', () => {
 		const response = await request(Login);
 
 		const getToken = async res => {
-			let token = null;
 			try {
 				token = await Promise.resolve(res.body.token);
 			}
@@ -116,7 +121,6 @@ describe('User Routes', () => {
 		const response = await request(addFlow);
 	     
 		const getFlowId = async res => {
-			let id = null;
 			try {
 				id = await Promise.resolve(res.body.data.id);
 			}
@@ -128,7 +132,6 @@ describe('User Routes', () => {
 		flowID = await getFlowId(response);
 
 		const getFlowName = async res2 => {
-			let name = null;
 			try {
 				name = await Promise.resolve(res2.body.data.name);
 			}
@@ -138,7 +141,6 @@ describe('User Routes', () => {
 			return name; 
 		};
 		const getFlowStatus = async res3 => {
-			let status = null;
 			try {
 				status = await Promise.resolve(res3.body.data.status);
 			}
@@ -208,7 +210,6 @@ describe('User Routes', () => {
 			const response = await request(stopFlowById);
 		
 			const getFlowStatus = async res6 => {
-				let status_flow = null;
 				try {
 					status_flow = await Promise.resolve(res6.body);
 				}
