@@ -10,9 +10,9 @@ let flowID = null;
 let flowName = null;
 let flowStatus = null;
 let token = null;
-let id = null;
-let name = null;
-let status = null;
+//let id = null;
+//let name = null;
+//let status = null;
 let status_flow = null;
 
 var start = Date.now();
@@ -119,7 +119,7 @@ describe('User Routes', () => {
         		body: createdFlow		
 		};
 		const response = await request(addFlow);
-	     
+	     	console.log(JSON.stringify(response.body));
 		const getFlowId = async res => {
 			try {
 				id = await Promise.resolve(res.body.data.id);
