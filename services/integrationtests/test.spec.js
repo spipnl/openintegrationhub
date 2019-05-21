@@ -116,8 +116,9 @@ describe('User Routes', () => {
 		const response = await request(addFlow);
 	     
 		const getFlowId = async res => {
+			let id = null;
 			try {
-				const id = await Promise.resolve(res.body.data.id);
+				id = await Promise.resolve(res.body.data.id);
 			}
 			catch (error) {
 				console.log(error);
@@ -127,8 +128,9 @@ describe('User Routes', () => {
 		flowID = await getFlowId(response);
 
 		const getFlowName = async res2 => {
+			let name = null;
 			try {
-				const name = await Promise.resolve(res2.body.data.name);
+				name = await Promise.resolve(res2.body.data.name);
 			}
 			catch (error) {
 				console.log(error);
@@ -136,8 +138,9 @@ describe('User Routes', () => {
 			return name; 
 		};
 		const getFlowStatus = async res3 => {
+			let status = null;
 			try {
-				const status = await Promise.resolve(res3.body.data.status);
+				status = await Promise.resolve(res3.body.data.status);
 			}
 			catch (error) {
 				console.log(error);
@@ -205,8 +208,9 @@ describe('User Routes', () => {
 			const response = await request(stopFlowById);
 		
 			const getFlowStatus = async res6 => {
+				let status_flow = null;
 				try {
-					const status_flow = await Promise.resolve(res6.body);
+					status_flow = await Promise.resolve(res6.body);
 				}
 				catch (error) {
 					console.log(error);
@@ -245,7 +249,7 @@ describe('User Routes', () => {
             		},
         		body: response 		
 		};
-		//console.log("flowstatus after patch: " + response.body.data.status); // = null / undefine
+		
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
@@ -253,9 +257,6 @@ describe('User Routes', () => {
 	
 	
 	test('--- DELETE FLOW BY ID ---', async (done) => { 
-		//async function requestDelete() {
-		//};
-		//setTimeout(requestDelete, 5000);
 		const deleteFlowById = {
 				method: 'DELETE',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
