@@ -63,7 +63,7 @@ describe('User Routes', () => {
     test('--- ADD NEW FLOW ---', async (done) => {
 	    jest.setTimeout(5000);
 		    const createdFlow = {
-					"name": "Mein neuer Testflow " + start,
+					"name": "D Testflow",
   				 	"description": "This flow takes actions at regular invervals based on a set timer.",
   					"graph": {
    						"nodes": [
