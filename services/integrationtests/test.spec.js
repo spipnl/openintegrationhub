@@ -54,15 +54,7 @@ describe('User Routes', () => {
 	 done();
      });
 
-    test('--- ADD NEW FLOW ---', async (done) => { 
-		jest.setTimeout(15000);
-		var timePassed = Date.now() - start;
-		console.log(Math.floor(timePassed/1000));
-		
-	    	jest.setTimeout(15000);
-		var timePassed = Date.now() - start;
-		console.log(Math.floor(timePassed/1000));
-	    
+    test('--- ADD NEW FLOW ---', async (done) => {
 		    const createdFlow = {
 					"name": "Mein neuer Testflow " + start,
   				 	"description": "This flow takes actions at regular invervals based on a set timer.",
