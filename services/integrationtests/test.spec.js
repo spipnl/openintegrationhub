@@ -188,37 +188,8 @@ describe('User Routes', () => {
 		done();
 	});
 
-	test('--- PATCH FLOW BY ID ---', async (done) => { 
-		const getFlowData = {
-			method: 'GET',
-			uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
-			json: true,
-			headers: {
-				"Authorization" : " Bearer " + tokenAdmin, 
-			}
-		};
-		var response = await request(getFlowData);
-
-		const newName = "new given name " + flowName;
-
-		response.body.data.name = newName;
-
-		const patchFlow = {
-        		method: 'PATCH',
-        		uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
-        		json: true,
-				headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: response 		
-		};
-		//console.log("flowstatus after patch: " + response.body.data.status); // = null / undefine
-		expect(response.statusCode).toEqual(200);
-		done();
-	});
-
 	test('--- STOP FLOW BY ID ---', async (done) => { 
-        	
+        	jest.setTimeout(15000);
 		//async function requestFlowStop() {
 		//};
 		//setTimeout(requestFlowStop, 5000);	
@@ -249,6 +220,37 @@ describe('User Routes', () => {
     		done();
 	});
 
+	test('--- PATCH FLOW BY ID ---', async (done) => { 
+		const getFlowData = {
+			method: 'GET',
+			uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		var response = await request(getFlowData);
+
+		const newName = "new given name " + flowName;
+
+		response.body.data.name = newName;
+
+		const patchFlow = {
+        		method: 'PATCH',
+        		uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
+        		json: true,
+				headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: response 		
+		};
+		//console.log("flowstatus after patch: " + response.body.data.status); // = null / undefine
+		expect(response.statusCode).toEqual(200);
+		done();
+	});
+	
+	
+	
 	test('--- DELETE FLOW BY ID ---', async (done) => { 
 		//async function requestDelete() {
 		//};
