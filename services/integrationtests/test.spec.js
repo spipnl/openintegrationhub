@@ -61,7 +61,6 @@ describe('User Routes', () => {
      });
 
     test('--- ADD NEW FLOW ---', async (done) => {
-	    jest.setTimeout(5000);
 		    const createdFlow = {
 					"name": "D Testflow",
   				 	"description": "This flow takes actions at regular invervals based on a set timer.",
@@ -195,10 +194,9 @@ describe('User Routes', () => {
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
-        	jest.setTimeout(15000);
-		//async function requestFlowStop() {
-		//};
-		//setTimeout(requestFlowStop, 5000);	
+        	jest.setTimeout(5000);
+	   	jest.setTimeout(5000);
+	    	jest.setTimeout(5000);	
 		const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
