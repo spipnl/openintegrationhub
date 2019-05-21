@@ -13,12 +13,6 @@ var start = Date.now();
 
 
 describe('User Routes', () => {
-	beforeEach(() => {
-		jest.setTimeout(15000);
-		var timePassed = Date.now() - start;
-		console.log(Math.floor(timePassed/1000));
-	});
-
     test('--- LOGIN & TOKEN ---', async (done) => {
         const jsonPayload = {
         	username,
@@ -61,8 +55,15 @@ describe('User Routes', () => {
      });
 
     test('--- ADD NEW FLOW ---', async (done) => { 
-		process.env.IAM_AUTH_TYPE = 'basic';
-		const createdFlow = {
+		jest.setTimeout(15000);
+		var timePassed = Date.now() - start;
+		console.log(Math.floor(timePassed/1000));
+		
+	    	jest.setTimeout(15000);
+		var timePassed = Date.now() - start;
+		console.log(Math.floor(timePassed/1000));
+	    
+		    const createdFlow = {
 					"name": "Mein neuer Testflow " + start,
   				 	"description": "This flow takes actions at regular invervals based on a set timer.",
   					"graph": {
