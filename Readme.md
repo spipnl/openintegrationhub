@@ -2,7 +2,7 @@
   <img src="https://github.com/openintegrationhub/openintegrationhub/blob/updateReadme/Assets/medium-oih-einzeilig-zentriert.jpg" alt="Sublime's custom image" width="400"/>
 </p>
 
-[![CircleCI](https://circleci.com/gh/openintegrationhub/openintegrationhub/tree/master.svg?style=svg)](https://circleci.com/gh/openintegrationhub/openintegrationhub/tree/master)
+[![CircleCI](https://circleci.com/gh/openintegrationhub/openintegrationhub/tree/master.svg?style=svg)](https://circleci.com/gh/openintegrationhub/openintegrationhub/tree/master) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 
 The revolution in data synchronization — the Open Integration Hub enables simple data synchronization between any software applications and thus accelerates digitalisation.
 
