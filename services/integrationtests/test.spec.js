@@ -188,16 +188,15 @@ describe('User Routes', () => {
 		const response = await request(startFlowById);
 		
 		console.log(JSON.stringify(response.body)); // status = starting 
-		expect(response.statusCode).toEqual(200);
-		done();
-	    	jest.setTimeout(5000);	
+		
+		setTimeout(function() {
+			expect(response.statusCode).toEqual(200);
+		}, 4000);
+		
+		done();   		
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
-        	setTimeout(function() {
-			console.log("wait 4 seconds to let flow become active");
-		}, 4000);
-		
 		const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
