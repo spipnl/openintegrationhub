@@ -189,14 +189,19 @@ describe('User Routes', () => {
 		
 		console.log(JSON.stringify(response.body)); // status = starting 
 		
-		setTimeout(function() {
-			expect(response.statusCode).toEqual(200);
-		}, 4000);
-		
 		done();   		
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
+		
+		timeoutFn(){
+    			setTimeout(()=>{
+      				this.setState({
+        				timeout: true
+      				})
+    			},5000)
+  		};
+		
 		const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
