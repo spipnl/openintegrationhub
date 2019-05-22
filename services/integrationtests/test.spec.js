@@ -194,13 +194,13 @@ describe('User Routes', () => {
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
 		
-		timeoutFn(){
-    			setTimeout(()=>{
-      				this.setState({
-        				timeout: true
-      				})
-    			},5000)
-  		};
+		
+    		setTimeout(()=>{
+      			this.setState({
+        			timeout: true
+      			})
+    		},5000);
+  		
 		
 		const stopFlowById = {
 				method: 'POST',
