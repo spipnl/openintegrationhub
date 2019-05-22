@@ -194,11 +194,8 @@ describe('User Routes', () => {
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
 		
-		
     		setTimeout(()=>{
-      			this.setState({
-        			timeout: true
-      			})
+      			jest.setTimeout(5000);
     		},5000);
   		
 		
