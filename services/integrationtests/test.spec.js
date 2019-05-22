@@ -10,9 +10,6 @@ let flowID = null;
 let flowName = null;
 let flowStatus = null;
 let token = null;
-//let id = null;
-//let name = null;
-//let status = null;
 let status_flow = null;
 
 var start = Date.now();
@@ -118,7 +115,10 @@ describe('User Routes', () => {
         		body: createdFlow		
 		};
 		const response = await request(addFlow);
+	    
 	     	console.log(JSON.stringify(response.body));
+	    	console.log(JSON.stringify(addFlow.body));
+	    
 		const getFlowId = async res => {
 			try {
 				id = await Promise.resolve(res.body.data.id);
@@ -188,15 +188,13 @@ describe('User Routes', () => {
 		const response = await request(startFlowById);
 		
 		console.log(JSON.stringify(response.body)); // status = starting 
-
 		expect(response.statusCode).toEqual(200);
 		done();
+	    	jest.setTimeout(5000);	
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
         	jest.setTimeout(5000);
-	   	jest.setTimeout(5000);
-	    	jest.setTimeout(5000);	
 		const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
