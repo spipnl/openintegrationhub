@@ -179,7 +179,7 @@ describe('User Routes', () => {
 		const startFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
-					json:	true,
+					//json:	true,
 					headers: {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
@@ -198,7 +198,7 @@ describe('User Routes', () => {
     			return new Promise(resolve => setTimeout(resolve, ms));
 		}
   		
-		await request(timeout(4000));
+		const bs = await request(timeout(4000));
 		
 		
 		const stopFlowById = {
