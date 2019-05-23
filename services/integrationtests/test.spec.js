@@ -11,7 +11,6 @@ let flowName = null;
 let flowStatus = null;
 let token = null;
 let status_flow = null;
-
 var start = Date.now();
 
 
