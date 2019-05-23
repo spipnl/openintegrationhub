@@ -194,10 +194,12 @@ describe('User Routes', () => {
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
 		
-    		setTimeout(()=>{
-      			jest.setTimeout(5000);
-    		},5000);
+    		function timeout(ms) {
+    			return new Promise(resolve => setTimeout(resolve, ms));
+		}
   		
+		await timeout(4000);
+		
 		
 		const stopFlowById = {
 				method: 'POST',
