@@ -193,6 +193,13 @@ describe('User Routes', () => {
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
 	
+				
+    		function timeout(ms) {
+    			return new Promise(resolve => setTimeout(resolve, ms));
+		}
+  		
+		await request(timeout(4000));
+		
 		
 		const stopFlowById = {
 				method: 'POST',
