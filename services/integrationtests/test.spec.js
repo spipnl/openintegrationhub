@@ -202,7 +202,7 @@ describe('User Routes', () => {
 			return token; 
 		};	
 
-		tokenAdmin = await getToken(response); 
+		//tokenAdmin = await getToken(response); 
 		expect(response.statusCode).toEqual(200);	
     	done();
     });	
