@@ -261,6 +261,7 @@ describe('User Routes', () => {
 		};
 		
 		expect(response.statusCode).toEqual(200);
+		console.log(JSON.stringify(response.body));
 		done();
 	});
 	
