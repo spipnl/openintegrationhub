@@ -193,12 +193,13 @@ describe('User Routes', () => {
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
 		const checkStatus = {
-				method: 'GET',
-					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
-					headers: {
-						"Authorization" : " Bearer " + tokenAdmin, 
-					}
-			};
+        	method: 'POST',
+        	uri: `http://flow-repository.openintegrationhub.com/flows`,
+        	json: true,
+			headers: {
+                	"Authorization" : " Bearer " + tokenAdmin 
+            		}		
+		};
 		const response = await request(checkStatus);
 		var status = false;
 		
