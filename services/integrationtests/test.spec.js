@@ -262,7 +262,7 @@ describe('User Routes', () => {
 			};
 			const response = await request(deleteFlowById);
 			expect(response.statusCode).toEqual(200);
-		
+			console.log(JSON.stringify(response));
 		done();
 	});
 	
