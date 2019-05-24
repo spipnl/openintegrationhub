@@ -192,18 +192,18 @@ describe('User Routes', () => {
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
-		const checkStatus = {
-        	method: 'POST',
-        	uri: `http://flow-repository.openintegrationhub.com/flows`,
-        	json: true,
-			headers: {
-                	"Authorization" : " Bearer " + tokenAdmin 
-            		}		
-		};
-		const response = await request(checkStatus);
 		var status = false;
-		
-		while (status != true) {
+		while (status != true) {	
+			const checkStatus = {
+        			method: 'POST',
+        			uri: `http://flow-repository.openintegrationhub.com/flows`,
+        			json: true,
+				headers: {
+                			"Authorization" : " Bearer " + tokenAdmin 
+            			}		
+			};
+			const response = await request(checkStatus);
+			console.log(JSON.stringify(response.body));
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
@@ -218,7 +218,7 @@ describe('User Routes', () => {
 			if (flowStatus = "active") {
 				status = true;
 			}
-		}
+		};
 			
 		const stopFlowById = {
 				method: 'POST',
