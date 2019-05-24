@@ -185,8 +185,8 @@ describe('User Routes', () => {
 		var status = false;
 		while (status != true) {	
 			const checkStatus = {
-        			method: 'POST',
-        			uri: `http://flow-repository.openintegrationhub.com/flows`,
+        			method: 'GET',
+        			uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}``,
         			json: true,
 				headers: {
                 			"Authorization" : " Bearer " + tokenAdmin 
