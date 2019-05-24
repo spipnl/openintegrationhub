@@ -178,34 +178,6 @@ describe('User Routes', () => {
 		
 		done();   		
 	});
-	
-	test('--- TIMEOUT ---', async (done) => {
-        const jsonPayload = {
-        	username,
-        	password
-		};
-        const Login = {
-        	method: 'POST',
-        	uri: `http://iam.openintegrationhub.com/login`,
-        	json: true,
-        	body: jsonPayload
-        };
-		const response = await request(Login);
-
-		const getToken = async res => {
-			try {
-				token = await Promise.resolve(res.body.token);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return token; 
-		};	
-
-		//tokenAdmin = await getToken(response); 
-		expect(response.statusCode).toEqual(200);	
-    	done();
-    });	
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
 		var status = false;
@@ -231,7 +203,7 @@ describe('User Routes', () => {
 			};
 			flowStatus = await getFlowStatus(response);
 			console.log("flowstatus beim check: " + flowStatus);
-			if (flowStatus = "active") {
+			if (flowStatus == "active") {
 				status = true;
 			}
 		};
@@ -244,22 +216,8 @@ describe('User Routes', () => {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 		};
-			const response2 = await request(stopFlowById);
-		
-			const getFlowStatus = async res6 => {
-				try {
-					status_flow = await Promise.resolve(res6.body);
-				}
-				catch (error) {
-					console.log(error);
-				}
-				return status_flow; 
-			};
-			flowStatus = await getFlowStatus(response2); 
-		
-			 	
-			expect(response2.statusCode).toEqual(200);
-			console.log("flowstatus after call stop: " + flowStatus); // = null / undefined
+		const response2 = await request(stopFlowById);	
+		expect(response2.statusCode).toEqual(200); 
     		done();
 	});
 
