@@ -203,11 +203,6 @@ describe('User Routes', () => {
 		var status = false;
 		
 		while (status != true) {
-			function timeout(ms) {
-    				return new Promise(resolve => setTimeout(resolve, ms));
-			}
-  			const bs = await request(timeout(4000));
-			
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
