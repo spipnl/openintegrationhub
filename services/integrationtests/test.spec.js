@@ -218,7 +218,7 @@ describe('User Routes', () => {
 			return status; 
 			};
 			flowStatus = await getFlowStatus(response);
-			console.log("flowstatus beim check: " + flowStatus;
+			console.log("flowstatus beim check: " + flowStatus);
 			if (flowStatus = "active") {
 				status = true;
 			}
