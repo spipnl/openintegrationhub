@@ -14,6 +14,7 @@ var start = Date.now();
 
 
 describe('User Routes', () => {
+	jest.setTimeout(15000);
     test('--- LOGIN & TOKEN ---', async (done) => {
         const jsonPayload = {
         	username,
@@ -179,6 +180,7 @@ describe('User Routes', () => {
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
+		
 		var status = false;
 		while (status != true) {	
 			const checkStatus = {
@@ -201,7 +203,7 @@ describe('User Routes', () => {
 			return status; 
 			};
 			flowStatus = await getFlowStatus(response);
-			console.log("flowstatus beim check: " + flowStatus);
+			//console.log("flowstatus beim check: " + flowStatus);
 			if (flowStatus == "active") {
 				status = true;
 			}
@@ -217,10 +219,37 @@ describe('User Routes', () => {
 		};
 		const response2 = await request(stopFlowById);	
 		expect(response2.statusCode).toEqual(200); 
-    		done();
+    	done();
 	});
 
 	test('--- PATCH FLOW BY ID ---', async (done) => { 
+		var status2 = false;
+		while (status2 != true) {	
+			const checkStatus = {
+        			method: 'GET',
+        			uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
+        			json: true,
+				headers: {
+                			"Authorization" : " Bearer " + tokenAdmin 
+            			}		
+			};
+			const response = await request(checkStatus);
+			console.log(JSON.stringify(response.body));
+			const getFlowStatus = async res3 => {
+			try {
+				status = await Promise.resolve(res3.body.data.status);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return status; 
+			};
+			flowStatus = await getFlowStatus(response);
+			//console.log("flowstatus beim check: " + flowStatus);
+			if (flowStatus == "inactive") {
+				status2 = true;
+			}
+		};
 		const getFlowData = {
 			method: 'GET',
 			uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -251,6 +280,33 @@ describe('User Routes', () => {
 	});
 	
 	test('--- DELETE FLOW BY ID ---', async (done) => { 
+		var status3 = false;
+		while (status3 != true) {	
+			const checkStatus = {
+        			method: 'GET',
+        			uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
+        			json: true,
+				headers: {
+                			"Authorization" : " Bearer " + tokenAdmin 
+            			}		
+			};
+			const response = await request(checkStatus);
+			console.log(JSON.stringify(response.body));
+			const getFlowStatus = async res3 => {
+			try {
+				status = await Promise.resolve(res3.body.data.status);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return status; 
+			};
+			flowStatus = await getFlowStatus(response);
+			//console.log("flowstatus beim check: " + flowStatus);
+			if (flowStatus == "inactive") {
+				status3 = true;
+			}
+		};
 		const deleteFlowById = {
 				method: 'DELETE',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -264,6 +320,7 @@ describe('User Routes', () => {
 			console.log(JSON.stringify(response));
 		done();
 	});
+
 	
 	//--------------------------------------------------------------------------------------
 	
