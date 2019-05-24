@@ -232,7 +232,7 @@ describe('User Routes', () => {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 		};
-			const response = await request(stopFlowById);
+			const response2 = await request(stopFlowById);
 		
 			const getFlowStatus = async res6 => {
 				try {
@@ -243,10 +243,10 @@ describe('User Routes', () => {
 				}
 				return status_flow; 
 			};
-			flowStatus = await getFlowStatus(response); 
+			flowStatus = await getFlowStatus(response2); 
 		
 			 	
-			expect(response.statusCode).toEqual(200);
+			expect(response2.statusCode).toEqual(200);
 			console.log("flowstatus after call stop: " + flowStatus); // = null / undefined
     		done();
 	});
