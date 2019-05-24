@@ -192,15 +192,38 @@ describe('User Routes', () => {
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
-	
-				
-    		function timeout(ms) {
-    			return new Promise(resolve => setTimeout(resolve, ms));
+		const checkStatus = {
+				method: 'GET',
+					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
+					headers: {
+						"Authorization" : " Bearer " + tokenAdmin, 
+					}
+			};
+		const response = await request(checkStatus);
+		var status = false;
+		
+		while (status != true) {
+			function timeout(ms) {
+    				return new Promise(resolve => setTimeout(resolve, ms));
+			}
+  			const bs = await request(timeout(4000));
+			
+			const getFlowStatus = async res3 => {
+			try {
+				status = await Promise.resolve(res3.body.data.status);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return status; 
+			};
+			flowStatus = await getFlowStatus(response);
+			console.log("flowstatus beim check: " + flowStatus;
+			if (flowStatus = "active") {
+				status = true;
+			}
 		}
-  		
-		const bs = await request(timeout(4000));
-		
-		
+			
 		const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
