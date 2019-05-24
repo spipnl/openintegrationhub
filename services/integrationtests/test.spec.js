@@ -2,7 +2,6 @@ process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
 const username = process.env.username;
 const password = process.env.password;
-//let conf = null;
 
 let tokenUser = null; 
 let tokenAdmin = null;
