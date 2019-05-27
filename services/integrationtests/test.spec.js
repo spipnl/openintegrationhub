@@ -14,7 +14,7 @@ var start = Date.now();
 
 
 describe('User Routes', () => {
-	jest.setTimeout(15000);
+    jest.setTimeout(15000);
     test('--- LOGIN & TOKEN ---', async (done) => {
         const jsonPayload = {
         	username,
@@ -42,6 +42,8 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(200);	
     	done();
     });	
+	
+	//--------------------------------------------------------------------------------------
 		
     test('--- GET All FLOWS ---', async (done) => { 
         const getAllFlows = {
@@ -51,13 +53,13 @@ describe('User Routes', () => {
                 	"Authorization" : " Bearer " + tokenAdmin, 
             	}
         };
-	 	const response = await request(getAllFlows);
-        expect(response.statusCode).toEqual(200);
-	 done();
+	const response = await request(getAllFlows);
+     expect(response.statusCode).toEqual(200);
+     done();
      });
 
     test('--- ADD NEW FLOW ---', async (done) => {
-		   const createdFlow = {
+		const createdFlow = {
    					"name":"D Testflow",
    					"description":"This flow takes actions at regular invervals based on a set timer.",
    					"graph":{
@@ -139,10 +141,10 @@ describe('User Routes', () => {
 		flowName = await getFlowName(response);
 		flowStatus = await getFlowStatus(response); 
 		
-		console.log("token" + tokenAdmin); //works
-		console.log("name" + flowName);
-		console.log("id" + flowID); //work
-		console.log("status" + flowStatus); // keiner? / Null
+		console.log("token: " + tokenAdmin);
+		console.log("name: " + flowName);
+		console.log("id: " + flowID);
+		console.log("status: " + flowStatus);
 
 		expect(response.statusCode).toEqual(201);
     	done();
@@ -315,13 +317,12 @@ describe('User Routes', () => {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 			};
-			const response = await request(deleteFlowById);
-			expect(response.statusCode).toEqual(200);
-			console.log(JSON.stringify(response));
-		done();
+		const response = await request(deleteFlowById);
+		expect(response.statusCode).toEqual(200);
+		console.log(JSON.stringify(response));
+	done();
 	});
 
-	
 	//--------------------------------------------------------------------------------------
 	
 	// This will only return logs that pertain to the current user's tenant -> zuweisbar über Token?
@@ -334,9 +335,9 @@ describe('User Routes', () => {
 					"Authorization" : " Bearer " + tokenAdmin, 
 				}
 		};
-	const response = await request(getAllLogs);
-	//console.log(response.body);
-	expect(response.statusCode).toEqual(200);
+		const response = await request(getAllLogs);
+		console.log("logs: " + response.body);
+		expect(response.statusCode).toEqual(200);
 	done();
 	});
 
@@ -365,7 +366,8 @@ describe('User Routes', () => {
         		body: createdFlow		
 		};
 		const response = await request(addLog);
+		console.log("logs" + response.body);
 		expect(response.statusCode).toEqual(201);
-    		done();
+    	done();
 	});
 });
