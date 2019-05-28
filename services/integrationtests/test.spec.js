@@ -332,7 +332,7 @@ describe('User Routes', () => {
 				uri: `http://auditlog.openintegrationhub.com/logs`,
 				json:	true,
 				headers: {
-					"Authorization" : " Bearer " + tokenAdmin, 
+					"Authorization" : " Bearer " + tokenAdmin 
 				}
 		};
 		const response = await request(getAllLogs);
@@ -343,7 +343,7 @@ describe('User Routes', () => {
 
 	test('--- ADD LOG ---', async (done) => { 
 		process.env.IAM_AUTH_TYPE = 'basic';
-		const createdFlow = {
+		const createdLog = {
         		"service": "MyService",
   			"timeStamp": "1234567",
   			"nameSpace": "outerSpace",
@@ -361,9 +361,9 @@ describe('User Routes', () => {
         		uri: `http://auditlog.openintegrationhub.com/logs`,
         		json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
+                		"Authorization" : " Bearer " + tokenAdmin 
             		},
-        		body: createdFlow		
+        		body: createdLog		
 		};
 		const response = await request(addLog);
 		console.log("logs" + response.body);
