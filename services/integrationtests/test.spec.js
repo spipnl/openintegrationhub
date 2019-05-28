@@ -12,7 +12,6 @@ let token = null;
 let status_flow = null;
 var start = Date.now();
 
-
 describe('User Routes', () => {
     jest.setTimeout(15000);
     test('--- LOGIN & TOKEN ---', async (done) => {
