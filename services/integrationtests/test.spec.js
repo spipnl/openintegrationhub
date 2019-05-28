@@ -174,11 +174,10 @@ describe('User Routes', () => {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 		};
-		const response = await request(startFlowById);
-		
+		const response = await request(startFlowById);	
 		console.log(JSON.stringify(response.body)); // status = starting 
-		
-		done();   		
+		expect(response.statusCode).toEqual(200); 
+	done();   		
 	});
 
 	test('--- STOP FLOW BY ID ---', async (done) => { 
@@ -205,7 +204,6 @@ describe('User Routes', () => {
 			return status; 
 			};
 			flowStatus = await getFlowStatus(response);
-			//console.log("flowstatus beim check: " + flowStatus);
 			if (flowStatus == "active") {
 				status = true;
 			}
