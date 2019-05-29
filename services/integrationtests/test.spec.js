@@ -363,7 +363,7 @@ describe('User Routes', () => {
         		body: createdLog		
 		};
 		const response = await request(addLog);
-		console.log("added logs" + JSON.stringify(response.body);
+		console.log("added logs" + JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(201);
     	done();
 	});
