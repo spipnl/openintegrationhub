@@ -333,7 +333,7 @@ describe('User Routes', () => {
 				}
 		};
 		const response = await request(getAllLogs);
-		console.log("get all logs: " + response.body);
+		console.log("get all logs: " + Json.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 	done();
 	});
@@ -363,7 +363,7 @@ describe('User Routes', () => {
         		body: createdLog		
 		};
 		const response = await request(addLog);
-		console.log("added logs" + response.body);
+		console.log("added logs" + Json.stringify(response.body);
 		expect(response.statusCode).toEqual(201);
     	done();
 	});
