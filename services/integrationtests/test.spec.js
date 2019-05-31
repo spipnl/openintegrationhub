@@ -412,7 +412,7 @@ describe('User Routes', () => {
             	}
         };
 	const response = await request(getAllFlows);
-     	expect(response.statusCode).toEqual(404);
+     	expect(response.statusCode).toEqual(401);
      	done();
      	});
 
@@ -522,7 +522,7 @@ describe('User Routes', () => {
 				method: 'GET',
 					uri: `http://flow-repository.openintegrationhub.com/flows/324423`,
 					headers: {
-						"Authorization" : " Bearer " + adminToken, 
+						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 			};
 		const response = await request(getFlowById);
@@ -556,32 +556,19 @@ describe('User Routes', () => {
 					}
 		};
 		const response2 = await request(stopFlowById);	
-		expect(response2.statusCode).toEqual(200); 
+		expect(response2.statusCode).toEqual(401); 
     	done();
 	});
 
-	test('--- PATCH FLOW BY ID - FLOW NOT FOUND ---', async (done) => { 
+	test('--- PATCH FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
 		// flow was already stopped and deleted in earlier tests, simulates "can't be found"
-		const getFlowData = {
-			method: 'GET',
-			uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
-			json: true,
-			headers: {
-				"Authorization" : " Bearer " + tokenAdmin, 
-			}
-		};
-		var response = await request(getFlowData);
-
-		const newName = "new given name " + flowName;
-
-		response.body.data.name = newName;
-
+		var response = "some string";
 		const patchFlow = {
         		method: 'PATCH',
-        		uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
+        		uri: `http://flow-repository.openintegrationhub.com/flows/928347632`,
         		json: true,
 				headers: {
-                		"Authorization" : " Bearer " + adminToken, 
+                		"Authorization" : " Bearer " + tokenAdmin, 
             		},
         		body: response 		
 		};
@@ -596,7 +583,7 @@ describe('User Routes', () => {
 					uri: `http://flow-repository.openintegrationhub.com/flows/1982312`,
 					json:	true,
 					headers: {
-						"Authorization" : " Bearer " + adminToken, 
+						"Authorization" : " Bearer " + tokenAdmin, 
 					}
 			};
 		const response = await request(deleteFlowById);
