@@ -322,7 +322,6 @@ describe('User Routes', () => {
 
 	//--------------------------------------------------------------------------------------
 	
-	// This will only return logs that pertain to the current user's tenant -> zuweisbar über Token?
 	test('--- GET ALL LOGS ---', async (done) => {
 		const getAllLogs = {
 			method: 'GET',
@@ -367,4 +366,39 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(201);
     	done();
 	});
+	
+	//-----------------------------------neg---------------------------------------------------
+	
+	test('--- AUDIT LOG - MISSING AUTH ---', async (done) => {
+		const getAllLogs = {
+			method: 'GET',
+				uri: `http://auditlog.openintegrationhub.com/logs`,
+				json:	true,
+				headers: {
+				//	"Authorization" : " Bearer " + invalidAdmin 
+				}
+		};
+		const response = await request(getAllLogs);
+		console.log("get all logs: " + JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(401);
+	done();
+	});
+	
+	
+	test('--- AUDIT LOG - INVALID TOKEN ---', async (done) => {
+		var invalidToken = tokenAdmin + "axsyfdas"
+		const getAllLogs = {
+			method: 'GET',
+				uri: `http://auditlog.openintegrationhub.com/logs`,
+				json:	true,
+				headers: {
+					"Authorization" : " Bearer " + invalidToken
+				}
+		};
+		const response = await request(getAllLogs);
+		console.log("get all logs: " + JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(404);
+	done();
+	});
+	
 });
