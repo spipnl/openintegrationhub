@@ -367,7 +367,8 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	//-----------------------------------neg---------------------------------------------------
+	//-----------------------------------neg-audit-----------------------------------------------------
+	var invalidToken = tokenAdmin + "axsyfdas"
 	
 	test('--- AUDIT LOG - MISSING AUTH ---', async (done) => {
 		const getAllLogs = {
@@ -386,7 +387,6 @@ describe('User Routes', () => {
 	
 	
 	test('--- AUDIT LOG - INVALID TOKEN ---', async (done) => {
-		var invalidToken = tokenAdmin + "axsyfdas"
 		const getAllLogs = {
 			method: 'GET',
 				uri: `http://auditlog.openintegrationhub.com/logs`,
@@ -401,4 +401,207 @@ describe('User Routes', () => {
 	done();
 	});
 	
+	//---------------------------------------neg-flow----------------------------------------------------
+	
+	test('--- GET All FLOWS - INVALID TOKEN ---', async (done) => { 
+        const getAllFlows = {
+        	method: 'GET',
+            	uri: `http://flow-repository.openintegrationhub.com/flows`,
+            	headers: {
+                	"Authorization" : " Bearer " + invalidToken, 
+            	}
+        };
+	const response = await request(getAllFlows);
+     	expect(response.statusCode).toEqual(404);
+     	done();
+     	});
+
+    	test('--- ADD NEW FLOW - INVALID TOKEN ---', async (done) => {
+		const createdFlow = {
+   					"name":"D Testflow",
+   					"description":"This flow takes actions at regular invervals based on a set timer.",
+   					"graph":{
+     						 "nodes":[
+         						{
+            						"id":"step_1",
+            						"componentId":"5cb87489df763a001a54c7de",
+            						"function":"timer",
+            						"name":"step_1",
+            						"description":"string",
+            						"fields":{
+               							"intervall":"minute"
+            						}
+        				 		},
+         						{
+            						"id":"step_2",
+            						"componentId":"5cdaba4d6474a5001a8b2588",
+            						"function":"execute",
+            						"fields":{
+               							"code":"function* run() {console.log('Calling external URL');yield request.post({uri: 'http://requestbin.fullcontact.com/12os6ec1', body: msg, json: true});}"
+            						}
+         						}
+      							],
+      						"edges":[
+         					{
+            					"source":"step_1",
+            					"target":"step_2"
+         					}
+      						]
+   					},
+   					"type":"ordinary",
+   					"cron":"*/2 * * * *",
+   					"owners":[]
+   		};
+        	const addFlow = {
+        	method: 'POST',
+        	uri: `http://flow-repository.openintegrationhub.com/flows`,
+        	json: true,
+			headers: {
+                	"Authorization" : " Bearer " + invalidToken, 
+            		},
+        		body: createdFlow		
+		};
+		const response = await request(addFlow);
+	    
+	     	//console.log(JSON.stringify(response.body));
+	    	//console.log(JSON.stringify(addFlow.body));
+	    
+		const getFlowId = async res => {
+			try {
+				id = await Promise.resolve(res.body.data.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return id; 
+		};
+		flowID = await getFlowId(response);
+
+		const getFlowName = async res2 => {
+			try {
+				name = await Promise.resolve(res2.body.data.name);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return name; 
+		};
+		const getFlowStatus = async res3 => {
+			try {
+				status = await Promise.resolve(res3.body.data.status);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return status; 
+		};
+
+		flowName = await getFlowName(response);
+		flowStatus = await getFlowStatus(response); 
+		
+		expect(response.statusCode).toEqual(401);
+    	done();
+	});
+	
+	test('--- GET FLOW BY ID - INVALID TOKEN ---', async (done) => { 
+		const getFlowById = {
+				method: 'GET',
+					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
+					headers: {
+						"Authorization" : " Bearer " + invalidToken, 
+					}
+			};
+		const response = await request(getFlowById);
+
+		expect(response.statusCode).toEqual(401);
+		done();
+	});
+	
+	test('--- GET FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
+		const getFlowById = {
+				method: 'GET',
+					uri: `http://flow-repository.openintegrationhub.com/flows/324423`,
+					headers: {
+						"Authorization" : " Bearer " + adminToken, 
+					}
+			};
+		const response = await request(getFlowById);
+
+		expect(response.statusCode).toEqual(404);
+		done();
+	});
+	// patch here
+
+	test('--- START FLOW BY ID - INVALID TOKEN ---', async (done) => { 
+		const startFlowById = {
+				method: 'POST',
+					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
+					//json:	true,
+					headers: {
+						"Authorization" : " Bearer " + invalidToken, 
+					}
+		};
+		const response = await request(startFlowById);	 
+		expect(response.statusCode).toEqual(401); 
+	done();   		
+	});
+
+	test('--- STOP FLOW BY ID - INVALID TOKEN ---', async (done) => { 			
+		const stopFlowById = {
+				method: 'POST',
+					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
+					json:	true,
+					headers: {
+						"Authorization" : " Bearer " + invalidToken, 
+					}
+		};
+		const response2 = await request(stopFlowById);	
+		expect(response2.statusCode).toEqual(200); 
+    	done();
+	});
+
+	test('--- PATCH FLOW BY ID - FLOW NOT FOUND ---', async (done) => { 
+		// flow was already stopped and deleted in earlier tests, simulates "can't be found"
+		const getFlowData = {
+			method: 'GET',
+			uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		var response = await request(getFlowData);
+
+		const newName = "new given name " + flowName;
+
+		response.body.data.name = newName;
+
+		const patchFlow = {
+        		method: 'PATCH',
+        		uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
+        		json: true,
+				headers: {
+                		"Authorization" : " Bearer " + adminToken, 
+            		},
+        		body: response 		
+		};
+		
+		expect(response.statusCode).toEqual(404);
+		done();
+	});
+	
+	test('--- DELETE FLOW BY ID - FLOW ID NOT FOUND---', async (done) => { 
+		const deleteFlowById = {
+				method: 'DELETE',
+					uri: `http://flow-repository.openintegrationhub.com/flows/1982312`,
+					json:	true,
+					headers: {
+						"Authorization" : " Bearer " + adminToken, 
+					}
+			};
+		const response = await request(deleteFlowById);
+		expect(response.statusCode).toEqual(404);
+		console.log(JSON.stringify(response));
+	done();
+	});
 });
