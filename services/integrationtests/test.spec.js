@@ -104,8 +104,8 @@ describe('User Routes', () => {
 		};
 		const response = await request(addFlow);
 	    
-	     	console.log(JSON.stringify(response.body));
-	    	console.log(JSON.stringify(addFlow.body));
+	     	//console.log(JSON.stringify(response.body));
+	    	//console.log(JSON.stringify(addFlow.body));
 	    
 		const getFlowId = async res => {
 			try {
@@ -143,7 +143,7 @@ describe('User Routes', () => {
 		console.log("token: " + tokenAdmin);
 		console.log("name: " + flowName);
 		console.log("id: " + flowID);
-		console.log("status: " + flowStatus);
+		//console.log("status: " + flowStatus);
 
 		expect(response.statusCode).toEqual(201);
     	done();
@@ -174,7 +174,7 @@ describe('User Routes', () => {
 					}
 		};
 		const response = await request(startFlowById);	
-		console.log(JSON.stringify(response.body)); // status = starting 
+		//console.log(JSON.stringify(response.body)); // status = starting 
 		expect(response.statusCode).toEqual(200); 
 	done();   		
 	});
@@ -274,7 +274,7 @@ describe('User Routes', () => {
 		};
 		
 		expect(response.statusCode).toEqual(200);
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		done();
 	});
 	
@@ -316,7 +316,7 @@ describe('User Routes', () => {
 			};
 		const response = await request(deleteFlowById);
 		expect(response.statusCode).toEqual(200);
-		console.log(JSON.stringify(response));
+		//console.log(JSON.stringify(response));
 	done();
 	});
 
@@ -332,7 +332,7 @@ describe('User Routes', () => {
 				}
 		};
 		const response = await request(getAllLogs);
-		console.log("get all logs: " + JSON.stringify(response.body));
+		//console.log("get all logs: " + JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 	done();
 	});
@@ -362,7 +362,7 @@ describe('User Routes', () => {
         		body: createdLog		
 		};
 		const response = await request(addLog);
-		console.log("added logs" + JSON.stringify(response.body));
+		//console.log("added logs" + JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(201);
     	done();
 	});
@@ -380,7 +380,7 @@ describe('User Routes', () => {
 				}
 		};
 		const response = await request(getAllLogs);
-		console.log("get all logs: " + JSON.stringify(response.body));
+		//console.log("get all logs: " + JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);
 	done();
 	});
@@ -396,7 +396,7 @@ describe('User Routes', () => {
 				}
 		};
 		const response = await request(getAllLogs);
-		console.log("get all logs: " + JSON.stringify(response.body));
+		//console.log("get all logs: " + JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);
 	done();
 	});
@@ -513,7 +513,7 @@ describe('User Routes', () => {
 			};
 		const response = await request(getFlowById);
 
-		expect(response.statusCode).toEqual(400);
+		expect(response.statusCode).toEqual(401);
 		done();
 	});
 	
@@ -527,7 +527,7 @@ describe('User Routes', () => {
 			};
 		const response = await request(getFlowById);
 
-		expect(response.statusCode).toEqual(404);
+		expect(response.statusCode).toEqual(400);
 		done();
 	});
 	// patch here
@@ -588,7 +588,7 @@ describe('User Routes', () => {
 			};
 		const response = await request(deleteFlowById);
 		expect(response.statusCode).toEqual(400);
-		console.log(JSON.stringify(response));
+		//console.log(JSON.stringify(response));
 	done();
 	});
 });
