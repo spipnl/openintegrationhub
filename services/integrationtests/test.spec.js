@@ -397,7 +397,7 @@ describe('User Routes', () => {
 		};
 		const response = await request(getAllLogs);
 		console.log("get all logs: " + JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(404);
+		expect(response.statusCode).toEqual(401);
 	done();
 	});
 	
