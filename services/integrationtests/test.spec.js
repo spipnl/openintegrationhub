@@ -453,52 +453,15 @@ describe('User Routes', () => {
    					"owners":[]
    		};
         	const addFlow = {
-        	method: 'POST',
-        	uri: `http://flow-repository.openintegrationhub.com/flows`,
-        	json: true,
+        		method: 'POST',
+        		uri: `http://flow-repository.openintegrationhub.com/flows`,
+        		json: true,
 			headers: {
-                	"Authorization" : " Bearer " + invalidToken, 
+                		"Authorization" : " Bearer " + invalidToken, 
             		},
         		body: createdFlow		
 		};
-		const response = await request(addFlow);
-	    
-	     	//console.log(JSON.stringify(response.body));
-	    	//console.log(JSON.stringify(addFlow.body));
-	    
-		const getFlowId = async res => {
-			try {
-				id = await Promise.resolve(res.body.data.id);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return id; 
-		};
-		flowID = await getFlowId(response);
-
-		const getFlowName = async res2 => {
-			try {
-				name = await Promise.resolve(res2.body.data.name);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return name; 
-		};
-		const getFlowStatus = async res3 => {
-			try {
-				status = await Promise.resolve(res3.body.data.status);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return status; 
-		};
-
-		flowName = await getFlowName(response);
-		flowStatus = await getFlowStatus(response); 
-		
+		const response = await request(addFlow);		
 		expect(response.statusCode).toEqual(401);
     	done();
 	});
@@ -562,7 +525,7 @@ describe('User Routes', () => {
 
 	test('--- PATCH FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
 		// flow was already stopped and deleted in earlier tests, simulates "can't be found"
-		var response = "some string";
+		var newBody = "some string";
 		const patchFlow = {
         		method: 'PATCH',
         		uri: `http://flow-repository.openintegrationhub.com/flows/928347632`,
@@ -570,9 +533,10 @@ describe('User Routes', () => {
 				headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
             		},
-        		body: response 		
+        		body: newBody 		
 		};
-		
+		response = await request(patchFlow);
+		console.log("neg patch: " JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(404);
 		done();
 	});
