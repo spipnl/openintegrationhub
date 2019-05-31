@@ -526,9 +526,10 @@ describe('User Routes', () => {
 	test('--- PATCH FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
 		// flow was already stopped and deleted in earlier tests, simulates "can't be found"
 		var newBody = "some string";
+		const tempFlowID = 29384329856;
 		const patchFlow = {
         		method: 'PATCH',
-        		uri: `http://flow-repository.openintegrationhub.com/flows/928347632`,
+        		uri: `http://flow-repository.openintegrationhub.com/flows/${tempFlowID}`,
         		json: true,
 				headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
