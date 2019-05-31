@@ -536,7 +536,7 @@ describe('User Routes', () => {
         		body: newBody 		
 		};
 		response = await request(patchFlow);
-		console.log("neg patch: " JSON.stringify(response.body));
+		console.log("neg patch: " + JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(404);
 		done();
 	});
