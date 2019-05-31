@@ -192,7 +192,7 @@ describe('User Routes', () => {
             			}		
 			};
 			const response = await request(checkStatus);
-			console.log(JSON.stringify(response.body));
+			//console.log(JSON.stringify(response.body));
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
@@ -233,7 +233,7 @@ describe('User Routes', () => {
             			}		
 			};
 			const response = await request(checkStatus);
-			console.log(JSON.stringify(response.body));
+			//console.log(JSON.stringify(response.body));
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
@@ -290,7 +290,7 @@ describe('User Routes', () => {
             			}		
 			};
 			const response = await request(checkStatus);
-			console.log(JSON.stringify(response.body));
+			//console.log(JSON.stringify(response.body));
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
@@ -513,7 +513,7 @@ describe('User Routes', () => {
 			};
 		const response = await request(getFlowById);
 
-		expect(response.statusCode).toEqual(401);
+		expect(response.statusCode).toEqual(400);
 		done();
 	});
 	
@@ -587,7 +587,7 @@ describe('User Routes', () => {
 					}
 			};
 		const response = await request(deleteFlowById);
-		expect(response.statusCode).toEqual(404);
+		expect(response.statusCode).toEqual(400);
 		console.log(JSON.stringify(response));
 	done();
 	});
