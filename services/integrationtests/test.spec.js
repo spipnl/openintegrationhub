@@ -537,7 +537,7 @@ describe('User Routes', () => {
 		};
 		response = await request(patchFlow);
 		console.log("neg patch " + JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(404);
+		expect(response.statusCode).toEqual(400); //docu:404
 		done();
 	});
 	
