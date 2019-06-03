@@ -543,16 +543,31 @@ describe('User Routes', () => {
 	
 	test('--- DELETE FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
 		const deleteFlowById = {
-				method: 'DELETE',
-					uri: `http://flow-repository.openintegrationhub.com/flows/1982312`,
-					json:	true,
-					headers: {
-						"Authorization" : " Bearer " + tokenAdmin, 
-					}
+			method: 'DELETE',
+			uri: `http://flow-repository.openintegrationhub.com/flows/1982312`,
+			json:	true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+				}
 			};
 		const response = await request(deleteFlowById);
 		expect(response.statusCode).toEqual(400);
 		//console.log(JSON.stringify(response));
 	done();
 	});
+	
+	//---------------------------------------metadata-repository---------------------------------------------------
+	
+	test('--- GET ALL DOMAINS ---', async (done) => {
+		const getAllDomains = {
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/domains`,
+			json: true
+		};
+	    
+		const response = await request(getAllDomains);
+		expect(response.statusCode).toEqual(200); 
+	done();
+	}
+	     
 });
