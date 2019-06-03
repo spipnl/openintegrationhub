@@ -313,10 +313,9 @@ describe('User Routes', () => {
 					headers: {
 						"Authorization" : " Bearer " + tokenAdmin, 
 					}
-			};
+		};
 		const response = await request(deleteFlowById);
 		expect(response.statusCode).toEqual(200);
-		//console.log(JSON.stringify(response));
 	done();
 	});
 
@@ -561,8 +560,12 @@ describe('User Routes', () => {
 	test('--- GET ALL DOMAINS ---', async (done) => {
 		const getAllDomains = {
 			method: 'GET',
-			uri: `http://metadata.openintegrationhub.com/domains`,
-			json: true
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+				}
+			};
 		};
 	    
 		const response = await request(getAllDomains);
