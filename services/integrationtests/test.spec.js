@@ -568,6 +568,5 @@ describe('User Routes', () => {
 		const response = await request(getAllDomains);
 		expect(response.statusCode).toEqual(200); 
 	done();
-	}
-	     
+	});     
 });
