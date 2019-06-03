@@ -565,7 +565,6 @@ describe('User Routes', () => {
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
 				}
-			};
 		};
 	    
 		const response = await request(getAllDomains);
