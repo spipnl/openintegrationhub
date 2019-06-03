@@ -60,7 +60,7 @@ The service is a plain NodeJS microservice which stores its data in a MongoDB an
 
 # Concept of the Integration Layer Service
 
-[ILS schema](./Assets/ILS.jpg)
+![ILS schema](Assets/ILS.jpg)
 
 As of now, the OIH can not directly transfer data from one flow to another. For aggregation, splitting and filtering we need such a functionality. Therefore we have to implement a temporary storage for the data. This is done by the Integration Layer Service.
 
