@@ -596,9 +596,10 @@ describe('User Routes', () => {
                 		"Authorization" : " Bearer " + invalidToken, 
             		},
         		body: toBeUploaded		
-		};
-		console.log(JSON.stringify(response.body));
+		};		
 		const response = await request(getAllDomains);
+		
+		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 	
 	done();
