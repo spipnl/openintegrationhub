@@ -597,7 +597,7 @@ describe('User Routes', () => {
             		},
         		body: toBeUploaded		
 		};
-
+		console.log(JSON.stringify(response.body));
 		const response = await request(getAllDomains);
 		expect(response.statusCode).toEqual(200);
 	
