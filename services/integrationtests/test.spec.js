@@ -588,16 +588,16 @@ describe('User Routes', () => {
     						"updatedAt": "2019-06-03T14:58:39.897Z"
   					}					
 		};
-		
 		const getAllDomains = {
-			method: 'POST',
-			uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
-			json: true,
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
+        		json: true,
 			headers: {
-				"Authorization" : " Bearer " + tokenAdmin, 
-				}
-	     		body: toBeUploaded
+                		"Authorization" : " Bearer " + invalidToken, 
+            		},
+        		body: toBeUploaded		
 		};
+
 		const response = await request(getAllDomains);
 		expect(response.statusCode).toEqual(200);
 	
