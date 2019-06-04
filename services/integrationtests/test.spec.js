@@ -573,7 +573,6 @@ describe('User Routes', () => {
 	
 	test('--- 22. CREATE NEW DOMAIN ---', async (done) => {
 		const toBeUploaded = {
-					{
   					"data": {
     						"name": "string",
     						"description": "string",
@@ -587,8 +586,7 @@ describe('User Routes', () => {
     						"id": "string",
     						"createdAt": "2019-06-03T14:58:39.897Z",
     						"updatedAt": "2019-06-03T14:58:39.897Z"
-  						}
-					}	
+  					}					
 		};
 		
 		const getAllDomains = {
