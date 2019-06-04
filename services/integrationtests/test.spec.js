@@ -600,6 +600,7 @@ describe('User Routes', () => {
 		const response = await request(getAllDomains);
 		
 		console.log(JSON.stringify(response.body));
+		console.log("token: " + tokenAdmin);
 		expect(response.statusCode).toEqual(200);
 	
 	done();
