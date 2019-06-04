@@ -596,7 +596,7 @@ describe('User Routes', () => {
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
 				}
-	     		body: toBeUploaded;
+	     		body: toBeUploaded
 		};
 		const response = await request(getAllDomains);
 		expect(response.statusCode).toEqual(200);
