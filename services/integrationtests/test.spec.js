@@ -593,7 +593,7 @@ describe('User Routes', () => {
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
         		json: true,
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken, 
+                		"Authorization" : " Bearer " + tokenAdmin, 
             		},
         		body: toBeUploaded		
 		};		
