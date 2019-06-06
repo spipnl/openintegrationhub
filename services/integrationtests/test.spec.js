@@ -10,7 +10,7 @@ let flowName = null;
 let flowStatus = null;
 let token = null;
 let status_flow = null;
-var start = Date.now();
+let domainID = null;
 
 describe('User Routes', () => {
     jest.setTimeout(15000);
@@ -599,6 +599,17 @@ describe('User Routes', () => {
 		};		
 		const response = await request(getAllDomains);
 		
+		const getDomainID = async res => {
+			try {
+				id = await Promise.resolve(res.body.data.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return id; 
+		};
+		domainID = await getDomainID(response);
+		
 		console.log(JSON.stringify(response.body));
 		console.log("token: " + tokenAdmin);
 		expect(response.statusCode).toEqual(200);
@@ -606,4 +617,21 @@ describe('User Routes', () => {
 	done();
 	});
 	
+	test('--- 23. GET DOMAIN BY ID ---', async (done) => {
+		const getDomainByID = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}		
+		};		
+		const response = await request(getDomainByID);
+		
+		console.log(JSON.stringify(response.body));
+		console.log("domainID: " + domainID);
+		expect(response.statusCode).toEqual(200);
+	
+	done();
+	});
 });
