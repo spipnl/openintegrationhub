@@ -607,7 +607,7 @@ describe('User Routes', () => {
 			catch (error) {
 				console.log(error);
 			}
-			return domain_id; 
+			return domain_ID; 
 		};
 		domainID = await getDomainID(response);
 		
