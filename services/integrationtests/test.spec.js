@@ -104,7 +104,7 @@ describe('User Routes', () => {
 		};
 		const response = await request(addFlow);
 	    
-	     	//console.log(JSON.stringify(response.body));
+	     	//console.log(JSON.stringify("post: " + response.body));
 	    	//console.log(JSON.stringify(addFlow.body));
 	    
 		const getFlowId = async res => {
@@ -598,10 +598,11 @@ describe('User Routes', () => {
         		body: toBeUploaded		
 		};		
 		const response = await request(getAllDomains);
+		console.log(JSON.stringify(response.body));
 		
 		const getDomainID = async res => {
 			try {
-				domain_ID = await Promise.resolve(res.body.data.owners.id);
+				domain_ID = await Promise.resolve(res.body.data.data.owners.id);
 			}
 			catch (error) {
 				console.log(error);
@@ -610,7 +611,7 @@ describe('User Routes', () => {
 		};
 		domainID = await getDomainID(response);
 		
-		console.log(JSON.stringify(response.body));
+		
 		//console.log("token: " + tokenAdmin);
 		expect(response.statusCode).toEqual(200);
 	
