@@ -601,17 +601,17 @@ describe('User Routes', () => {
 		
 		const getDomainID = async res => {
 			try {
-				id = await Promise.resolve(res.body.data.id);
+				domain_ID = await Promise.resolve(res.body.data.owners.id);
 			}
 			catch (error) {
 				console.log(error);
 			}
-			return id; 
+			return domain_id; 
 		};
 		domainID = await getDomainID(response);
 		
 		console.log(JSON.stringify(response.body));
-		console.log("token: " + tokenAdmin);
+		//console.log("token: " + tokenAdmin);
 		expect(response.statusCode).toEqual(200);
 	
 	done();
