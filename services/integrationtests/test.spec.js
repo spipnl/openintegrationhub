@@ -635,4 +635,34 @@ describe('User Routes', () => {
 	
 	done();
 	});
+	
+	test('--- 7. PATCH DOMAIN BY ID ---', async (done) => { 	
+		const getDomainData = {
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		var response = await request(getDomainData);
+		var domainDesc = "short,  description";
+		const newDescription = "new description: " + domainDesc;
+
+		response.body.data.description = newDescription;
+
+		const patchDomain = {
+        		method: 'PUT',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+        		json: true,
+				headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: response 		
+		};
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(200);
+		//console.log(JSON.stringify(response.body));
+		done();
+	});
 });
