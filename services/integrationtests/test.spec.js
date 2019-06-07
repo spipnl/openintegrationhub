@@ -664,4 +664,57 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
+	
+	test('--- 25. IMPORT DOMAIN MODEL ---', async(done) => {
+	     
+		const newModel = {
+				"address": {
+    				"type": "object",
+    				"required": [
+      				"street_address",
+      				"city",
+      				"state"
+    				],
+    				"properties": {
+      				"street_address": {
+        				"type": "string"
+      				},
+      				"city": {
+        				"type": "string"
+      				},
+      				"state": {
+        				"type": "string"
+      				}
+    				}
+  				},
+  				"person": {
+    					"type": "object",
+    					"required": [
+      						"first_name",
+      						"last_name"
+    				],
+    				"properties": {
+      						"first_name": {
+        						"type": "string"
+      							},
+      							"last_name": {
+        							"type": "string"
+      							}
+    						}
+  				}
+		};
+		
+		const addDomainModel = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: newModel		
+		};
+		const response = await request(addDomainModel);		
+		expect(response.statusCode).toEqual(200);
+    	done();
+			
 });
