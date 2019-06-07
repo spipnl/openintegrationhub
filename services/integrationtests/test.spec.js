@@ -25,20 +25,20 @@ describe('User Routes', () => {
         	json: true,
         	body: jsonPayload
         };
-		const response = await request(Login);
+	const response = await request(Login);
 
-		const getToken = async res => {
-			try {
-				token = await Promise.resolve(res.body.token);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return token; 
-		};	
+	const getToken = async res => {
+		try {
+			token = await Promise.resolve(res.body.token);
+		}
+		catch (error) {
+			console.log(error);
+		}
+		return token; 
+	};	
 
-		tokenAdmin = await getToken(response); 
-		expect(response.statusCode).toEqual(200);	
+	tokenAdmin = await getToken(response); 
+	expect(response.statusCode).toEqual(200);	
     	done();
     });	
 	
@@ -716,5 +716,5 @@ describe('User Routes', () => {
 		const response = await request(addDomainModel);		
 		expect(response.statusCode).toEqual(200);
     	done();
-			
+	});	
 });
