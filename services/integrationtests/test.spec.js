@@ -636,7 +636,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 7. PATCH DOMAIN BY ID ---', async (done) => { 	
+	test('--- 24. PATCH DOMAIN BY ID ---', async (done) => { 	
 		const getDomainData = {
 			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
@@ -646,7 +646,7 @@ describe('User Routes', () => {
 			}
 		};
 		var response = await request(getDomainData);
-		var domainDesc = "short,  description";
+		var domainDesc = "short desc update";
 		const newDescription = "new description: " + domainDesc;
 
 		response.body.data.description = newDescription;
@@ -662,7 +662,6 @@ describe('User Routes', () => {
 		};
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
-		//console.log(JSON.stringify(response.body));
 		done();
 	});
 });
