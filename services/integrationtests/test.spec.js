@@ -629,8 +629,8 @@ describe('User Routes', () => {
 		};		
 		const response = await request(getDomainByID);
 		
-		console.log(JSON.stringify(response.body));
-		console.log("domainID: " + domainID);
+		//console.log(JSON.stringify(response.body));
+		//console.log("domainID: " + domainID);
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -660,13 +660,12 @@ describe('User Routes', () => {
             		},
         		body: response 		
 		};
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
 	
-	test('--- 25. IMPORT DOMAIN MODEL ---', async(done) => {
-	     
+	test('--- 25. IMPORT DOMAIN MODEL ---', async(done) => {   
 		const newModel = {
 				"address": {
     				"type": "object",
@@ -713,8 +712,11 @@ describe('User Routes', () => {
             		},
         		body: newModel		
 		};
-		const response = await request(addDomainModel);		
-		expect(response.statusCode).toEqual(200);
+		
+		const response = await request(addDomainModel);
+		
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(202);
     	done();
 	});	
 });
