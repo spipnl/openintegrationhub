@@ -612,7 +612,7 @@ describe('User Routes', () => {
 		domainID = await getDomainID(response);
 		
 		
-		//console.log("token: " + tokenAdmin);
+		console.log("domainID: " + domainID);
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -629,7 +629,7 @@ describe('User Routes', () => {
 		};		
 		const response = await request(getDomainByID);
 		
-		//console.log(JSON.stringify(response.body));
+		console.log("get domain: " + JSON.stringify(response.body));
 		//console.log("domainID: " + domainID);
 		expect(response.statusCode).toEqual(200);
 	
@@ -660,7 +660,7 @@ describe('User Routes', () => {
             		},
         		body: response 		
 		};
-		//console.log(JSON.stringify(response.body));
+		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
