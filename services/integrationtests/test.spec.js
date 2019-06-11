@@ -636,7 +636,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 24. PATCH DOMAIN BY ID ---', async (done) => { 	
+	test('--- 24. PUT DOMAIN BY ID ---', async (done) => { 	
 		const getDomainData = {
 			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
@@ -656,7 +656,7 @@ describe('User Routes', () => {
 		response.body.data.description = newDescription;
 
 		const patchDomain = {
-        		method: 'PATCH',
+        		method: 'PUT',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
         		json: true,
 				headers: {
