@@ -590,7 +590,7 @@ describe('User Routes', () => {
 		};
 		const getAllDomains = {
         		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/domains/`,
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
@@ -602,7 +602,7 @@ describe('User Routes', () => {
 		
 		const getDomainID = async res => {
 			try {
-				var domain_ID = await Promise.resolve(res.body.data._id);
+				var domain_ID = await Promise.resolve(res.body.data.id);
 			}
 			catch (error) {
 				console.log(error);
@@ -621,7 +621,7 @@ describe('User Routes', () => {
 	test('--- 23. GET DOMAIN BY ID ---', async (done) => {
 		const getDomainByID = {
         		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}`,
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
@@ -639,7 +639,7 @@ describe('User Routes', () => {
 	test('--- 24. PATCH DOMAIN BY ID ---', async (done) => { 	
 		const getDomainData = {
 			method: 'GET',
-			uri: `http://metadata.openintegrationhub.com/domains//${domainID}`,
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
 			json: true,
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
@@ -648,12 +648,13 @@ describe('User Routes', () => {
 		var response = await request(getDomainData);
 		var domainDesc = "short desc update";
 		const newDescription = "new description: " + domainDesc;
-
+		
+		console.log("Description: " + JSON.stringify(response.body.data.description));
 		response.body.data.description = newDescription;
 
 		const patchDomain = {
-        		method: 'PUT',
-        		uri: `http://metadata.openintegrationhub.com/domains//${domainID}`,
+        		method: 'PATCH',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
         		json: true,
 				headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
@@ -705,7 +706,7 @@ describe('User Routes', () => {
 		
 		const addDomainModel = {
         		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/domains//${domainID}/import/`,
+        		uri: `http://metadata.openintegrationhub.com/domains/api/v1/${domainID}/import/`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
