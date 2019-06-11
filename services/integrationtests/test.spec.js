@@ -668,42 +668,42 @@ describe('User Routes', () => {
 		
 	test('--- 25. IMPORT DOMAIN MODEL ---', async(done) => {   
 		const newModel = {
-				"address": {
-    				"type": "object",
-    				"required": [
-      				"street_address",
-      				"city",
-      				"state"
-    				],
-    				"properties": {
-      				"street_address": {
-        				"type": "string"
-      				},
-      				"city": {
-        				"type": "string"
-      				},
-      				"state": {
-        				"type": "string"
-      				}
-    				}
-  				},
-  				"person": {
-    					"type": "object",
-    					"required": [
-      						"first_name",
-      						"last_name"
-    				],
-    				"properties": {
-      						"first_name": {
-        						"type": "string"
-      							},
-      							"last_name": {
-        							"type": "string"
-      							}
-    						}
-  				}
+		   "address":{
+		      "type":"object",
+		      "required":[
+			 "street_address",
+			 "city",
+			 "state"
+		      ],
+		      "properties":{
+			 "street_address":{
+			    "type":"string"
+			 },
+			 "city":{
+			    "type":"string"
+			 },
+			 "state":{
+			    "type":"string"
+			 }
+		      }
+		   },
+		   "person":{
+		      "type":"object",
+		      "required":[
+			 "first_name",
+			 "last_name"
+		      ],
+		      "properties":{
+			 "first_name":{
+			    "type":"string"
+			 },
+			 "last_name":{
+			    "type":"string"
+			 }
+		      }
+		   }
 		};
-		
+		console.log(`Domain ID in POST Model ${domainID}`);
 		const addDomainModel = {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/domains/api/v1/${domainID}/import/`,
