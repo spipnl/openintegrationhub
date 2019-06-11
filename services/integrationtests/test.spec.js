@@ -628,7 +628,7 @@ describe('User Routes', () => {
             		}		
 		};		
 		const response = await request(getDomainByID);
-		
+		console.log(`Domain ID in get Domain by ID: ${domainID}`);
 		console.log("get domain: " + JSON.stringify(response.body));
 		//console.log("domainID: " + domainID);
 		expect(response.statusCode).toEqual(200);
@@ -645,8 +645,11 @@ describe('User Routes', () => {
 				"Authorization" : " Bearer " + tokenAdmin, 
 			}
 		};
-		var response = await request(getDomainData);
-		var domainDesc = "short desc update";
+		console.log(`Domain ID in PATCH Domain by ID: ${domainID}`);
+		
+		const response = await request(getDomainData);
+		console.log("Received domain: "+JSON.stringify(response));
+		const domainDesc = "short desc update";
 		const newDescription = "new description: " + domainDesc;
 		
 		console.log("Description: " + JSON.stringify(response.body.data.description));
@@ -703,7 +706,7 @@ describe('User Routes', () => {
 		      }
 		   }
 		};
-		console.log(`Domain ID in POST Model ${domainID}`);
+		console.log(`Domain ID in POST Model: ${domainID}`);
 		const addDomainModel = {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/domains/api/v1/${domainID}/import/`,
