@@ -602,7 +602,8 @@ describe('User Routes', () => {
 		
 		const getDomainID = async res => {
 			try {
-				var domain_ID = await Promise.resolve(res.body.data.owners._id);
+				var domain_ID = await Promise.resolve(res.body.data._id);
+				console.log(JSON.stringify(res.body));
 			}
 			catch (error) {
 				console.log(error);
