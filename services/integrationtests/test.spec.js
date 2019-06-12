@@ -727,19 +727,19 @@ describe('User Routes', () => {
 	
 	test('--- 27. GET ALL COMPONENTS ---', async(done) => {   
 		
-		const requestOptions = {
+		const getAllComponents = {
         		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
+        		uri: `http://component-repository.openintegrationhub.com/components/`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
             		}
 		};
 		
-		const response = await request(requestOptions);
+		const response = await request(getAllComponents);
 		
 		console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(202);
+		expect(response.statusCode).toEqual(200);
     	done();
 	});
 });
