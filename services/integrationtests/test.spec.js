@@ -14,7 +14,7 @@ let domainID = null;
 
 describe('User Routes', () => {
     jest.setTimeout(15000);
-    test('--- 1. LOGIN & TOKEN ---', async (done) => {
+    test('---  1. LOGIN & TOKEN ---', async (done) => {
         const jsonPayload = {
         	username,
         	password
@@ -44,7 +44,7 @@ describe('User Routes', () => {
 	
 	//--------------------------------------------------------------------------------------
 		
-    test('--- 2. GET All FLOWS ---', async (done) => { 
+    test('---  2. GET All FLOWS ---', async (done) => { 
         const getAllFlows = {
         	method: 'GET',
             	uri: `http://flow-repository.openintegrationhub.com/flows`,
@@ -57,7 +57,7 @@ describe('User Routes', () => {
      done();
      });
 
-    test('--- 3. ADD NEW FLOW ---', async (done) => {
+    test('---  3. ADD NEW FLOW ---', async (done) => {
 		const createdFlow = {
    					"name":"D Testflow",
    					"description":"This flow takes actions at regular invervals based on a set timer.",
@@ -103,10 +103,7 @@ describe('User Routes', () => {
         		body: createdFlow		
 		};
 		const response = await request(addFlow);
-	    
-	     	//console.log(JSON.stringify("post: " + response.body));
-	    	//console.log(JSON.stringify(addFlow.body));
-	    
+	    	    
 		const getFlowId = async res => {
 			try {
 				id = await Promise.resolve(res.body.data.id);
@@ -143,13 +140,12 @@ describe('User Routes', () => {
 		console.log("token: " + tokenAdmin);
 		console.log("name: " + flowName);
 		console.log("id: " + flowID);
-		//console.log("status: " + flowStatus);
 
 		expect(response.statusCode).toEqual(201);
     	done();
 	});
 	
-	test('--- 4. GET FLOW BY ID ---', async (done) => { 
+	test('---  4. GET FLOW BY ID ---', async (done) => { 
 		const getFlowById = {
 				method: 'GET',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -158,13 +154,12 @@ describe('User Routes', () => {
 					}
 			};
 		const response = await request(getFlowById);
-
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
 	// patch here
 
-	test('--- 5. START FLOW BY ID ---', async (done) => { 
+	test('---  5. START FLOW BY ID ---', async (done) => { 
 		const startFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
@@ -174,12 +169,11 @@ describe('User Routes', () => {
 					}
 		};
 		const response = await request(startFlowById);	
-		//console.log(JSON.stringify(response.body)); // status = starting 
 		expect(response.statusCode).toEqual(200); 
 	done();   		
 	});
 
-	test('--- 6. STOP FLOW BY ID ---', async (done) => { 
+	test('---  6. STOP FLOW BY ID ---', async (done) => { 
 		
 		var status = false;
 		while (status != true) {	
@@ -192,7 +186,6 @@ describe('User Routes', () => {
             			}		
 			};
 			const response = await request(checkStatus);
-			//console.log(JSON.stringify(response.body));
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
@@ -221,7 +214,7 @@ describe('User Routes', () => {
     	done();
 	});
 
-	test('--- 7. PATCH FLOW BY ID ---', async (done) => { 
+	test('---  7. PATCH FLOW BY ID ---', async (done) => { 
 		var status2 = false;
 		while (status2 != true) {	
 			const checkStatus = {
@@ -233,7 +226,6 @@ describe('User Routes', () => {
             			}		
 			};
 			const response = await request(checkStatus);
-			//console.log(JSON.stringify(response.body));
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
@@ -244,7 +236,6 @@ describe('User Routes', () => {
 			return status; 
 			};
 			flowStatus = await getFlowStatus(response);
-			//console.log("flowstatus beim check: " + flowStatus);
 			if (flowStatus == "inactive") {
 				status2 = true;
 			}
@@ -274,11 +265,10 @@ describe('User Routes', () => {
 		};
 		
 		expect(response.statusCode).toEqual(200);
-		//console.log(JSON.stringify(response.body));
 		done();
 	});
 	
-	test('--- 8. DELETE FLOW BY ID ---', async (done) => { 
+	test('---  8. DELETE FLOW BY ID ---', async (done) => { 
 		var status3 = false;
 		while (status3 != true) {	
 			const checkStatus = {
@@ -290,7 +280,6 @@ describe('User Routes', () => {
             			}		
 			};
 			const response = await request(checkStatus);
-			//console.log(JSON.stringify(response.body));
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
@@ -301,7 +290,6 @@ describe('User Routes', () => {
 			return status; 
 			};
 			flowStatus = await getFlowStatus(response);
-			//console.log("flowstatus beim check: " + flowStatus);
 			if (flowStatus == "inactive") {
 				status3 = true;
 			}
@@ -321,7 +309,7 @@ describe('User Routes', () => {
 
 	//--------------------------------------------------------------------------------------
 	
-	test('--- 9. GET ALL LOGS ---', async (done) => {
+	test('---  9. GET ALL LOGS ---', async (done) => {
 		const getAllLogs = {
 			method: 'GET',
 				uri: `http://auditlog.openintegrationhub.com/logs`,
@@ -492,7 +480,6 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(400);
 		done();
 	});
-	// patch here
 
 	test('--- 17. START FLOW BY ID - INVALID TOKEN ---', async (done) => { 
 		const startFlowById = {
@@ -535,7 +522,7 @@ describe('User Routes', () => {
             		}		
 		};
 		response = await request(patchFlow);
-		console.log("neg patch " + JSON.stringify(response.body));
+		//console.log("neg patch " + JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(400); //docu:404
 		done();
 	});
@@ -551,7 +538,6 @@ describe('User Routes', () => {
 			};
 		const response = await request(deleteFlowById);
 		expect(response.statusCode).toEqual(400);
-		//console.log(JSON.stringify(response));
 	done();
 	});
 	
@@ -598,7 +584,6 @@ describe('User Routes', () => {
         		body: toBeUploaded		
 		};		
 		const response = await request(getAllDomains);
-		console.log(JSON.stringify(response.body));
 		
 		const getDomainID = async res => {
 			try {
@@ -610,8 +595,7 @@ describe('User Routes', () => {
 			return domain_ID; 
 		};
 		domainID = await getDomainID(response);
-		
-		
+	
 		console.log("domainID: " + domainID);
 		expect(response.statusCode).toEqual(200);
 	
@@ -630,7 +614,6 @@ describe('User Routes', () => {
 		const response = await request(getDomainByID);
 		console.log(`Domain ID in get Domain by ID: ${domainID}`);
 		console.log("get domain: " + JSON.stringify(response.body));
-		//console.log("domainID: " + domainID);
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -724,7 +707,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 25. GET ALL DOMAIN MODELS ---', async(done) => {   
+	test('--- 26. GET ALL DOMAIN MODELS ---', async(done) => {   
 		
 		const requestOptions = {
         		method: 'GET',
