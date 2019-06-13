@@ -748,7 +748,7 @@ describe('User Routes', () => {
 			return component_ID; 
 		};
 		componentID = await getComponentID(response);
-		
+		console.log("component id: " + componentID);
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
     	done();
