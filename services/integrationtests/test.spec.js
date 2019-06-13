@@ -738,17 +738,7 @@ describe('User Routes', () => {
 		};
 		const response = await request(getAllComponents);
 		
-		const getComponentID = async res => {
-			try {
-				var component_ID = await Promise.resolve(res.body.data.id);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return component_ID; 
-		};
-		componentID = await getComponentID(response);
-		console.log("component id: " + componentID);
+
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
     	done();
@@ -785,6 +775,18 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(createNewComponent);
+		
+		const getComponentID = async res => {
+			try {
+				var component_ID = await Promise.resolve(res.body.data.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return component_ID; 
+		};
+		componentID = await getComponentID(response);
+		console.log("component id: " + componentID);
 		
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(201);
