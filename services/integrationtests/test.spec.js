@@ -820,11 +820,11 @@ describe('User Routes', () => {
 			}
 		};
 		var response = await request(getComponentData);
-
+		console.log(JSON.stringify(response.body));
 		const newDescription = "new given desc ";
 
 		response.body.data.description = newDescription;
-
+	
 		const patchComponent = {
         		method: 'PATCH',
         		uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
