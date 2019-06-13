@@ -774,7 +774,6 @@ describe('User Routes', () => {
     					]
   					}
 		};
-
 		const createNewComponent = {
         		method: 'POST',
         		uri: `http://component-repository.openintegrationhub.com/components/`,
