@@ -842,10 +842,3 @@ describe('User Routes', () => {
 	done();	
 	});
 });
-
-
-
-
-
-
-
