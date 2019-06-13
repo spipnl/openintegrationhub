@@ -824,6 +824,8 @@ describe('User Routes', () => {
 		const newDescription = "new given desc ";
 
 		response.body.data.description = newDescription;
+		
+		console.log("description component: " + JSON.stringify(response.body.data.description));
 	
 		const patchComponent = {
         		method: 'PATCH',
