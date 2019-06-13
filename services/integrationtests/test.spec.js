@@ -11,6 +11,7 @@ let flowStatus = null;
 let token = null;
 let status_flow = null;
 let domainID = null;
+let componentID = null;
 
 describe('User Routes', () => {
     jest.setTimeout(15000);
@@ -736,6 +737,17 @@ describe('User Routes', () => {
             		}
 		};
 		
+		const getComponentID = async res => {
+			try {
+				var component_ID = await Promise.resolve(res.body.data.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return component_ID; 
+		};
+		componentID = await getComponentID(response);
+		
 		const response = await request(getAllComponents);
 		
 		console.log(JSON.stringify(response.body));
@@ -743,7 +755,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 28. GET COMPONENT BY ID  ---', async(done) => {   
+	test('--- 28. CREATE NEW COMPONENT  ---', async(done) => {   
 		const newComponent = {
   					"data": {
     					"name": "My Component",
@@ -777,8 +789,25 @@ describe('User Routes', () => {
 		const response = await request(createNewComponent);
 		
 		console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(200);
+		expect(response.statusCode).toEqual(201);
     	done();
 	});
+	
+	test('--- 29. GET COMPONENT BY ID ---', async(done) => {
+		const getComponentById = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		const response = await request(getComponentById);	
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(200);
+		
+	done();
+	});
+		
 	
 });
