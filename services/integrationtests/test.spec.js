@@ -736,6 +736,7 @@ describe('User Routes', () => {
                 		"Authorization" : " Bearer " + tokenAdmin, 
             		}
 		};
+		const response = await request(getAllComponents);
 		
 		const getComponentID = async res => {
 			try {
@@ -747,8 +748,6 @@ describe('User Routes', () => {
 			return component_ID; 
 		};
 		componentID = await getComponentID(response);
-		
-		const response = await request(getAllComponents);
 		
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
@@ -807,7 +806,5 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(200);
 		
 	done();
-	});
-		
-	
+	});	
 });
