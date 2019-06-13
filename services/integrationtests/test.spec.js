@@ -742,4 +742,43 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(200);
     	done();
 	});
+	
+	test('--- 28. GET COMPONENT BY ID  ---', async(done) => {   
+		const newComponent = {
+  					"data": {
+    					"name": "My Component",
+    					"description": "My Component",
+    					"access": "public",
+    					"descriptor": {},
+    					"distribution": {
+      						"type": "docker",
+      						"image": "openintegrationhub/email",
+      						"registrySecretId": "5b62c919fd98ea00112d52e7"
+    					},
+    					"owners": [
+      						{
+        					"id": "123",
+        					"type": "user"
+      						}
+    					]
+  					}
+		};
+
+		const createNewComponent = {
+        		method: 'POST',
+        		uri: `http://component-repository.openintegrationhub.com/components/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+			body: newComponent
+		};
+		
+		const response = await request(createNewComponent);
+		
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(200);
+    	done();
+	});
+	
 });
