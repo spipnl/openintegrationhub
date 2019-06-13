@@ -827,12 +827,12 @@ describe('User Routes', () => {
 	
 		const patchComponent = {
         		method: 'PATCH',
-        		uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+        		uri: `http://component-repository.openintegrationhub.com/components/`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
             		},
-        		body: response 		
+			body: response
 		};
 		
 		const patchedComponent = await request(patchComponent);
