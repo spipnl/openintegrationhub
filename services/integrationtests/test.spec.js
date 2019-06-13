@@ -808,4 +808,44 @@ describe('User Routes', () => {
 		
 	done();
 	});	
+	
+	
+	test('--- 30. PATCH COMPONENT BY ID ---', async(done) => {
+		const getComponentData = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		var response = await request(getComponentData);
+
+		const newDescription = "new given desc ";
+
+		response.body.data.description = newDescription;
+
+		const patchComponent = {
+        		method: 'PATCH',
+        		uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: response 		
+		};
+		
+		const patchedComponent = await request(patchComponent);
+		console.log(JSON.stringify(patchedComponent.body));
+		expect(response.statusCode).toEqual(200);
+		done();	
+	done();	
+	});
 });
+
+
+
+
+
+
+
