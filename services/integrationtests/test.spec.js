@@ -843,4 +843,18 @@ describe('User Routes', () => {
 		done();	
 	done();	
 	});
+	
+	test('--- 31. DELETE COMPONENT BY ID ---', async (done) => { 
+		const deleteComponentById = {
+			method: 'DELETE',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+			json:	true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+				}
+			};
+		const response = await request(deleteComponentById);
+		expect(response.statusCode).toEqual(204);
+	done();
+	});
 });
