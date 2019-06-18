@@ -859,7 +859,6 @@ describe('User Routes', () => {
 	});
 	
 	test('--- 32. GET ALL COMPONENTS - TOKEN INVALID ---', async(done) => {   
-		
 		const getAllComponents = {
         		method: 'GET',
         		uri: `http://component-repository.openintegrationhub.com/components/`,
@@ -869,8 +868,55 @@ describe('User Routes', () => {
             		}
 		};
 		const response = await request(getAllComponents);
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(401);
+    	done();
+	});
+	
+	test('--- 33. CREATE NEW COMPONENT - TOKEN INVALID ---', async(done) => {   
+		const newComponent = {
+  					"data": {
+    					"name": "My Component",
+    					"description": "My Component",
+    					"access": "public",
+    					"descriptor": {},
+    					"distribution": {
+      						"type": "docker",
+      						"image": "openintegrationhub/email",
+      						"registrySecretId": "5b62c919fd98ea00112d52e7"
+    					},
+    					"owners": [
+      						{
+        					"id": "123",
+        					"type": "user"
+      						}
+    					]
+  					}
+		};
+		const createNewComponent = {
+        		method: 'POST',
+        		uri: `http://component-repository.openintegrationhub.com/components/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		},
+			body: newComponent
+		};
 		
-
+		const response = await request(createNewComponent);
+		
+		const getComponentID = async res => {
+			try {
+				var component_ID = await Promise.resolve(res.body.data.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return component_ID; 
+		};
+		componentID = await getComponentID(response);
+		console.log("component id: " + componentID);
+		
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);
     	done();
