@@ -857,4 +857,22 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(204);
 	done();
 	});
+	
+	test('--- 32. GET ALL COMPONENTS - TOKEN INVALID ---', async(done) => {   
+		
+		const getAllComponents = {
+        		method: 'GET',
+        		uri: `http://component-repository.openintegrationhub.com/components/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		}
+		};
+		const response = await request(getAllComponents);
+		
+
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(401);
+    	done();
+	});
 });
