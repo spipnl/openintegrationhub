@@ -935,11 +935,23 @@ describe('User Routes', () => {
                 		"Authorization" : " Bearer " + invalidToken, 
             		}
 		};
-		
 		const response = await request(getComponentById);	
 		console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(404);
+		expect(response.statusCode).toEqual(401);
 	done();
 	});
-
+	
+	test('--- 38. DELETE COMPONENT BY ID ---', async (done) => { 
+		const deleteComponentById = {
+			method: 'DELETE',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+			json:	true,
+			headers: {
+				"Authorization" : " Bearer " + invalidToken, 
+			}
+		};
+		const response = await request(deleteComponentById);
+		expect(response.statusCode).toEqual(401);
+	done();
+	});
 });
