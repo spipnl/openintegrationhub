@@ -1008,7 +1008,8 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(requestOptions);
-		expect(response.statusCode).toEqual(401);
+		expect(response.statusCode).toEqual(404);
+		console.log(JSON.stringify(response.body));
     	done();
 	});
 	
