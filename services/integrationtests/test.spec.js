@@ -996,4 +996,21 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(404);
 	done();
 	});
+	
+	test('--- 40. GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	
+		const requestOptions = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		}
+		};
+		
+		const response = await request(requestOptions);
+		expect(response.statusCode).toEqual(401);
+    	done();
+	});
+	
+	
 });
