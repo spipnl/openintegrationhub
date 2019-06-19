@@ -940,4 +940,25 @@ describe('User Routes', () => {
 		
 	done();
 	});
+	
+	test('--- 35. GET COMPONENT BY ID - INVALID ID SUPPLIED ---', async(done) => {	
+		var invalidComponentID = componentID + "a";
+		
+		const getComponentById = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${invalidComponentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		
+		const response = await request(getComponentById);	
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(400);
+		
+	done();
+	});
+	
+	
 });
