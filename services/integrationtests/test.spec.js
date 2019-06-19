@@ -921,7 +921,7 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(getComponentById);	
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(404);
 	done();
 	});
@@ -936,12 +936,12 @@ describe('User Routes', () => {
             		}
 		};
 		const response = await request(getComponentById);	
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);
 	done();
 	});
 	
-	test('--- 38. DELETE COMPONENT BY ID ---', async (done) => { 
+	test('--- 38. DELETE COMPONENT BY ID - TOKEN INVALED ---', async (done) => { 
 		const deleteComponentById = {
 			method: 'DELETE',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -952,6 +952,21 @@ describe('User Routes', () => {
 		};
 		const response = await request(deleteComponentById);
 		expect(response.statusCode).toEqual(401);
+	done();
+	});
+	
+	test('--- 39. DELETE COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async (done) => { 
+		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
+		const deleteComponentById = {
+			method: 'DELETE',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+			json:	true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		const response = await request(deleteComponentById);
+		expect(response.statusCode).toEqual(404);
 	done();
 	});
 });
