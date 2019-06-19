@@ -354,6 +354,8 @@ describe('User Routes', () => {
     	done();
 	});
 	
+	
+	
 	//-----------------------------------neg-audit-----------------------------------------------------
 	var invalidToken = tokenAdmin + "axsyfdas"
 	
@@ -387,6 +389,8 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(401);
 	done();
 	});
+	
+	
 	
 	//---------------------------------------neg-flow----------------------------------------------------
 	
@@ -540,6 +544,8 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(400);
 	done();
 	});
+	
+	
 	
 	//---------------------------------------metadata-repository---------------------------------------------------
 	
@@ -705,6 +711,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
+	
 	test('--- 26. GET ALL DOMAIN MODELS ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
@@ -719,6 +726,7 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(202);
     	done();
 	});
+	
 	
 	test('--- 27. GET ALL COMPONENTS ---', async(done) => {   
 		const getAllComponents = {
@@ -895,6 +903,7 @@ describe('User Routes', () => {
 	});
 	
 	test('--- 34. GET COMPONENT BY ID - TOKEN INVALID ---', async(done) => {
+		
 		const getComponentById = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -910,6 +919,24 @@ describe('User Routes', () => {
 	
 	test('--- 35. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async(done) => {	
 		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
+		
+		const getComponentById = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${invalidComponentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		
+		const response = await request(getComponentById);	
+		//console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(404);
+	done();
+	});
+	
+	test('--- 36. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async(done) => {	
+		var invalidComponentID = "*&"§$%&/";
 		
 		const getComponentById = {
 			method: 'GET',
