@@ -926,7 +926,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 37. PATCH COMPONENT BY ID - INVALID ---', async(done) => {	
+	test('--- 37. PATCH COMPONENT BY ID - COMPONENT NOT FOUND ---', async(done) => {	
 		const getComponentById = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -938,9 +938,8 @@ describe('User Routes', () => {
 		
 		const response = await request(getComponentById);	
 		console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(401);
+		expect(response.statusCode).toEqual(404);
 	done();
 	});
-	
-	
+
 });
