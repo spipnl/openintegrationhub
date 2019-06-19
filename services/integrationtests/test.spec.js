@@ -54,12 +54,12 @@ describe('User Routes', () => {
             	}
         };
 	const response = await request(getAllFlows);
-     expect(response.statusCode).toEqual(200);
+     	expect(response.statusCode).toEqual(200);
      done();
      });
 
     test('---  3. ADD NEW FLOW ---', async (done) => {
-		const createdFlow = {
+	const createdFlow = {
    					"name":"D Testflow",
    					"description":"This flow takes actions at regular invervals based on a set timer.",
    					"graph":{
@@ -139,8 +139,8 @@ describe('User Routes', () => {
 		flowStatus = await getFlowStatus(response); 
 		
 		console.log("token: " + tokenAdmin);
-		console.log("name: " + flowName);
-		console.log("id: " + flowID);
+		//console.log("name: " + flowName);
+		//console.log("id: " + flowID);
 
 		expect(response.statusCode).toEqual(201);
     	done();
@@ -175,7 +175,6 @@ describe('User Routes', () => {
 	});
 
 	test('---  6. STOP FLOW BY ID ---', async (done) => { 
-		
 		var status = false;
 		while (status != true) {	
 			const checkStatus = {
@@ -689,7 +688,8 @@ describe('User Routes', () => {
 		      }
 		   }
 		};
-		console.log(`Domain ID in POST Model: ${domainID}`);
+		
+		//console.log(`Domain ID in POST Model: ${domainID}`);
 		const addDomainModel = {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import/`,
@@ -889,18 +889,7 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(createNewComponent);
-		
-		const getComponentID = async res => {
-			try {
-				var component_ID = await Promise.resolve(res.body.data.id);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return component_ID; 
-		};
-		componentID = await getComponentID(response);
-		console.log("component id: " + componentID);
+		//console.log("component id: " + componentID);
 		expect(response.statusCode).toEqual(401);
     	done();
 	});
