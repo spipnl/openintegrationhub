@@ -909,7 +909,7 @@ describe('User Routes', () => {
 	});
 	
 	test('--- 35. GET COMPONENT BY ID - INVALID ID SUPPLIED ---', async(done) => {	
-		var invalidComponentID = componentID + "a";
+		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
 		
 		const getComponentById = {
 			method: 'GET',
@@ -923,7 +923,6 @@ describe('User Routes', () => {
 		const response = await request(getComponentById);	
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(400);
-		
 	done();
 	});
 	
