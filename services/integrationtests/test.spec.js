@@ -597,7 +597,7 @@ describe('User Routes', () => {
 		};
 		domainID = await getDomainID(response);
 	
-		console.log("domainID: " + domainID);
+		//console.log("domainID: " + domainID);
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -613,8 +613,8 @@ describe('User Routes', () => {
             		}		
 		};		
 		const response = await request(getDomainByID);
-		console.log(`Domain ID in get Domain by ID: ${domainID}`);
-		console.log("get domain: " + JSON.stringify(response.body));
+		//console.log(`Domain ID in get Domain by ID: ${domainID}`);
+		//console.log("get domain: " + JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -629,14 +629,14 @@ describe('User Routes', () => {
 				"Authorization" : " Bearer " + tokenAdmin, 
 			}
 		};
-		console.log(`Domain ID in PATCH Domain by ID: ${domainID}`);
+		//console.log(`Domain ID in PATCH Domain by ID: ${domainID}`);
 		
 		const response = await request(getDomainData);
-		console.log("Received domain: "+JSON.stringify(response));
+		//console.log("Received domain: "+JSON.stringify(response));
 		const domainDesc = "short desc update";
 		const newDescription = "new description: " + domainDesc;
 		
-		console.log("Description: " + JSON.stringify(response.body.data.description));
+		//console.log("Description: " + JSON.stringify(response.body.data.description));
 		response.body.data.description = newDescription;
 
 		const patchDomain = {
@@ -648,7 +648,6 @@ describe('User Routes', () => {
             		},
         		body: response 		
 		};
-		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
@@ -702,14 +701,11 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(addDomainModel);
-		
-		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(202);
     	done();
 	});
 	
-	test('--- 26. GET ALL DOMAIN MODELS ---', async(done) => {   
-		
+	test('--- 26. GET ALL DOMAIN MODELS ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
@@ -720,14 +716,11 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(requestOptions);
-		
-		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(202);
     	done();
 	});
 	
 	test('--- 27. GET ALL COMPONENTS ---', async(done) => {   
-		
 		const getAllComponents = {
         		method: 'GET',
         		uri: `http://component-repository.openintegrationhub.com/components/`,
@@ -737,9 +730,6 @@ describe('User Routes', () => {
             		}
 		};
 		const response = await request(getAllComponents);
-		
-
-		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
     	done();
 	});
@@ -786,9 +776,6 @@ describe('User Routes', () => {
 			return component_ID; 
 		};
 		componentID = await getComponentID(response);
-		console.log("component id: " + componentID);
-		
-		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(201);
     	done();
 	});
@@ -803,7 +790,6 @@ describe('User Routes', () => {
             		}
 		};
 		const response = await request(getComponentById);	
-		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 		
 	done();
@@ -820,12 +806,11 @@ describe('User Routes', () => {
 			}
 		};
 		var response = await request(getComponentData);
-		console.log(JSON.stringify(response.body));
 		const newDescription = "new given desc ";
 
 		response.body.data.description = newDescription;
 		
-		console.log("description component: " + JSON.stringify(response.body.data.description));
+		//console.log("description component: " + JSON.stringify(response.body.data.description));
 	
 		const patchComponent = {
         		method: 'PATCH',
@@ -836,9 +821,7 @@ describe('User Routes', () => {
             		},
 			body: response
 		};
-		
 		const patchedComponent = await request(patchComponent);
-		console.log(JSON.stringify(patchedComponent.body));
 		expect(response.statusCode).toEqual(200);
 		done();	
 	done();	
@@ -871,7 +854,6 @@ describe('User Routes', () => {
             		}
 		};
 		const response = await request(getAllComponents);
-		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);
     	done();
 	});
@@ -919,8 +901,6 @@ describe('User Routes', () => {
 		};
 		componentID = await getComponentID(response);
 		console.log("component id: " + componentID);
-		
-		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);
     	done();
 	});
@@ -935,9 +915,7 @@ describe('User Routes', () => {
             		}
 		};
 		const response = await request(getComponentById);	
-		console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(401);
-		
+		expect(response.statusCode).toEqual(401);		
 	done();
 	});
 	
