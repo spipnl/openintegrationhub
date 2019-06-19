@@ -908,7 +908,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 35. GET COMPONENT BY ID - INVALID ID SUPPLIED ---', async(done) => {	
+	test('--- 35. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async(done) => {	
 		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
 		
 		const getComponentById = {
@@ -922,7 +922,23 @@ describe('User Routes', () => {
 		
 		const response = await request(getComponentById);	
 		console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(400);
+		expect(response.statusCode).toEqual(404);
+	done();
+	});
+	
+	test('--- 37. PATCH COMPONENT BY ID - INVALID ---', async(done) => {	
+		const getComponentById = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		}
+		};
+		
+		const response = await request(getComponentById);	
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(401);
 	done();
 	});
 	
