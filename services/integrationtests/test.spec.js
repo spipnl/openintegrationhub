@@ -936,7 +936,7 @@ describe('User Routes', () => {
 	});
 	
 	test('--- 36. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async(done) => {	
-		var invalidComponentID = "*&"§$%&/";
+		var invalidComponentID = " *&%&/ ";
 		
 		const getComponentById = {
 			method: 'GET',
