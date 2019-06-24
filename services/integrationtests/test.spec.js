@@ -914,7 +914,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 35. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async(done) => {	
+	test('--- 35. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID NOT FOUND ---', async(done) => {	
 		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
 		
 		const getComponentById = {
@@ -932,7 +932,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 36. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async(done) => {	
+	test('--- 36. GET COMPONENT BY ID - ID INVALID ---', async(done) => {	
 		var invalidComponentID = "&$$%&%$§";
 		
 		const getComponentById = {
@@ -946,7 +946,7 @@ describe('User Routes', () => {
 		
 		const response = await request(getComponentById);	
 		//console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(404);
+		expect(response.statusCode).toEqual(400);
 	done();
 	});
 	
