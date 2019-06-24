@@ -706,7 +706,8 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(addDomainModel);
-		expect(response.statusCode).toEqual(202);
+		expect(response.statusCode).toEqual(201);
+		const.log(
     	done();
 	});
 	
