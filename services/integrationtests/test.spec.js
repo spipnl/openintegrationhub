@@ -711,8 +711,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	
-	test('--- 26. GET ALL DOMAIN MODELS ---', async(done) => {   	
+	test('--- 26. GET ALL DOMAIN MODEL SCHEMAS---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
@@ -723,11 +722,10 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(requestOptions);
-		expect(response.statusCode).toEqual(202);
+		expect(response.statusCode).toEqual(200);
     	done();
 	});
-	
-	
+		
 	test('--- 27. GET ALL COMPONENTS ---', async(done) => {   
 		const getAllComponents = {
         		method: 'GET',
