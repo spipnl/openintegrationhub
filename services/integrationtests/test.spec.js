@@ -707,7 +707,7 @@ describe('User Routes', () => {
 		
 		const response = await request(addDomainModel);
 		expect(response.statusCode).toEqual(201);
-		const.log(
+		const.log(JSON.stringify(response.body));
     	done();
 	});
 	
@@ -928,7 +928,6 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(getComponentById);	
-		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(404);
 	done();
 	});
@@ -946,7 +945,6 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(getComponentById);	
-		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(400);
 	done();
 	});
