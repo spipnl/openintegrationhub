@@ -1006,14 +1006,14 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 40. GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
+	test('--- 41. GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
 		var invalidDomainID = "034957430985";
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/domains/${invalidDomainID}/schemas`,
         		json: true,
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken, 
+                		"Authorization" : " Bearer " + tokenAdmin, 
             		}
 		};
 		
