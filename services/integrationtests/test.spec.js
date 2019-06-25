@@ -708,7 +708,7 @@ describe('User Routes', () => {
 	test('--- 26. GET ALL DOMAIN MODEL SCHEMAS ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/#address`,
+        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/#address/`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
