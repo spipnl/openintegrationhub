@@ -708,7 +708,7 @@ describe('User Routes', () => {
 	test('--- 26. GET ALL DOMAIN MODEL SCHEMAS ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/#adress`,
+        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/#address`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
@@ -734,7 +734,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 28. CREATE NEW COMPONENT  ---', async(done) => {   
+	test('--- 28. CREATE NEW COMPONENT ---', async(done) => {   
 		const newComponent = {
   					"data": {
     					"name": "My Component",
@@ -809,9 +809,7 @@ describe('User Routes', () => {
 		const newDescription = "new given desc ";
 
 		response.body.data.description = newDescription;
-		
-		//console.log("description component: " + JSON.stringify(response.body.data.description));
-	
+			
 		const patchComponent = {
         		method: 'PATCH',
         		uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
