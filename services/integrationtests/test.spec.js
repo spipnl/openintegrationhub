@@ -601,7 +601,7 @@ describe('User Routes', () => {
 			return domain_ID; 
 		};
 		domainID = await getDomainID(response);
-		console.log(JSON.stringify("domain id: " + domainID);
+		console.log(JSON.stringify("domain id: " + domainID));
 		expect(response.statusCode).toEqual(200);
 	
 	done();
