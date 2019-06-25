@@ -624,7 +624,7 @@ describe('User Routes', () => {
 	
 	test('--- 24. PUT DOMAIN BY ID ---', async (done) => { 	
 		const getDomainData = {
-			method: 'PoST',
+			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
 			json: true,
 			headers: {
