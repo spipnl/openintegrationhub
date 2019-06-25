@@ -1023,4 +1023,48 @@ describe('User Routes', () => {
     	done();
 	});
 	
+	
+	test('--- 42. CREATE NEW DOMAIN - INVALID TOKEN---', async (done) => {
+		const toBeUploaded = {
+  					"data": {
+    						"name": "string",
+    						"description": "string",
+    						"public": true,
+    						"owners": [
+      							{
+        						"id": "string",
+        						"type": "string"
+      							}
+    						],
+    						"id": "string",
+    						"createdAt": "2019-06-03T14:58:39.897Z",
+    						"updatedAt": "2019-06-03T14:58:39.897Z"
+  					}					
+		};
+		const getAllDomains = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		},
+        		body: toBeUploaded		
+		};		
+		const response = await request(getAllDomains);
+		
+		const getDomainID = async res => {
+			try {
+				var domain_ID = await Promise.resolve(res.body.data.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return domain_ID; 
+		};
+		domainID = await getDomainID(response);
+		console.log(JSON.stringify("domain id: " + domainID));
+		expect(response.statusCode).toEqual(400);
+	
+	done();
+	});
 });
