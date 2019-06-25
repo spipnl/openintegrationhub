@@ -708,13 +708,14 @@ describe('User Routes', () => {
 	test('--- 26. GET ALL DOMAIN MODEL SCHEMAS ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/`,
+        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/#adress`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
             		}
 		};
 		const response = await request(requestOptions);
+		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
     	done();
 	});
