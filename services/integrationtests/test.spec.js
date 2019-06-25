@@ -706,12 +706,13 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(addDomainModel);
-		expect(response.statusCode).toEqual(201);
 		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(201);
+		
     	done();
 	});
 	
-	test('--- 26. GET ALL DOMAIN MODEL SCHEMAS---', async(done) => {   	
+	test('--- 26. GET ALL DOMAIN MODEL SCHEMAS ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/`,
