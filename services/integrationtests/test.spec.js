@@ -1063,7 +1063,7 @@ describe('User Routes', () => {
 		};
 		domainID = await getDomainID(response);
 		console.log(JSON.stringify("domain id: " + domainID));
-		expect(response.statusCode).toEqual(400);
+		expect(response.statusCode).toEqual(401);
 	
 	done();
 	});
