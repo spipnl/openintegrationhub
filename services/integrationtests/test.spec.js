@@ -624,7 +624,7 @@ describe('User Routes', () => {
 	
 	test('--- 24. PUT DOMAIN BY ID ---', async (done) => { 	
 		const getDomainData = {
-			method: 'GET',
+			method: 'PUT',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
 			json: true,
 			headers: {
@@ -705,7 +705,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 26. GET ALL DOMAIN MODEL SCHEMAS ---', async(done) => {   	
+	test('--- 26. GET ALL DOMAIN MODEL SCHEMES ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/#address/`,
@@ -719,7 +719,10 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(200);
     	done();
 	});
-		
+	
+	//---------------------------------------component-repository---------------------------------------------------
+	//--------------------------------------------------------------------------------------------------------------
+	
 	test('--- 27. GET ALL COMPONENTS ---', async(done) => {   
 		const getAllComponents = {
         		method: 'GET',
@@ -838,7 +841,6 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(204);
 	done();
 	});
-	
 	
 	//---------------------------------------------------------------------------------------------------------
 	
@@ -985,10 +987,30 @@ describe('User Routes', () => {
 	done();
 	});
 	
+	//---------------------------------------metadata-repository---------------------------------------------------
+	//--------------------------------------------------------------------------------------------------------------
+	
 	test('--- 40. GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		}
+		};
+		
+		const response = await request(requestOptions);
+		expect(response.statusCode).toEqual(404);
+		console.log(JSON.stringify(response.body));
+    	done();
+	});
+	
+	test('--- 40. GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
+		var invalidDomainID = "034957430985";
+		const requestOptions = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/domains/${invalidDomainID}/schemas`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + invalidToken, 
