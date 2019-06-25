@@ -690,7 +690,7 @@ describe('User Routes', () => {
 		
 		const addDomainModel = {
         		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import/`,
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
@@ -700,7 +700,7 @@ describe('User Routes', () => {
 		
 		const response = await request(addDomainModel);
 		console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(201);
+		expect(response.statusCode).toEqual(202);
 		
     	done();
 	});
