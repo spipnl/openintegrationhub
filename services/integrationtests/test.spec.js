@@ -601,8 +601,7 @@ describe('User Routes', () => {
 			return domain_ID; 
 		};
 		domainID = await getDomainID(response);
-	
-		//console.log("domainID: " + domainID);
+		console.log(JSON.stringify("domain id: " + domainID);
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -618,8 +617,6 @@ describe('User Routes', () => {
             		}		
 		};		
 		const response = await request(getDomainByID);
-		//console.log(`Domain ID in get Domain by ID: ${domainID}`);
-		//console.log("get domain: " + JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -634,14 +631,9 @@ describe('User Routes', () => {
 				"Authorization" : " Bearer " + tokenAdmin, 
 			}
 		};
-		//console.log(`Domain ID in PATCH Domain by ID: ${domainID}`);
-		
 		const response = await request(getDomainData);
-		//console.log("Received domain: "+JSON.stringify(response));
 		const domainDesc = "short desc update";
 		const newDescription = "new description: " + domainDesc;
-		
-		//console.log("Description: " + JSON.stringify(response.body.data.description));
 		response.body.data.description = newDescription;
 
 		const patchDomain = {
@@ -654,7 +646,8 @@ describe('User Routes', () => {
         		body: response 		
 		};
 		expect(response.statusCode).toEqual(200);
-		done();
+	
+	done();
 	});
 		
 	test('--- 25. IMPORT DOMAIN MODEL ---', async(done) => {   
@@ -721,7 +714,6 @@ describe('User Routes', () => {
                 		"Authorization" : " Bearer " + tokenAdmin, 
             		}
 		};
-		
 		const response = await request(requestOptions);
 		expect(response.statusCode).toEqual(200);
     	done();
