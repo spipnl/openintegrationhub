@@ -1050,18 +1050,6 @@ describe('User Routes', () => {
         		body: toBeUploaded		
 		};		
 		const response = await request(getAllDomains);
-		
-		const getDomainID = async res => {
-			try {
-				var domain_ID = await Promise.resolve(res.body.data.id);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return domain_ID; 
-		};
-		domainID = await getDomainID(response);
-		console.log(JSON.stringify("domain id: " + domainID));
 		expect(response.statusCode).toEqual(401);
 	
 	done();
