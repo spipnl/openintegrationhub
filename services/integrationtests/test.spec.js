@@ -1140,7 +1140,7 @@ describe('User Routes', () => {
             		},
         		body: response 		
 		};
-		expect(response.statusCode).toEqual(200);
+		expect(response.statusCode).toEqual(401);
 	
 	done();
 	});
