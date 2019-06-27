@@ -1067,7 +1067,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 43. CREATE NEW DOMAIN - INVALID DOMAIN?  ---', async (done) => {
+	test('--- 43. CREATE NEW DOMAIN - INVALID DOMAIN  ---', async (done) => {
 		const toBeUploaded = {
   					"data": {
     						"name": "string",
@@ -1109,4 +1109,22 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(401);
 	done();
 	});
+	
+	test('--- 44. GET DOMAIN BY ID - INVALID ID ---', async (done) => {
+		var invalidDomainID ="lksfhdslfh";
+		const getDomainByID = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}		
+		};		
+		const response = await request(getDomainByID);
+		expect(response.statusCode).toEqual(404);
+	
+	done();
+	});
+	
+	
 });
