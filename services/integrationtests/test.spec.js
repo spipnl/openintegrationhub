@@ -1107,10 +1107,12 @@ describe('User Routes', () => {
 		domainID = await getDomainID(response);
 		console.log(JSON.stringify("domain id: " + domainID));
 		expect(response.statusCode).toEqual(401);
+		
 	done();
 	});
 	
-	test('--- 44. GET DOMAIN BY ID - INVALID ID ---', async (done) => {
+	test('--- 44. GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
+		
 		var invalidDomainID ="lksfhdslfh";
 		const getDomainByID = {
         		method: 'GET',
@@ -1121,10 +1123,38 @@ describe('User Routes', () => {
             		}		
 		};		
 		const response = await request(getDomainByID);
-		expect(response.statusCode).toEqual(404);
+		expect(response.statusCode).toEqual(401);
 	
 	done();
 	});
 	
+	test('--- 45. PUT DOMAIN BY ID - INVALID ID ---', async (done) => { 	
+		var invalidDomainID ="lksfhdslfh";
+		const getDomainData = {
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		const response = await request(getDomainData);
+		const domainDesc = "short desc update";
+		const newDescription = "new description: " + domainDesc;
+		response.body.data.description = newDescription;
+
+		const patchDomain = {
+        		method: 'PUT',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+        		json: true,
+				headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: response 		
+		};
+		expect(response.statusCode).toEqual(200);
+	
+	done();
+	});
 	
 });
