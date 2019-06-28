@@ -1058,18 +1058,7 @@ describe('User Routes', () => {
 	test('--- 43. CREATE NEW DOMAIN - INVALID DOMAIN ---', async (done) => {
 		const toBeUploaded = {
   					"data": {
-    						"name": "string",
-    						"description": "string",
-    						"public": true,
-    						"owners": [
-      							{
-        						"id": "string",
-        						"type": "string"
-      							}
-    						],
-    						"id": "string",
-    						"createdAt": "2019-06-03T14:58:39.897Z",
-    						"updatedAt": "2019-06-03T14:58:39.897Z"
+    						
   					}					
 		};
 		const getAllDomains = {
@@ -1077,7 +1066,7 @@ describe('User Routes', () => {
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
         		json: true,
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken, 
+                		"Authorization" : " Bearer " + tokenAdmin, 
             		},
         		body: toBeUploaded		
 		};		
@@ -1092,8 +1081,8 @@ describe('User Routes', () => {
 			}
 			return domain_ID; 
 		};
-		domainID = await getDomainID(response);
-		console.log(JSON.stringify("domain id: " + domainID));
+		var domainID2 = await getDomainID(response);
+		console.log(JSON.stringify("domain id: " + domainID2));
 		expect(response.statusCode).toEqual(401);
 		
 	done();
