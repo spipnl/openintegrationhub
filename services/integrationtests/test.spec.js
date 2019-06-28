@@ -1129,7 +1129,8 @@ describe('User Routes', () => {
             		},
         		body: response 		
 		};
-		expect(response.statusCode).toEqual(401);
+		const response2 = await request(patchDomain);
+		expect(response2.statusCode).toEqual(401);
 	
 	done();
 	});
