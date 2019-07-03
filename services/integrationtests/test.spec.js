@@ -61,7 +61,7 @@ describe('User Routes', () => {
     test('---  3. ADD NEW FLOW ---', async (done) => {
 	const createdFlow = {
    					"name":"D Testflow",
-   					"description":"This flow takes actions at regular invervals based on a set timer.",
+   					"description":"This flow takes actions at regular invervals based on a set timer",
    					"graph":{
      						 "nodes":[
          						{
