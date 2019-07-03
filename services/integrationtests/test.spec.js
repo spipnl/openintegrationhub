@@ -1116,7 +1116,7 @@ describe('User Routes', () => {
 			}
 		};
 		const response = await request(getDomainData);
-		const domainDesc = "short desc update";
+		const domainDesc = "short descr update";
 		const newDescription = "new description: " + domainDesc;
 		response.body.data.description = newDescription;
 
