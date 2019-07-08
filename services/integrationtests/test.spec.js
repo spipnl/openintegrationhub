@@ -691,7 +691,7 @@ describe('User Routes', () => {
 		
 		const addDomainModel = {
         		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
