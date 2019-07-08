@@ -11,10 +11,11 @@ let flowStatus = null;
 let token = null;
 let status_flow = null;
 let domainID = null;
+let componentID = null;
 
 describe('User Routes', () => {
     jest.setTimeout(15000);
-    test('--- 1. LOGIN & TOKEN ---', async (done) => {
+    test('---  1. LOGIN & TOKEN ---', async (done) => {
         const jsonPayload = {
         	username,
         	password
@@ -25,26 +26,26 @@ describe('User Routes', () => {
         	json: true,
         	body: jsonPayload
         };
-		const response = await request(Login);
+	const response = await request(Login);
 
-		const getToken = async res => {
-			try {
-				token = await Promise.resolve(res.body.token);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return token; 
-		};	
+	const getToken = async res => {
+		try {
+			token = await Promise.resolve(res.body.token);
+		}
+		catch (error) {
+			console.log(error);
+		}
+		return token; 
+	};	
 
-		tokenAdmin = await getToken(response); 
-		expect(response.statusCode).toEqual(200);	
+	tokenAdmin = await getToken(response); 
+	expect(response.statusCode).toEqual(200);	
     	done();
     });	
 	
 	//--------------------------------------------------------------------------------------
 		
-    test('--- 2. GET All FLOWS ---', async (done) => { 
+    test('---  2. GET All FLOWS ---', async (done) => { 
         const getAllFlows = {
         	method: 'GET',
             	uri: `http://flow-repository.openintegrationhub.com/flows`,
@@ -53,14 +54,14 @@ describe('User Routes', () => {
             	}
         };
 	const response = await request(getAllFlows);
-     expect(response.statusCode).toEqual(200);
+     	expect(response.statusCode).toEqual(200);
      done();
      });
 
-    test('--- 3. ADD NEW FLOW ---', async (done) => {
-		const createdFlow = {
+    test('---  3. ADD NEW FLOW ---', async (done) => {
+	const createdFlow = {
    					"name":"D Testflow",
-   					"description":"This flow takes actions at regular invervals based on a set timer.",
+   					"description":"This flow takes actions at regular invervals based on a set timer",
    					"graph":{
      						 "nodes":[
          						{
@@ -103,10 +104,7 @@ describe('User Routes', () => {
         		body: createdFlow		
 		};
 		const response = await request(addFlow);
-	    
-	     	//console.log(JSON.stringify("post: " + response.body));
-	    	//console.log(JSON.stringify(addFlow.body));
-	    
+	    	    
 		const getFlowId = async res => {
 			try {
 				id = await Promise.resolve(res.body.data.id);
@@ -141,15 +139,14 @@ describe('User Routes', () => {
 		flowStatus = await getFlowStatus(response); 
 		
 		console.log("token: " + tokenAdmin);
-		console.log("name: " + flowName);
-		console.log("id: " + flowID);
-		//console.log("status: " + flowStatus);
+		//console.log("name: " + flowName);
+		//console.log("id: " + flowID);
 
 		expect(response.statusCode).toEqual(201);
     	done();
 	});
 	
-	test('--- 4. GET FLOW BY ID ---', async (done) => { 
+	test('---  4. GET FLOW BY ID ---', async (done) => { 
 		const getFlowById = {
 				method: 'GET',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -158,13 +155,12 @@ describe('User Routes', () => {
 					}
 			};
 		const response = await request(getFlowById);
-
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
 	// patch here
 
-	test('--- 5. START FLOW BY ID ---', async (done) => { 
+	test('---  5. START FLOW BY ID ---', async (done) => { 
 		const startFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
@@ -174,13 +170,11 @@ describe('User Routes', () => {
 					}
 		};
 		const response = await request(startFlowById);	
-		//console.log(JSON.stringify(response.body)); // status = starting 
 		expect(response.statusCode).toEqual(200); 
 	done();   		
 	});
 
-	test('--- 6. STOP FLOW BY ID ---', async (done) => { 
-		
+	test('---  6. STOP FLOW BY ID ---', async (done) => { 
 		var status = false;
 		while (status != true) {	
 			const checkStatus = {
@@ -192,7 +186,6 @@ describe('User Routes', () => {
             			}		
 			};
 			const response = await request(checkStatus);
-			//console.log(JSON.stringify(response.body));
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
@@ -221,7 +214,7 @@ describe('User Routes', () => {
     	done();
 	});
 
-	test('--- 7. PATCH FLOW BY ID ---', async (done) => { 
+	test('---  7. PATCH FLOW BY ID ---', async (done) => { 
 		var status2 = false;
 		while (status2 != true) {	
 			const checkStatus = {
@@ -233,7 +226,6 @@ describe('User Routes', () => {
             			}		
 			};
 			const response = await request(checkStatus);
-			//console.log(JSON.stringify(response.body));
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
@@ -244,7 +236,6 @@ describe('User Routes', () => {
 			return status; 
 			};
 			flowStatus = await getFlowStatus(response);
-			//console.log("flowstatus beim check: " + flowStatus);
 			if (flowStatus == "inactive") {
 				status2 = true;
 			}
@@ -274,11 +265,10 @@ describe('User Routes', () => {
 		};
 		
 		expect(response.statusCode).toEqual(200);
-		//console.log(JSON.stringify(response.body));
 		done();
 	});
 	
-	test('--- 8. DELETE FLOW BY ID ---', async (done) => { 
+	test('---  8. DELETE FLOW BY ID ---', async (done) => { 
 		var status3 = false;
 		while (status3 != true) {	
 			const checkStatus = {
@@ -290,7 +280,6 @@ describe('User Routes', () => {
             			}		
 			};
 			const response = await request(checkStatus);
-			//console.log(JSON.stringify(response.body));
 			const getFlowStatus = async res3 => {
 			try {
 				status = await Promise.resolve(res3.body.data.status);
@@ -301,7 +290,6 @@ describe('User Routes', () => {
 			return status; 
 			};
 			flowStatus = await getFlowStatus(response);
-			//console.log("flowstatus beim check: " + flowStatus);
 			if (flowStatus == "inactive") {
 				status3 = true;
 			}
@@ -321,7 +309,7 @@ describe('User Routes', () => {
 
 	//--------------------------------------------------------------------------------------
 	
-	test('--- 9. GET ALL LOGS ---', async (done) => {
+	test('---  9. GET ALL LOGS ---', async (done) => {
 		const getAllLogs = {
 			method: 'GET',
 				uri: `http://auditlog.openintegrationhub.com/logs`,
@@ -366,6 +354,8 @@ describe('User Routes', () => {
     	done();
 	});
 	
+	
+	
 	//-----------------------------------neg-audit-----------------------------------------------------
 	var invalidToken = tokenAdmin + "axsyfdas"
 	
@@ -399,6 +389,8 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(401);
 	done();
 	});
+	
+	
 	
 	//---------------------------------------neg-flow----------------------------------------------------
 	
@@ -492,7 +484,6 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(400);
 		done();
 	});
-	// patch here
 
 	test('--- 17. START FLOW BY ID - INVALID TOKEN ---', async (done) => { 
 		const startFlowById = {
@@ -535,7 +526,7 @@ describe('User Routes', () => {
             		}		
 		};
 		response = await request(patchFlow);
-		console.log("neg patch " + JSON.stringify(response.body));
+		//console.log("neg patch " + JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(400); //docu:404
 		done();
 	});
@@ -551,9 +542,10 @@ describe('User Routes', () => {
 			};
 		const response = await request(deleteFlowById);
 		expect(response.statusCode).toEqual(400);
-		//console.log(JSON.stringify(response));
 	done();
 	});
+	
+	
 	
 	//---------------------------------------metadata-repository---------------------------------------------------
 	
@@ -590,7 +582,7 @@ describe('User Routes', () => {
 		};
 		const getAllDomains = {
         		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
@@ -598,12 +590,10 @@ describe('User Routes', () => {
         		body: toBeUploaded		
 		};		
 		const response = await request(getAllDomains);
-		console.log(JSON.stringify(response.body));
 		
 		const getDomainID = async res => {
 			try {
-				var domain_ID = await Promise.resolve(res.body.data._id);
-				console.log(JSON.stringify(res.body));
+				var domain_ID = await Promise.resolve(res.body.data.id);
 			}
 			catch (error) {
 				console.log(error);
@@ -611,9 +601,7 @@ describe('User Routes', () => {
 			return domain_ID; 
 		};
 		domainID = await getDomainID(response);
-		
-		
-		//console.log("token: " + tokenAdmin);
+		console.log(JSON.stringify("domain id: " + domainID));
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -629,11 +617,522 @@ describe('User Routes', () => {
             		}		
 		};		
 		const response = await request(getDomainByID);
-		
-		console.log(JSON.stringify(response.body));
-		console.log("domainID: " + domainID);
 		expect(response.statusCode).toEqual(200);
 	
 	done();
 	});
+	
+	test('--- 24. PUT DOMAIN BY ID ---', async (done) => { 	
+		const getDomainData = {
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		const response = await request(getDomainData);
+		const domainDesc = "short desc update";
+		const newDescription = "new description: " + domainDesc;
+		response.body.data.description = newDescription;
+
+		const patchDomain = {
+        		method: 'PUT',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+        		json: true,
+				headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: response 		
+		};
+		expect(response.statusCode).toEqual(200);
+	
+	done();
+	});
+		
+	test('--- 25. IMPORT DOMAIN MODEL ---', async(done) => {   
+		const newModel = {
+		   "address":{
+		      "type":"object",
+		      "required":[
+			 "street_address",
+			 "city",
+			 "state"
+		      ],
+		      "properties":{
+			 "street_address":{
+			    "type":"string"
+			 },
+			 "city":{
+			    "type":"string"
+			 },
+			 "state":{
+			    "type":"string"
+			 }
+		      }
+		   },
+		   "person":{
+		      "type":"object",
+		      "required":[
+			 "first_name",
+			 "last_name"
+		      ],
+		      "properties":{
+			 "first_name":{
+			    "type":"string"
+			 },
+			 "last_name":{
+			    "type":"string"
+			 }
+		      }
+		   }
+		};
+		
+		const addDomainModel = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: newModel		
+		};
+		
+		const response = await request(addDomainModel);
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(202);
+		
+    	done();
+	});
+	
+	test('--- 26. GET ALL DOMAIN MODEL SCHEMES ---', async(done) => {   	
+		const requestOptions = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/address/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		const response = await request(requestOptions);
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(200);
+    	done();
+	});
+	
+	//---------------------------------------component-repository---------------------------------------------------
+	//--------------------------------------------------------------------------------------------------------------
+	
+	test('--- 27. GET ALL COMPONENTS ---', async(done) => {   
+		const getAllComponents = {
+        		method: 'GET',
+        		uri: `http://component-repository.openintegrationhub.com/components/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		const response = await request(getAllComponents);
+		expect(response.statusCode).toEqual(200);
+    	done();
+	});
+	
+	test('--- 28. CREATE NEW COMPONENT ---', async(done) => {   
+		const newComponent = {
+  					"data": {
+    					"name": "My Component",
+    					"description": "My Component",
+    					"access": "public",
+    					"descriptor": {},
+    					"distribution": {
+      						"type": "docker",
+      						"image": "openintegrationhub/email",
+      						"registrySecretId": "5b62c919fd98ea00112d52e7"
+    					},
+    					"owners": [
+      						{
+        					"id": "123",
+        					"type": "user"
+      						}
+    					]
+  					}
+		};
+		const createNewComponent = {
+        		method: 'POST',
+        		uri: `http://component-repository.openintegrationhub.com/components/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+			body: newComponent
+		};
+		
+		const response = await request(createNewComponent);
+		
+		const getComponentID = async res => {
+			try {
+				var component_ID = await Promise.resolve(res.body.data.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return component_ID; 
+		};
+		componentID = await getComponentID(response);
+		expect(response.statusCode).toEqual(201);
+    	done();
+	});
+	
+	test('--- 29. GET COMPONENT BY ID ---', async(done) => {
+		const getComponentById = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		const response = await request(getComponentById);	
+		expect(response.statusCode).toEqual(200);
+		
+	done();
+	});	
+	
+	
+	test('--- 30. PATCH COMPONENT BY ID ---', async(done) => {
+		const getComponentData = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		var response = await request(getComponentData);
+		const newDescription = "new given desc ";
+
+		response.body.data.description = newDescription;
+			
+		const patchComponent = {
+        		method: 'PATCH',
+        		uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+			body: response
+		};
+		const patchedComponent = await request(patchComponent);
+		expect(response.statusCode).toEqual(200);
+		done();	
+	done();	
+	});
+	
+	test('--- 31. DELETE COMPONENT BY ID ---', async (done) => { 
+		const deleteComponentById = {
+			method: 'DELETE',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+			json:	true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+				}
+			};
+		const response = await request(deleteComponentById);
+		expect(response.statusCode).toEqual(204);
+	done();
+	});
+	
+	//---------------------------------------------------------------------------------------------------------
+	
+	test('--- 32. GET ALL COMPONENTS - TOKEN INVALID ---', async(done) => {   
+		const getAllComponents = {
+        		method: 'GET',
+        		uri: `http://component-repository.openintegrationhub.com/components/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		}
+		};
+		const response = await request(getAllComponents);
+		expect(response.statusCode).toEqual(401);
+    	done();
+	});
+	
+	test('--- 33. CREATE NEW COMPONENT - TOKEN INVALID ---', async(done) => {   
+		const newComponent = {
+  					"data": {
+    					"name": "My Component",
+    					"description": "My Component",
+    					"access": "public",
+    					"descriptor": {},
+    					"distribution": {
+      						"type": "docker",
+      						"image": "openintegrationhub/email",
+      						"registrySecretId": "5b62c919fd98ea00112d52e7"
+    					},
+    					"owners": [
+      						{
+        					"id": "123",
+        					"type": "user"
+      						}
+    					]
+  					}
+		};
+		const createNewComponent = {
+        		method: 'POST',
+        		uri: `http://component-repository.openintegrationhub.com/components/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		},
+			body: newComponent
+		};
+		
+		const response = await request(createNewComponent);
+		//console.log("component id: " + componentID);
+		expect(response.statusCode).toEqual(401);
+    	done();
+	});
+	
+	test('--- 34. GET COMPONENT BY ID - TOKEN INVALID ---', async(done) => {
+		
+		const getComponentById = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		}
+		};
+		const response = await request(getComponentById);	
+		expect(response.statusCode).toEqual(401);		
+	done();
+	});
+	
+	test('--- 35. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID NOT FOUND ---', async(done) => {	
+		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
+		
+		const getComponentById = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${invalidComponentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		
+		const response = await request(getComponentById);	
+		expect(response.statusCode).toEqual(404);
+	done();
+	});
+	
+	test('--- 36. GET COMPONENT BY ID - ID INVALID ---', async(done) => {	
+		var invalidComponentID = "&$$%&%$§";
+		
+		const getComponentById = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${invalidComponentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		
+		const response = await request(getComponentById);	
+		expect(response.statusCode).toEqual(400);
+	done();
+	});
+	
+	test('--- 37. PATCH COMPONENT BY ID - COMPONENT NOT FOUND ---', async(done) => {	
+		const getComponentById = {
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		}
+		};
+		const response = await request(getComponentById);	
+		//console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(401);
+	done();
+	});
+	
+	test('--- 38. DELETE COMPONENT BY ID - TOKEN INVALED ---', async (done) => { 
+		const deleteComponentById = {
+			method: 'DELETE',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+			json:	true,
+			headers: {
+				"Authorization" : " Bearer " + invalidToken, 
+			}
+		};
+		const response = await request(deleteComponentById);
+		expect(response.statusCode).toEqual(401);
+	done();
+	});
+	
+	test('--- 39. DELETE COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async (done) => { 
+		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
+		const deleteComponentById = {
+			method: 'DELETE',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+			json:	true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		const response = await request(deleteComponentById);
+		expect(response.statusCode).toEqual(404);
+	done();
+	});
+	
+	//---------------------------------------metadata-repository---------------------------------------------------
+	//--------------------------------------------------------------------------------------------------------------
+	
+	test('--- 40. GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	
+		const requestOptions = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		}
+		};
+		
+		const response = await request(requestOptions);
+		expect(response.statusCode).toEqual(404);
+		console.log(JSON.stringify(response.body));
+    	done();
+	});
+	
+	test('--- 41. GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
+		var invalidDomainID = "034957430985";
+		const requestOptions = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/domains/${invalidDomainID}/schemas`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		
+		const response = await request(requestOptions);
+		expect(response.statusCode).toEqual(404);
+		console.log(JSON.stringify(response.body));
+    	done();
+	});
+	
+	test('--- 42. CREATE NEW DOMAIN - INVALID TOKEN ---', async (done) => {
+		const toBeUploaded = {
+  					"data": {
+    						"name": "string",
+    						"description": "string",
+    						"public": true,
+    						"owners": [
+      							{
+        						"id": "string",
+        						"type": "string"
+      							}
+    						],
+    						"id": "string",
+    						"createdAt": "2019-06-03T14:58:39.897Z",
+    						"updatedAt": "2019-06-03T14:58:39.897Z"
+  					}					
+		};
+		const getAllDomains = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		},
+        		body: toBeUploaded		
+		};		
+		const response = await request(getAllDomains);
+		expect(response.statusCode).toEqual(401);
+	
+	done();
+	});
+	
+	test('--- 43. CREATE NEW DOMAIN - INVALID DOMAIN ---', async (done) => {
+		const toBeUploaded = {
+  					"data": {
+    						
+  					}					
+		};
+		const getAllDomains = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: toBeUploaded		
+		};		
+		const response = await request(getAllDomains);
+		
+		const getDomainID = async res => {
+			try {
+				var domain_ID = await Promise.resolve(res.body.data.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return domain_ID; 
+		};
+		var domainID2 = await getDomainID(response);
+		console.log(JSON.stringify("domain id: " + domainID2));
+		expect(response.statusCode).toEqual(401);
+		
+	done();
+	});
+	
+	test('--- 44. GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
+		
+		var invalidDomainID ="lksfhdslfh";
+		const getDomainByID = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}		
+		};		
+		const response = await request(getDomainByID);
+		expect(response.statusCode).toEqual(401);
+	
+	done();
+	});
+	
+	test('--- 45. PUT DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => { 	
+		var invalidDomainID ="lksfhdslfh";
+		const getDomainData = {
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		const response = await request(getDomainData);
+		const domainDesc = "short descr update";
+		const newDescription = "new description: " + domainDesc;
+		response.body.data.description = newDescription;
+
+		const patchDomain = {
+        		method: 'PUT',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}`,
+        		json: true,
+				headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: response 		
+		};
+		const response2 = await request(patchDomain);
+		expect(response2.statusCode).toEqual(401);
+	
+	done();
+	});
+	
 });
