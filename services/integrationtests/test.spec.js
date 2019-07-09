@@ -1115,7 +1115,7 @@ describe('User Routes', () => {
             		}		
 		};		
 		const response = await request(getDomainByID);
-		expect(response.statusCode).toEqual(401);
+		expect(response.statusCode).toEqual(404);
 	
 	done();
 	});
@@ -1145,7 +1145,7 @@ describe('User Routes', () => {
         		body: response 		
 		};
 		const response2 = await request(patchDomain);
-		expect(response2.statusCode).toEqual(401);
+		expect(response2.statusCode).toEqual(404);
 	
 	done();
 	});
