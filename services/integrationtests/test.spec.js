@@ -682,12 +682,12 @@ describe('User Routes', () => {
 		
 		const response = await request(addDomainModel);
 		console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(202);
+		expect(response.statusCode).toEqual(200);
 		
     	done();
 	});
 	
-	test('--- 25.1 IMPORT DOMAIN MODEL ---', async(done) => {   
+	test('--- 25.1 PUT DOMAIN MODEL BY ID ---', async(done) => {   
 		const newModel = {
     				"data": {
         "name": "test",
@@ -1103,40 +1103,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 43. CREATE NEW DOMAIN - INVALID DOMAIN ---', async (done) => {
-		const toBeUploaded = {
-  					"data": {
-    						
-  					}					
-		};
-		const getAllDomains = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
-        		json: true,
-			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: toBeUploaded		
-		};		
-		const response = await request(getAllDomains);
-		
-		const getDomainID = async res => {
-			try {
-				var domain_ID = await Promise.resolve(res.body.data.id);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return domain_ID; 
-		};
-		var domainID2 = await getDomainID(response);
-		console.log(JSON.stringify("domain id: " + domainID2));
-		expect(response.statusCode).toEqual(401);
-		
-	done();
-	});
-	
-	test('--- 44. GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
+	test('--- 43. GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
 		
 		var invalidDomainID ="lksfhdslfh";
 		const getDomainByID = {
@@ -1153,7 +1120,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 45. PUT DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => { 	
+	test('--- 44. PUT DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => { 	
 		var invalidDomainID ="lksfhdslfh";
 		const getDomainData = {
 			method: 'GET',
