@@ -657,7 +657,7 @@ describe('User Routes', () => {
         "name": "test",
         "description": "upload test",
         "value": {
-            "$id": "testingPhil",
+            "$id": "testing",
             "properties": {
                 "first_name": {
                     "type": "string"
