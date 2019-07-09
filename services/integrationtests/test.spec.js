@@ -653,45 +653,62 @@ describe('User Routes', () => {
 		
 	test('--- 25. IMPORT DOMAIN MODEL ---', async(done) => {   
 		const newModel = {
-		   "address":{
-		      "type":"object",
-		      "required":[
-			 "street_address",
-			 "city",
-			 "state"
-		      ],
-		      "properties":{
-			 "street_address":{
-			    "type":"string"
-			 },
-			 "city":{
-			    "type":"string"
-			 },
-			 "state":{
-			    "type":"string"
-			 }
-		      }
-		   },
-		   "person":{
-		      "type":"object",
-		      "required":[
-			 "first_name",
-			 "last_name"
-		      ],
-		      "properties":{
-			 "first_name":{
-			    "type":"string"
-			 },
-			 "last_name":{
-			    "type":"string"
-			 }
-		      }
-		   }
+    "data": {
+        "name": "test",
+        "description": "upload test",
+        "value": {
+            "$id": "testingPhil",
+            "properties": {
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                }
+            }
+        }
+    }
 		};
 		
 		const addDomainModel = {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: newModel		
+		};
+		
+		const response = await request(addDomainModel);
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(202);
+		
+    	done();
+	});
+	
+	test('--- 25.1 IMPORT DOMAIN MODEL ---', async(done) => {   
+		const newModel = {
+    				"data": {
+        "name": "test",
+        "description": "upload test",
+        "value": {
+            "$id": "testing",
+            "properties": {
+                "first_name": {
+                    "type": "string"
+                },
+                "given_name": {
+                    "type": "string"
+                }
+            			}
+        			}
+    			}
+		};
+		
+		const addDomainModel = {
+        		method: 'PUT',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
@@ -718,6 +735,36 @@ describe('User Routes', () => {
 		const response = await request(requestOptions);
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
+    	done();
+	});
+	
+	test('--- 26.1 GET DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
+		const requestOptions = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/testing`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		const response = await request(requestOptions);
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(200);
+    	done();
+	});
+	
+	test('--- 26.2 DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
+		const requestOptions = {
+        		method: 'DELETE',
+        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/testing`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		const response = await request(requestOptions);
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(204);
     	done();
 	});
 	
