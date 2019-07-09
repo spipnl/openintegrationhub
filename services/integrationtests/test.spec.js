@@ -687,7 +687,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 25.1 PUT DOMAIN MODEL BY ID ---', async(done) => {   
+	test('--- 25.1 PUT DOMAIN MODEL BY URI ---', async(done) => {   
 		const newModel = {
     				"data": {
         "name": "test",
