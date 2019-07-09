@@ -726,7 +726,7 @@ describe('User Routes', () => {
 	test('--- 26. GET ALL DOMAIN MODEL SCHEMES ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
@@ -741,7 +741,7 @@ describe('User Routes', () => {
 	test('--- 26.1 GET DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/testing`,
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
@@ -756,7 +756,7 @@ describe('User Routes', () => {
 	test('--- 26.2 DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
         		method: 'DELETE',
-        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas/testing`,
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
