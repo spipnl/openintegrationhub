@@ -16,7 +16,7 @@ let componentID = null;
 
 describe('User Routes', () => {
     jest.setTimeout(15000);
-    test('---  1. LOGIN & TOKEN ---', async (done) => {
+    test('---  IAM 1. LOGIN & TOKEN ---', async (done) => {
         const jsonPayload = {
         	username,
         	password
@@ -46,7 +46,7 @@ describe('User Routes', () => {
 	
 	//--------------------------------------------------------------------------------------
 		
-    test('---  2. GET All FLOWS ---', async (done) => { 
+    test('---  FLOW REPO 2. GET All FLOWS ---', async (done) => { 
         const getAllFlows = {
         	method: 'GET',
             	uri: `http://flow-repository.openintegrationhub.com/flows`,
@@ -59,7 +59,7 @@ describe('User Routes', () => {
      done();
      });
 
-    test('---  3. ADD NEW FLOW ---', async (done) => {
+    test('---  FLOW REPO 3. ADD NEW FLOW ---', async (done) => {
 	const createdFlow = {
    					"name":"D Testflow",
    					"description":"This flow takes actions at regular invervals based on a set timer",
@@ -147,7 +147,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('---  4. GET FLOW BY ID ---', async (done) => { 
+	test('---  FLOW REPO 4. GET FLOW BY ID ---', async (done) => { 
 		const getFlowById = {
 				method: 'GET',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -161,7 +161,7 @@ describe('User Routes', () => {
 	});
 	// patch here
 
-	test('---  5. START FLOW BY ID ---', async (done) => { 
+	test('---  FLOW REPO 5. START FLOW BY ID ---', async (done) => { 
 		const startFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
@@ -175,7 +175,7 @@ describe('User Routes', () => {
 	done();   		
 	});
 
-	test('---  6. STOP FLOW BY ID ---', async (done) => { 
+	test('---  FLOW REPO 6. STOP FLOW BY ID ---', async (done) => { 
 		var status = false;
 		while (status != true) {	
 			const checkStatus = {
@@ -215,7 +215,7 @@ describe('User Routes', () => {
     	done();
 	});
 
-	test('---  7. PATCH FLOW BY ID ---', async (done) => { 
+	test('---  FLOW REPO 7. PATCH FLOW BY ID ---', async (done) => { 
 		var status2 = false;
 		while (status2 != true) {	
 			const checkStatus = {
@@ -269,7 +269,7 @@ describe('User Routes', () => {
 		done();
 	});
 	
-	test('---  8. DELETE FLOW BY ID ---', async (done) => { 
+	test('---  FLOW REPO 8. DELETE FLOW BY ID ---', async (done) => { 
 		var status3 = false;
 		while (status3 != true) {	
 			const checkStatus = {
@@ -310,7 +310,7 @@ describe('User Routes', () => {
 
 	//--------------------------------------------------------------------------------------
 	
-	test('---  9. GET ALL LOGS ---', async (done) => {
+	test('---  AUDIT LOG 9. GET ALL LOGS ---', async (done) => {
 		const getAllLogs = {
 			method: 'GET',
 				uri: `http://auditlog.openintegrationhub.com/logs`,
@@ -325,7 +325,7 @@ describe('User Routes', () => {
 	done();
 	});
 
-	test('--- 10. ADD LOG ---', async (done) => { 
+	test('--- AUDIT LOG 10. ADD LOG ---', async (done) => { 
 		process.env.IAM_AUTH_TYPE = 'basic';
 		const createdLog = {
         		"service": "MyService",
@@ -360,7 +360,7 @@ describe('User Routes', () => {
 	//-----------------------------------neg-audit-----------------------------------------------------
 	var invalidToken = tokenAdmin + "axsyfdas"
 	
-	test('--- 11. AUDIT LOG - MISSING AUTH ---', async (done) => {
+	test('--- AUDIT LOG 11. MISSING AUTH ---', async (done) => {
 		const getAllLogs = {
 			method: 'GET',
 				uri: `http://auditlog.openintegrationhub.com/logs`,
@@ -395,7 +395,7 @@ describe('User Routes', () => {
 	
 	//---------------------------------------neg-flow----------------------------------------------------
 	
-	test('--- 13. GET All FLOWS - INVALID TOKEN ---', async (done) => { 
+	test('--- FLOW REPO 13. GET All FLOWS - INVALID TOKEN ---', async (done) => { 
         const getAllFlows = {
         	method: 'GET',
             	uri: `http://flow-repository.openintegrationhub.com/flows`,
@@ -408,7 +408,7 @@ describe('User Routes', () => {
      	done();
      	});
 
-    	test('--- 14. ADD NEW FLOW - INVALID TOKEN ---', async (done) => {
+    	test('--- FLOW REPO 14. ADD NEW FLOW - INVALID TOKEN ---', async (done) => {
 		const createdFlow = {
    					"name":"D Testflow",
    					"description":"This flow takes actions at regular invervals based on a set timer.",
@@ -458,7 +458,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 15. GET FLOW BY ID - INVALID TOKEN ---', async (done) => { 
+	test('--- FLOW REPO 15. GET FLOW BY ID - INVALID TOKEN ---', async (done) => { 
 		const getFlowById = {
 				method: 'GET',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -472,7 +472,7 @@ describe('User Routes', () => {
 		done();
 	});
 	
-	test('--- 16. GET FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
+	test('--- FLOW REPO 16. GET FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
 		const getFlowById = {
 				method: 'GET',
 					uri: `http://flow-repository.openintegrationhub.com/flows/324423`,
@@ -486,7 +486,7 @@ describe('User Routes', () => {
 		done();
 	});
 
-	test('--- 17. START FLOW BY ID - INVALID TOKEN ---', async (done) => { 
+	test('--- FLOW REPO 17. START FLOW BY ID - INVALID TOKEN ---', async (done) => { 
 		const startFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
@@ -500,7 +500,7 @@ describe('User Routes', () => {
 	done();   		
 	});
 
-	test('--- 18. STOP FLOW BY ID - INVALID TOKEN ---', async (done) => { 			
+	test('--- FLOW REPO 18. STOP FLOW BY ID - INVALID TOKEN ---', async (done) => { 			
 		const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
@@ -514,7 +514,7 @@ describe('User Routes', () => {
     	done();
 	});
 
-	test('--- 19. PATCH FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
+	test('--- FLOW REPO 19. PATCH FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
 		// flow was already stopped and deleted in earlier tests, simulates "can't be found"
 		var newBody = "some string";
 		const tempFlowID = "29384329856";
@@ -532,7 +532,7 @@ describe('User Routes', () => {
 		done();
 	});
 	
-	test('--- 20. DELETE FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
+	test('--- FLOW REPO 20. DELETE FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
 		const deleteFlowById = {
 			method: 'DELETE',
 			uri: `http://flow-repository.openintegrationhub.com/flows/1982312`,
@@ -550,7 +550,7 @@ describe('User Routes', () => {
 	
 	//---------------------------------------metadata-repository---------------------------------------------------
 	
-	test('--- 21. GET ALL DOMAINS ---', async (done) => {
+	test('--- METADATA REPO 21. GET ALL DOMAINS ---', async (done) => {
 		const getAllDomains = {
 			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
@@ -564,7 +564,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 22. CREATE NEW DOMAIN ---', async (done) => {
+	test('--- METADATA REPO 22. CREATE NEW DOMAIN ---', async (done) => {
 		const toBeUploaded = {
   					"data": {
     						"name": "string",
@@ -608,7 +608,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 23. GET DOMAIN BY ID ---', async (done) => {
+	test('--- METADATA REPO 23. GET DOMAIN BY ID ---', async (done) => {
 		const getDomainByID = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
@@ -623,7 +623,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 24. PUT DOMAIN BY ID ---', async (done) => { 	
+	test('--- METADATA REPO 24. PUT DOMAIN BY ID ---', async (done) => { 	
 		const getDomainData = {
 			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
@@ -687,7 +687,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 25.1 PUT DOMAIN MODEL BY URI ---', async(done) => {   
+	test('--- METADATA REPO 25.1 PUT DOMAIN MODEL BY URI ---', async(done) => {   
 		const newModel = {
     				"data": {
         "name": "test",
@@ -723,7 +723,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 26. GET ALL DOMAIN MODEL SCHEMES ---', async(done) => {   	
+	test('--- METADATA REPO 26. GET ALL DOMAIN MODEL SCHEMES ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
@@ -738,7 +738,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 26.1 GET DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
+	test('--- METADATA REPO 26.1 GET DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
@@ -753,7 +753,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 26.2 DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
+	test('--- METADATA REPO 26.2 DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
         		method: 'DELETE',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
@@ -771,7 +771,7 @@ describe('User Routes', () => {
 	//---------------------------------------component-repository---------------------------------------------------
 	//--------------------------------------------------------------------------------------------------------------
 	
-	test('--- 27. GET ALL COMPONENTS ---', async(done) => {   
+	test('--- COMPONENT REPO 27. GET ALL COMPONENTS ---', async(done) => {   
 		const getAllComponents = {
         		method: 'GET',
         		uri: `http://component-repository.openintegrationhub.com/components/`,
@@ -785,7 +785,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 28. CREATE NEW COMPONENT ---', async(done) => {   
+	test('--- COMPONENT REPO 28. CREATE NEW COMPONENT ---', async(done) => {   
 		const newComponent = {
   					"data": {
     					"name": "My Component",
@@ -831,7 +831,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 29. GET COMPONENT BY ID ---', async(done) => {
+	test('--- COMPONENT REPO 29. GET COMPONENT BY ID ---', async(done) => {
 		const getComponentById = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -847,7 +847,7 @@ describe('User Routes', () => {
 	});	
 	
 	
-	test('--- 30. PATCH COMPONENT BY ID ---', async(done) => {
+	test('--- COMPONENT REPO 30. PATCH COMPONENT BY ID ---', async(done) => {
 		const getComponentData = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -876,7 +876,7 @@ describe('User Routes', () => {
 	done();	
 	});
 	
-	test('--- 31. DELETE COMPONENT BY ID ---', async (done) => { 
+	test('--- COMPONENT REPO 31. DELETE COMPONENT BY ID ---', async (done) => { 
 		const deleteComponentById = {
 			method: 'DELETE',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -892,7 +892,7 @@ describe('User Routes', () => {
 	
 	//---------------------------------------------------------------------------------------------------------
 	
-	test('--- 32. GET ALL COMPONENTS - TOKEN INVALID ---', async(done) => {   
+	test('--- COMPONENT REPO 32. GET ALL COMPONENTS - TOKEN INVALID ---', async(done) => {   
 		const getAllComponents = {
         		method: 'GET',
         		uri: `http://component-repository.openintegrationhub.com/components/`,
@@ -906,7 +906,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 33. CREATE NEW COMPONENT - TOKEN INVALID ---', async(done) => {   
+	test('--- COMPONENT REPO 33. CREATE NEW COMPONENT - TOKEN INVALID ---', async(done) => {   
 		const newComponent = {
   					"data": {
     					"name": "My Component",
@@ -942,7 +942,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 34. GET COMPONENT BY ID - TOKEN INVALID ---', async(done) => {
+	test('--- COMPONENT REPO 34. GET COMPONENT BY ID - TOKEN INVALID ---', async(done) => {
 		
 		const getComponentById = {
 			method: 'GET',
@@ -957,7 +957,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 35. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID NOT FOUND ---', async(done) => {	
+	test('--- COMPONENT REPO 35. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID NOT FOUND ---', async(done) => {	
 		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
 		
 		const getComponentById = {
@@ -974,7 +974,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 36. GET COMPONENT BY ID - ID INVALID ---', async(done) => {	
+	test('--- COMPONENT REPO 36. GET COMPONENT BY ID - ID INVALID ---', async(done) => {	
 		var invalidComponentID = "&$$%&%$§";
 		
 		const getComponentById = {
@@ -991,7 +991,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 37. PATCH COMPONENT BY ID - COMPONENT NOT FOUND ---', async(done) => {	
+	test('--- COMPONENT REPO 37. PATCH COMPONENT BY ID - COMPONENT NOT FOUND ---', async(done) => {	
 		const getComponentById = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -1006,7 +1006,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 38. DELETE COMPONENT BY ID - TOKEN INVALED ---', async (done) => { 
+	test('--- COMPONENT REPO 38. DELETE COMPONENT BY ID - TOKEN INVALED ---', async (done) => { 
 		const deleteComponentById = {
 			method: 'DELETE',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -1020,7 +1020,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 39. DELETE COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async (done) => { 
+	test('--- COMPONENT REPO 39. DELETE COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async (done) => { 
 		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
 		const deleteComponentById = {
 			method: 'DELETE',
@@ -1038,7 +1038,7 @@ describe('User Routes', () => {
 	//---------------------------------------metadata-repository---------------------------------------------------
 	//--------------------------------------------------------------------------------------------------------------
 	
-	test('--- 40. GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	
+	test('--- METADATA REPO 40. GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
@@ -1054,7 +1054,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 41. GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
+	test('--- METADATA REPO 41. GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
 		var invalidDomainID = "034957430985";
 		const requestOptions = {
         		method: 'GET',
@@ -1071,7 +1071,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- 42. CREATE NEW DOMAIN - INVALID TOKEN ---', async (done) => {
+	test('--- METADATA REPO 42. CREATE NEW DOMAIN - INVALID TOKEN ---', async (done) => {
 		const toBeUploaded = {
   					"data": {
     						"name": "string",
@@ -1103,7 +1103,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 43. GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
+	test('--- METADATA REPO 43. GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
 		
 		var invalidDomainID ="lksfhdslfh";
 		const getDomainByID = {
@@ -1120,7 +1120,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- 44. PUT DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => { 	
+	test('--- METADATA REPO 44. PUT DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => { 	
 		var invalidDomainID ="lksfhdslfh";
 		const getDomainData = {
 			method: 'GET',
