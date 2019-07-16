@@ -16,7 +16,7 @@ let componentID = null;
 
 describe('User Routes', () => {
     jest.setTimeout(15000);
-    test('---  IAM 1. LOGIN & TOKEN ---', async (done) => {
+    test('--- IAM 1. LOGIN & TOKEN ---', async (done) => {
         const jsonPayload = {
         	username,
         	password
@@ -46,7 +46,7 @@ describe('User Routes', () => {
 	
 	//--------------------------------------------------------------------------------------
 		
-    test('---  FLOW REPO 2. GET All FLOWS ---', async (done) => { 
+    test('--- FLOW REPO 2. GET All FLOWS ---', async (done) => { 
         const getAllFlows = {
         	method: 'GET',
             	uri: `http://flow-repository.openintegrationhub.com/flows`,
@@ -59,7 +59,7 @@ describe('User Routes', () => {
      done();
      });
 
-    test('---  FLOW REPO 3. ADD NEW FLOW ---', async (done) => {
+    test('--- FLOW REPO 3. ADD NEW FLOW ---', async (done) => {
 	const createdFlow = {
    					"name":"D Testflow",
    					"description":"This flow takes actions at regular invervals based on a set timer",
@@ -147,7 +147,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('---  FLOW REPO 4. GET FLOW BY ID ---', async (done) => { 
+	test('--- FLOW REPO 4. GET FLOW BY ID ---', async (done) => { 
 		const getFlowById = {
 				method: 'GET',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -161,7 +161,7 @@ describe('User Routes', () => {
 	});
 	// patch here
 
-	test('---  FLOW REPO 5. START FLOW BY ID ---', async (done) => { 
+	test('--- FLOW REPO 5. START FLOW BY ID ---', async (done) => { 
 		const startFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
@@ -175,7 +175,7 @@ describe('User Routes', () => {
 	done();   		
 	});
 
-	test('---  FLOW REPO 6. STOP FLOW BY ID ---', async (done) => { 
+	test('--- FLOW REPO 6. STOP FLOW BY ID ---', async (done) => { 
 		var status = false;
 		while (status != true) {	
 			const checkStatus = {
@@ -215,7 +215,7 @@ describe('User Routes', () => {
     	done();
 	});
 
-	test('---  FLOW REPO 7. PATCH FLOW BY ID ---', async (done) => { 
+	test('--- FLOW REPO 7. PATCH FLOW BY ID ---', async (done) => { 
 		var status2 = false;
 		while (status2 != true) {	
 			const checkStatus = {
@@ -269,7 +269,7 @@ describe('User Routes', () => {
 		done();
 	});
 	
-	test('---  FLOW REPO 8. DELETE FLOW BY ID ---', async (done) => { 
+	test('--- FLOW REPO 8. DELETE FLOW BY ID ---', async (done) => { 
 		var status3 = false;
 		while (status3 != true) {	
 			const checkStatus = {
@@ -310,7 +310,7 @@ describe('User Routes', () => {
 
 	//--------------------------------------------------------------------------------------
 	
-	test('---  AUDIT LOG 9. GET ALL LOGS ---', async (done) => {
+	test('--- AUDIT LOG 9. GET ALL LOGS ---', async (done) => {
 		const getAllLogs = {
 			method: 'GET',
 				uri: `http://auditlog.openintegrationhub.com/logs`,
@@ -376,7 +376,7 @@ describe('User Routes', () => {
 	});
 	
 	
-	test('--- 12. AUDIT LOG - INVALID TOKEN ---', async (done) => {
+	test('--- AUDIT LOG 12. INVALID TOKEN ---', async (done) => {
 		const getAllLogs = {
 			method: 'GET',
 				uri: `http://auditlog.openintegrationhub.com/logs`,
@@ -651,23 +651,23 @@ describe('User Routes', () => {
 	done();
 	});
 		
-	test('--- 25. IMPORT DOMAIN MODEL ---', async(done) => {   
+	test('--- METADATA 25. IMPORT DOMAIN MODEL ---', async(done) => {   
 		const newModel = {
-    "data": {
-        "name": "test",
-        "description": "upload test",
-        "value": {
-            "$id": "testing",
-            "properties": {
-                "first_name": {
-                    "type": "string"
-                },
-                "last_name": {
-                    "type": "string"
-                }
-            }
-        }
-    }
+    				"data": {
+        				"name": "test",
+        				"description": "upload test",
+        				"value": {
+            					"$id": "testing",
+            					"properties": {
+                					"first_name": {
+                    						"type": "string"
+                					},
+                					"last_name": {
+                    						"type": "string"
+                						}
+            						}
+        					}
+    				}
 		};
 		
 		const addDomainModel = {
