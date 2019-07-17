@@ -1104,7 +1104,6 @@ describe('User Routes', () => {
 	});
 	
 	test('--- METADATA REPO 43. GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
-		
 		var invalidDomainID ="lksfhdslfh";
 		const getDomainByID = {
         		method: 'GET',
@@ -1116,7 +1115,6 @@ describe('User Routes', () => {
 		};		
 		const response = await request(getDomainByID);
 		expect(response.statusCode).toEqual(404);
-	
 	done();
 	});
 	
@@ -1146,8 +1144,6 @@ describe('User Routes', () => {
 		};
 		const response2 = await request(patchDomain);
 		expect(response2.statusCode).toEqual(404);
-	
 	done();
 	});
-	
 });
