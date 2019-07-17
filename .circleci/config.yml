@@ -77,7 +77,7 @@ jobs:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests
     steps: *yarn_test_steps
-  integration-test-iam
+  integration-test-iam:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/iam
     steps: *yarn_test_steps
