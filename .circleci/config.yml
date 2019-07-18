@@ -77,7 +77,7 @@ jobs:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests
     steps: *yarn_test_steps
-  integration-test-iam:
+  login:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/iam
     steps: *yarn_test_steps
@@ -133,10 +133,10 @@ workflows:
   pipeline:
     jobs:
       - deps
-      - integration-test-iam:
+      - login:
           requires:
             - deps 
       - integration-test:
           requires:
             - deps
-            - integration-test-iam
+            - login
