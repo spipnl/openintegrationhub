@@ -133,9 +133,10 @@ workflows:
   pipeline:
     jobs:
       - deps
-      - integration-test:
-          requires:
-            - deps 
       - integration-test-iam:
           requires:
             - deps 
+      - integration-test:
+          requires:
+            - deps
+            - integration-test-iam
