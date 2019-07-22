@@ -44,7 +44,7 @@ describe('User Routes', () => {
     done();
     });
 	
-    exports.token = function() {
+    module.exports.token = function() {
     	return tokenAdmin;
     };
 	
