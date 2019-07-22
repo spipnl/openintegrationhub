@@ -40,10 +40,9 @@ describe('User Routes', () => {
 	      };	
 
 	      tokenAdmin = await getToken(response); 
-	      expect(response.statusCode).toEqual(200);	
-	    module.exports.SimpleMessage = tokenAdmin;
+	      expect(response.statusCode).toEqual(200);
     done();
     });	
 });
 
-
+ module.exports.SimpleMessage = tokenAdmin;
