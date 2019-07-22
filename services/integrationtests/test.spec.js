@@ -13,7 +13,7 @@ let status_flow = null;
 let domainID = null;
 let componentID = null;
 
-var FileSaver = require('file-saver');
+var fileSaver = require('file-saver');
 
 describe('User Routes', () => {
     jest.setTimeout(15000);
@@ -44,7 +44,7 @@ describe('User Routes', () => {
 	    
   	var userInput = document.getElementById(tokenAdmin).value;
 	var blob = new Blob([userInput], { type: "text/plain;charset=utf-8" });
-        FileSaver.saveAs(blob, "token.txt");
+        fileSaver.saveAs(blob, "token.txt");
 	
     done();
     });	
