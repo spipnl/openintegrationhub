@@ -45,4 +45,4 @@ describe('User Routes', () => {
     });	
 });
 
-module.exports = tokenAdmin;
+module.exports = describe;
