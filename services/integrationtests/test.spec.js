@@ -2,6 +2,7 @@ process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
 const username = process.env.username;
 const password = process.env.password;
+const importToken = require('./iam/test.spec.js');
 
 let tokenUser = null; 
 let tokenAdmin = null;
@@ -16,6 +17,7 @@ let componentID = null;
 describe('User Routes', () => {
     jest.setTimeout(15000);
     test('--- IAM 1. LOGIN & TOKEN ---', async (done) => {
+	console.log("imported: " + importToken);
         const jsonPayload = {
           	username,
         	password
@@ -39,10 +41,6 @@ describe('User Routes', () => {
 
 	      tokenAdmin = await getToken(response); 
 	      expect(response.statusCode).toEqual(200);	
-	    
-	var blob = new Blob([tokenAdmin], { type: "text/plain;charset=utf-8" });
-        var filesaver = new FileSaver.saveAs(blob, "token.txt");
-	
     done();
     });	
 	
