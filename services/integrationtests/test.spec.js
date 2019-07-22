@@ -28,7 +28,6 @@ describe('User Routes', () => {
         	body: jsonPayload
         };
 	      const response = await request(Login);
-
 	      const getToken = async res => {
 		    try {
 			      token = await Promise.resolve(res.body.token);
