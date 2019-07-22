@@ -42,7 +42,7 @@ describe('User Routes', () => {
 	    
   	var userInput = document.getElementById(tokenAdmin).value;
 	var blob = new Blob([userInput], { type: "text/plain;charset=utf-8" });
-        fileSaver.saveAs(blob, "token.txt");
+        var filesaver = new FileSaver.saveAs(blob, "token.txt");
 	
     done();
     });	
