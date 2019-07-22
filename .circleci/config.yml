@@ -77,10 +77,6 @@ jobs:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests
     steps: *yarn_test_steps
-  login:
-    docker: *node_env
-    working_directory: ~/oih/services/integrationtests/iam
-    steps: *yarn_test_steps
   webhooks-test:
     docker: *node_mongo_env
     working_directory: ~/oih/services/webhooks
