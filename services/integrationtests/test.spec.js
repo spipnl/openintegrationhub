@@ -17,7 +17,7 @@ let componentID = null;
 describe('User Routes', () => {
     jest.setTimeout(15000);
     test('--- IAM 1. LOGIN & TOKEN ---', async (done) => {
-	console.log("imported: " + importToken);
+	console.log("imported: " + importToken.env);
         const jsonPayload = {
           	username,
         	password
