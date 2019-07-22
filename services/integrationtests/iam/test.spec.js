@@ -43,19 +43,6 @@ describe('User Routes', () => {
 	      expect(response.statusCode).toEqual(200);	
     done();
     });	
-	
-	//--------------------------------------------------------------------------------------
-		
-    test('--- FLOW REPO 2. GET All FLOWS ---', async (done) => { 
-      const getAllFlows = {
-            	method: 'GET',
-            	uri: `http://flow-repository.openintegrationhub.com/flows`,
-            	headers: {
-                	"Authorization" : " Bearer " + tokenAdmin, 
-            	}
-      };
-	    const response = await request(getAllFlows);
-     	expect(response.statusCode).toEqual(200);
-     done();
-     });
 });
+
+module.exports = tokenAdmin;
