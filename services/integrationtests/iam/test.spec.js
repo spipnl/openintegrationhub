@@ -43,7 +43,9 @@ describe('User Routes', () => {
 	      expect(response.statusCode).toEqual(200);
     done();
     });
-
+	
+    exports.token = function() {
+    	return tokenAdmin;
+    };
+	
 });
-
- module.exports = tokenAdmin;
