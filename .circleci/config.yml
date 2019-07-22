@@ -133,10 +133,6 @@ workflows:
   pipeline:
     jobs:
       - deps
-      - login:
-          requires:
-            - deps 
       - integration-test:
           requires:
             - deps
-            - login
