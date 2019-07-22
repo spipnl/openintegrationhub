@@ -2,6 +2,7 @@ process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
 const username = process.env.username;
 const password = process.env.password;
+import { saveAs } from 'file-saver';
 var FileSaver = require('file-saver');
 
 let tokenUser = null; 
