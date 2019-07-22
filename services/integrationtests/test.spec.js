@@ -17,7 +17,7 @@ describe('User Routes', () => {
     jest.setTimeout(15000);
     test('--- IAM 1. LOGIN & TOKEN ---', async (done) => {
         const jsonPayload = {
-          username,
+          	username,
         	password
 		    };
         const Login = {
@@ -40,8 +40,7 @@ describe('User Routes', () => {
 	      tokenAdmin = await getToken(response); 
 	      expect(response.statusCode).toEqual(200);	
 	    
-  	var userInput = document.getElementById(tokenAdmin).value;
-	var blob = new Blob([userInput], { type: "text/plain;charset=utf-8" });
+	var blob = new Blob([tokenAdmin], { type: "text/plain;charset=utf-8" });
         var filesaver = new FileSaver.saveAs(blob, "token.txt");
 	
     done();
