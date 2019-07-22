@@ -13,8 +13,6 @@ let status_flow = null;
 let domainID = null;
 let componentID = null;
 
-var fileSaver = require('file-saver');
-
 describe('User Routes', () => {
     jest.setTimeout(15000);
     test('--- IAM 1. LOGIN & TOKEN ---', async (done) => {
