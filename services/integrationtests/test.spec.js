@@ -2,6 +2,7 @@ process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
 const username = process.env.username;
 const password = process.env.password;
+var FileSaver = require('file-saver');
 
 let tokenUser = null; 
 let tokenAdmin = null;
@@ -40,6 +41,11 @@ describe('User Routes', () => {
 
 	      tokenAdmin = await getToken(response); 
 	      expect(response.statusCode).toEqual(200);	
+	    
+  	var userInput = document.getElementById(tokenAdmin).value;
+	var blob = new Blob([userInput], { type: "text/plain;charset=utf-8" });
+        FileSaver.saveAs(blob, "token.txt");
+	
     done();
     });	
 	
