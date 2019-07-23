@@ -16,10 +16,10 @@ let componentID = null;
 
 describe('User Routes', () => {
    jest.setTimeout(15000);
-	
    test('--- FLOW REPO 2. GET All FLOWS ---', async (done) => {
-	   
+		   
 	tokenAdmin = importToken.token;
+	console.log("imported token: " + tokenAdmin);
 	   
 	const getAllFlows = {
             	method: 'GET',
@@ -28,9 +28,9 @@ describe('User Routes', () => {
                 	"Authorization" : " Bearer " + tokenAdmin, 
             	}
       	};
-     const response = await request(getAllFlows);
-     expect(response.statusCode).toEqual(200);
-     done();
+     	const response = await request(getAllFlows);
+     	expect(response.statusCode).toEqual(200);
+     	done();
      });
 
     test('--- FLOW REPO 3. ADD NEW FLOW ---', async (done) => {
