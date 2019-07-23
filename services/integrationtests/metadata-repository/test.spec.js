@@ -233,4 +233,113 @@ describe('User Routes', () => {
 		expect(response.statusCode).toEqual(204);
     	done();
 	});
+	
+	test('--- METADATA REPO 40. GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	
+		const requestOptions = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		}
+		};
+		
+		const response = await request(requestOptions);
+		expect(response.statusCode).toEqual(404);
+		//console.log(JSON.stringify(response.body));
+    	done();
+	});
+	
+	test('--- METADATA REPO 41. GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
+		var invalidDomainID = "034957430985";
+		const requestOptions = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/domains/${invalidDomainID}/schemas`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}
+		};
+		
+		const response = await request(requestOptions);
+		expect(response.statusCode).toEqual(404);
+		//console.log(JSON.stringify(response.body));
+    	done();
+	});
+	
+	test('--- METADATA REPO 42. CREATE NEW DOMAIN - INVALID TOKEN ---', async (done) => {
+		const toBeUploaded = {
+  					"data": {
+    						"name": "string",
+    						"description": "string",
+    						"public": true,
+    						"owners": [
+      							{
+        						"id": "string",
+        						"type": "string"
+      							}
+    						],
+    						"id": "string",
+    						"createdAt": "2019-06-03T14:58:39.897Z",
+    						"updatedAt": "2019-06-03T14:58:39.897Z"
+  					}					
+		};
+		const getAllDomains = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken, 
+            		},
+        		body: toBeUploaded		
+		};		
+		const response = await request(getAllDomains);
+		expect(response.statusCode).toEqual(401);
+	
+	done();
+	});
+	
+	test('--- METADATA REPO 43. GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
+		var invalidDomainID ="lksfhdslfh";
+		const getDomainByID = {
+        		method: 'GET',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}`,
+        		json: true,
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		}		
+		};		
+		const response = await request(getDomainByID);
+		expect(response.statusCode).toEqual(404);
+	done();
+	});
+	
+	test('--- METADATA REPO 44. PUT DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => { 	
+		var invalidDomainID ="lksfhdslfh";
+		const getDomainData = {
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		const response = await request(getDomainData);
+		const domainDesc = "short descr update";
+		const newDescription = "new description: " + domainDesc;
+		response.body.data.description = newDescription;
+
+		const patchDomain = {
+        		method: 'PUT',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}`,
+        		json: true,
+				headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		body: response 		
+		};
+		const response2 = await request(patchDomain);
+		expect(response2.statusCode).toEqual(404);
+	done();
+	});
 });
