@@ -39,11 +39,9 @@ describe('User Routes', () => {
 		        return token; 
 	      };	
 
-	      tokenAdmin = await getToken(response); 
+	      tokenAdmin = await getToken(response);
+	      module.exports.token = tokenAdmin;
 	      expect(response.statusCode).toEqual(200);
     done();
     });
-	
-    module.exports.token = tokenAdmin;
-	
 });
