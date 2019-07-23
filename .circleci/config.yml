@@ -139,4 +139,4 @@ workflows:
       - flow-repository:
           requires:
             - deps
-            - integration-test-iam
+            - iam
