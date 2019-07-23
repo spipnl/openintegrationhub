@@ -137,12 +137,13 @@ workflows:
   pipeline:
     jobs:
       - deps
+      - integration-test:
+          requires:
+            - deps
       - iam:
           requires:
             - deps
+            - integration-test
       - flow-repository:
           requires:
             -iam
-      - integration-test:
-          requires:
-            - flow-repository
