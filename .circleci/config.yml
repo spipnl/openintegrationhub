@@ -73,11 +73,11 @@ jobs:
     docker: *node_env
     working_directory: ~/oih
     steps: *deploy_steps_prod
-  integration-test-iam:
+  iam:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/iam
     steps: *yarn_test_steps
-  integration-test-flow-repository:
+  flow-repository:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/flow-repository
     steps: *yarn_test_steps
@@ -133,10 +133,10 @@ workflows:
   pipeline:
     jobs:
       - deps
-      - integration-test-iam:
+      - iam:
           requires:
             - deps
-      - integration-test-flow-repository:
+      - flow-repository:
           requires:
             - deps
             - integration-test-iam
