@@ -73,17 +73,9 @@ jobs:
     docker: *node_env
     working_directory: ~/oih
     steps: *deploy_steps_prod
-  iam:
+  integration-test-iam:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/iam
-    steps: *yarn_test_steps
-  flow-repository:
-    docker: *node_env
-    working_directory: ~/oih/services/integrationtests/flow-repository
-    steps: *yarn_test_steps
-  integration-test:
-    docker: *node_env
-    working_directory: ~/oih/services/integrationtests
     steps: *yarn_test_steps
   webhooks-test:
     docker: *node_mongo_env
@@ -137,13 +129,6 @@ workflows:
   pipeline:
     jobs:
       - deps
-      - integration-test:
+      - integration-test-iam:
           requires:
             - deps
-      - iam:
-          requires:
-            - deps
-            - integration-test
-      - flow-repository:
-          requires:
-            -iam
