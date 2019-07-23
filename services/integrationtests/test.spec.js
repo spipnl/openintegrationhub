@@ -17,7 +17,7 @@ let componentID = null;
 describe('User Routes', () => {
     jest.setTimeout(15000);
     test('--- IAM 1. LOGIN & TOKEN ---', async (done) => {
-	console.log("imported: " + importToken);
+	console.log("imported: " + importToken.token);
         const jsonPayload = {
           	username,
         	password
@@ -52,7 +52,7 @@ describe('User Routes', () => {
                 	"Authorization" : " Bearer " + tokenAdmin, 
             	}
       };
-	    const response = await request(getAllFlows);
+	   const response = await request(getAllFlows);
      	expect(response.statusCode).toEqual(200);
      done();
      });
@@ -679,7 +679,7 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(addDomainModel);
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 		
     	done();
@@ -715,7 +715,7 @@ describe('User Routes', () => {
 		};
 		
 		const response = await request(addDomainModel);
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 		
     	done();
@@ -731,7 +731,7 @@ describe('User Routes', () => {
             		}
 		};
 		const response = await request(requestOptions);
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
     	done();
 	});
@@ -746,7 +746,7 @@ describe('User Routes', () => {
             		}
 		};
 		const response = await request(requestOptions);
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
     	done();
 	});
@@ -761,7 +761,6 @@ describe('User Routes', () => {
             		}
 		};
 		const response = await request(requestOptions);
-		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(204);
     	done();
 	});
@@ -1048,7 +1047,7 @@ describe('User Routes', () => {
 		
 		const response = await request(requestOptions);
 		expect(response.statusCode).toEqual(404);
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
     	done();
 	});
 	
@@ -1065,7 +1064,7 @@ describe('User Routes', () => {
 		
 		const response = await request(requestOptions);
 		expect(response.statusCode).toEqual(404);
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
     	done();
 	});
 	
