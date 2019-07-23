@@ -136,7 +136,7 @@ workflows:
       - integration-test-iam:
           requires:
             - deps
-      - integration-test-flow-repository
+      - integration-test-flow-repository:
           requires:
             - deps
             - integration-test-iam
