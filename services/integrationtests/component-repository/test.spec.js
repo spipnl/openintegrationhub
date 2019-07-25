@@ -17,9 +17,7 @@ let componentID = null;
 describe('User Routes', () => {
    jest.setTimeout(15000);
 	
-	
 	//---------------------------------------component-repository---------------------------------------------------
-	//--------------------------------------------------------------------------------------------------------------
 	
 	test('--- COMPONENT REPO 27. GET ALL COMPONENTS ---', async(done) => {   
 		const getAllComponents = {
