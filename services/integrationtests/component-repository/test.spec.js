@@ -2,7 +2,7 @@ process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
 const username = process.env.username;
 const password = process.env.password;
-const importToken = require('./iam/test.spec.js');
+const importToken = require('../iam/test.spec.js');
 
 let tokenUser = null; 
 let tokenAdmin = null;
