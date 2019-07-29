@@ -13,6 +13,7 @@ let token = null;
 let status_flow = null;
 let domainID = null;
 let componentID = null;
+let invalidToken = "034957430985";
 
 describe('User Routes', () => {
    jest.setTimeout(15000);
