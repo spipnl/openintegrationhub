@@ -17,6 +17,7 @@ let invalidToken = "9807324598624kjhf";
 
 describe('User Routes', () => {
    jest.setTimeout(15000);
+   tokenAdmin = importToken.token;	
 	
 	//---------------------------------------component-repository---------------------------------------------------
 	
