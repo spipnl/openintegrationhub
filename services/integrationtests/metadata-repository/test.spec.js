@@ -16,9 +16,9 @@ let componentID = null;
 
 describe('User Routes', () => {
    jest.setTimeout(15000);
-	tokenAdmin = importToken.token;
-	
 	test('--- METADATA REPO 21. GET ALL DOMAINS ---', async (done) => {
+		tokenAdmin = importToken.token;
+		console.log("imported token for meta data: " + tokenAdmin);
 		const getAllDomains = {
 			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
@@ -61,7 +61,7 @@ describe('User Routes', () => {
 			return domain_ID; 
 		};
 		domainID = await getDomainID(response);
-		console.log(`domain id: ${JSON.stringify(res.body)}`);
+		//console.log(`domain id: ${JSON.stringify(res.body)}`);
 		console.log(JSON.stringify("domain id: " + domainID));
 		expect(response.statusCode).toEqual(200);
 	
