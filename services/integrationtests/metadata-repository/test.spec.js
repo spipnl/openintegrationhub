@@ -261,6 +261,7 @@ describe('User Routes', () => {
 	});
 	
 	test('--- METADATA REPO 42. CREATE NEW DOMAIN - INVALID TOKEN ---', async (done) => {
+		var invalidToken = "034957430985";
 		const toBeUploaded = {
   					"data": {
     						"name": "string",
