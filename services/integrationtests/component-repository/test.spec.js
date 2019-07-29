@@ -21,7 +21,7 @@ describe('User Routes', () => {
 	
 	test('--- COMPONENT REPO 27. GET ALL COMPONENTS ---', async(done) => {  
 		tokenAdmin = importToken.token;
-		console.log("imported token for audit log: " + tokenAdmin);
+		console.log("imported token for component repo: " + tokenAdmin);
 		const getAllComponents = {
         		method: 'GET',
         		uri: `http://component-repository.openintegrationhub.com/components/`,
