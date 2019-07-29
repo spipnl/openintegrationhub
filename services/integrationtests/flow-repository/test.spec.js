@@ -300,6 +300,7 @@ describe('User Routes', () => {
      	});
 
     	test('--- FLOW REPO 14. ADD NEW FLOW - INVALID TOKEN ---', async (done) => {
+		var invalidToken = "034957430985";
 		const createdFlow = {
    					"name":"D Testflow",
    					"description":"This flow takes actions at regular invervals based on a set timer.",
