@@ -37,15 +37,6 @@ describe('User Routes', () => {
     						"name": "string",
     						"description": "string",
     						"public": true,
-    						"owners": [
-      							{
-        						"id": "string",
-        						"type": "string"
-      							}
-    						],
-    						"id": "string",
-    						"createdAt": "2019-06-03T14:58:39.897Z",
-    						"updatedAt": "2019-06-03T14:58:39.897Z"
   					}					
 		};
 		const getAllDomains = {
