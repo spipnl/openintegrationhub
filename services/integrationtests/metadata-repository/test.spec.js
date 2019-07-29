@@ -16,7 +16,7 @@ let componentID = null;
 
 describe('User Routes', () => {
    jest.setTimeout(15000);
-	adminToken = importToken;
+	tokenAdmin = importToken.token;
 	
 	test('--- METADATA REPO 21. GET ALL DOMAINS ---', async (done) => {
 		const getAllDomains = {
