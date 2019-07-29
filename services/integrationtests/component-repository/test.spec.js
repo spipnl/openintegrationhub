@@ -16,12 +16,12 @@ let componentID = null;
 let invalidToken = "9807324598624kjhf";
 
 describe('User Routes', () => {
-   jest.setTimeout(15000);
-   tokenAdmin = importToken.token;	
-	
+   jest.setTimeout(15000);	
 	//---------------------------------------component-repository---------------------------------------------------
 	
-	test('--- COMPONENT REPO 27. GET ALL COMPONENTS ---', async(done) => {   
+	test('--- COMPONENT REPO 27. GET ALL COMPONENTS ---', async(done) => {  
+		tokenAdmin = importToken.token;
+		console.log("imported token for audit log: " + tokenAdmin);
 		const getAllComponents = {
         		method: 'GET',
         		uri: `http://component-repository.openintegrationhub.com/components/`,
