@@ -161,9 +161,7 @@ workflows:
             - deps
             - iam
       - audit-log:
-          requires:
-            - deps
-            - iam 
-               - flow-repository
-               - metadata-repository
-               - component-repository
+          requires: 
+            - flow-repository
+            - metadata-repository
+            - component-repository
