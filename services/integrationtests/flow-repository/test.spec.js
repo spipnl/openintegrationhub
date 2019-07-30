@@ -16,14 +16,12 @@ let componentID = null;
 let invalidToken = "034957430985";
 
 
-describe('User Routes', () => {
+describe('Flow-Repository', () => {
   jest.setTimeout(15000);
 
-  test('--- FLOW REPO 2. GET All FLOWS ---', async (done) => {
-		   
+  test('--- GET All FLOWS ---', async (done) => {	   
 	tokenAdmin = importToken.token;
-	console.log("imported token for flow repo: " + tokenAdmin);
-	   
+	//console.log("imported token for flow repo: " + tokenAdmin); 
 	const getAllFlows = {
             	method: 'GET',
             	uri: `http://flow-repository.openintegrationhub.com/flows`,
@@ -36,7 +34,7 @@ describe('User Routes', () => {
      	done();
      });
 
-  test('--- FLOW REPO 3. ADD NEW FLOW ---', async (done) => {
+  test('--- ADD NEW FLOW ---', async (done) => {
 	          const createdFlow = {
    					"name":"D Testflow",
    					"description":"This flow takes actions at regular invervals based on a set timer",
@@ -124,7 +122,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- FLOW REPO 4. GET FLOW BY ID ---', async (done) => { 
+	test('--- GET FLOW BY ID ---', async (done) => { 
 		const getFlowById = {
 				method: 'GET',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -138,7 +136,7 @@ describe('User Routes', () => {
 	});
 	// patch here
 
-	test('--- FLOW REPO 5. START FLOW BY ID ---', async (done) => { 
+	test('--- START FLOW BY ID ---', async (done) => { 
 		const startFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
@@ -152,7 +150,7 @@ describe('User Routes', () => {
 	done();   		
 	});
 
-	test('--- FLOW REPO 6. STOP FLOW BY ID ---', async (done) => { 
+	test('--- STOP FLOW BY ID ---', async (done) => { 
 		var status = false;
 		while (status != true) {	
 			const checkStatus = {
@@ -192,7 +190,7 @@ describe('User Routes', () => {
     	done();
 	});
 
-	test('--- FLOW REPO 7. PATCH FLOW BY ID ---', async (done) => { 
+	test('--- PATCH FLOW BY ID ---', async (done) => { 
 		var status2 = false;
 		while (status2 != true) {	
 			const checkStatus = {
@@ -246,7 +244,7 @@ describe('User Routes', () => {
 		done();
 	});
 	
-	test('--- FLOW REPO 8. DELETE FLOW BY ID ---', async (done) => { 
+	test('--- DELETE FLOW BY ID ---', async (done) => { 
 		var status3 = false;
 		while (status3 != true) {	
 			const checkStatus = {
@@ -287,7 +285,7 @@ describe('User Routes', () => {
 	
 		//---------------------------------------neg-flow----------------------------------------------------
 	
-	test('--- FLOW REPO 13. GET All FLOWS - INVALID TOKEN ---', async (done) => { 
+	test('--- GET All FLOWS - INVALID TOKEN ---', async (done) => { 
         const getAllFlows = {
         	method: 'GET',
             	uri: `http://flow-repository.openintegrationhub.com/flows`,
@@ -300,7 +298,7 @@ describe('User Routes', () => {
      	done();
      	});
 
-    	test('--- FLOW REPO 14. ADD NEW FLOW - INVALID TOKEN ---', async (done) => {
+    	test('--- ADD NEW FLOW - INVALID TOKEN ---', async (done) => {
 
 		const createdFlow = {
    					"name":"D Testflow",
@@ -351,7 +349,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- FLOW REPO 15. GET FLOW BY ID - INVALID TOKEN ---', async (done) => { 
+	test('--- GET FLOW BY ID - INVALID TOKEN ---', async (done) => { 
 		const getFlowById = {
 				method: 'GET',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -365,7 +363,7 @@ describe('User Routes', () => {
 		done();
 	});
 	
-	test('--- FLOW REPO 16. GET FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
+	test('--- GET FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
 		const getFlowById = {
 				method: 'GET',
 					uri: `http://flow-repository.openintegrationhub.com/flows/324423`,
@@ -379,7 +377,7 @@ describe('User Routes', () => {
 		done();
 	});
 
-	test('--- FLOW REPO 17. START FLOW BY ID - INVALID TOKEN ---', async (done) => { 
+	test('--- START FLOW BY ID - INVALID TOKEN ---', async (done) => { 
 		const startFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/start`,
@@ -393,7 +391,7 @@ describe('User Routes', () => {
 	done();   		
 	});
 
-	test('--- FLOW REPO 18. STOP FLOW BY ID - INVALID TOKEN ---', async (done) => { 			
+	test('--- STOP FLOW BY ID - INVALID TOKEN ---', async (done) => { 			
 		const stopFlowById = {
 				method: 'POST',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}/stop`,
@@ -407,8 +405,7 @@ describe('User Routes', () => {
     	done();
 	});
 
-	test('--- FLOW REPO 19. PATCH FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
-		// flow was already stopped and deleted in earlier tests, simulates "can't be found"
+	test('--- PATCH FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
 		var newBody = "some string";
 		const tempFlowID = "29384329856";
 		const patchFlow = {
@@ -425,7 +422,7 @@ describe('User Routes', () => {
 		done();
 	});
 	
-	test('--- FLOW REPO 20. DELETE FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
+	test('--- DELETE FLOW BY ID - FLOW ID NOT FOUND ---', async (done) => { 
 		const deleteFlowById = {
 			method: 'DELETE',
 			uri: `http://flow-repository.openintegrationhub.com/flows/1982312`,
