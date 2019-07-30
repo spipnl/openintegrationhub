@@ -207,7 +207,7 @@ describe('Metadata-Repository', () => {
             					value: fs.createReadStream('valid.zip'),
            					options: {
                 					filename: 'valid.zip',
-                					contentType: 'application/zip'
+                					contentType: 'multipart/form-data'
             					}
         				}
     			},
