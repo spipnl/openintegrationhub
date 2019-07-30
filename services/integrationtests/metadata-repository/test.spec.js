@@ -169,7 +169,6 @@ describe('Metadata-Repository', () => {
         			}
     			}
 		};
-		
 		const addDomainModel = {
         		method: 'PUT',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
@@ -179,11 +178,8 @@ describe('Metadata-Repository', () => {
             		},
         		body: newModel		
 		};
-		
 		const response = await request(addDomainModel);
-		//console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(200);
-		
+		expect(response.statusCode).toEqual(200);	
     	done();
 	});
 	
@@ -202,22 +198,6 @@ describe('Metadata-Repository', () => {
     	done();
 	});
 	
-	test('--- IMPORT BULK OF MODELS ---', async(done) => {   	
-		const uploadBulk = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
-			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin,
-				contentType: 'multipart/form-data'
-            		},		
-		        form: fs.createReadStream('/valid.zip')
-		};
-		
-		const response = await request(uploadBulk);
-		expect(response.statusCode).toEqual(200);	
-    	done();
-	});
-	
 	test('--- GET DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
@@ -230,6 +210,31 @@ describe('Metadata-Repository', () => {
 		const response = await request(requestOptions);
 		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
+    	done();
+	});
+	
+	test('--- IMPORT BULK OF MODELS ---', async(done) => {   	
+		const uploadBulk = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+			formData: {
+        			name: 'Jenn',
+        			file: {
+            				value: fs.createReadStream('/valid.zip'),
+            				options: {
+                				filename: 'valid.zip',
+                				contentType: 'multipart/form-data'
+            					}
+        				}
+    			},
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin,
+				"Content-Type" : 'multipart/form-data'
+            		}
+		};
+		
+		const response = await request(uploadBulk);
+		expect(response.statusCode).toEqual(200);	
     	done();
 	});
 	
