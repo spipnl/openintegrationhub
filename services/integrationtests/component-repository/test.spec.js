@@ -15,13 +15,11 @@ let domainID = null;
 let componentID = null;
 let invalidToken = "9807324598624kjhf";
 
-describe('User Routes', () => {
-   jest.setTimeout(15000);	
-	//---------------------------------------component-repository---------------------------------------------------
-	
-	test('--- COMPONENT REPO 27. GET ALL COMPONENTS ---', async(done) => {  
+describe('Component Repository', () => {
+   jest.setTimeout(15000);		
+	test('--- GET ALL COMPONENTS ---', async(done) => {  
 		tokenAdmin = importToken.token;
-		console.log("imported token for component repo: " + tokenAdmin);
+		//console.log("imported token for component repo: " + tokenAdmin);
 		const getAllComponents = {
         		method: 'GET',
         		uri: `http://component-repository.openintegrationhub.com/components/`,
@@ -35,7 +33,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- COMPONENT REPO 28. CREATE NEW COMPONENT ---', async(done) => {   
+	test('--- CREATE NEW COMPONENT ---', async(done) => {   
 		const newComponent = {
   					"data": {
     					"name": "My Component",
@@ -81,7 +79,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- COMPONENT REPO 29. GET COMPONENT BY ID ---', async(done) => {
+	test('--- GET COMPONENT BY ID ---', async(done) => {
 		const getComponentById = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -97,7 +95,7 @@ describe('User Routes', () => {
 	});	
 	
 	
-	test('--- COMPONENT REPO 30. PATCH COMPONENT BY ID ---', async(done) => {
+	test('--- PATCH COMPONENT BY ID ---', async(done) => {
 		const getComponentData = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -126,7 +124,7 @@ describe('User Routes', () => {
 	done();	
 	});
 	
-	test('--- COMPONENT REPO 31. DELETE COMPONENT BY ID ---', async (done) => { 
+	test('--- DELETE COMPONENT BY ID ---', async (done) => { 
 		const deleteComponentById = {
 			method: 'DELETE',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -142,7 +140,7 @@ describe('User Routes', () => {
 	
 	//---------------------------------------------------------------------------------------------------------
 	
-	test('--- COMPONENT REPO 32. GET ALL COMPONENTS - TOKEN INVALID ---', async(done) => {   
+	test('--- GET ALL COMPONENTS - TOKEN INVALID ---', async(done) => {   
 		const getAllComponents = {
         		method: 'GET',
         		uri: `http://component-repository.openintegrationhub.com/components/`,
@@ -156,7 +154,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- COMPONENT REPO 33. CREATE NEW COMPONENT - TOKEN INVALID ---', async(done) => {   
+	test('--- CREATE NEW COMPONENT - TOKEN INVALID ---', async(done) => {   
 		const newComponent = {
   					"data": {
     					"name": "My Component",
@@ -192,7 +190,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- COMPONENT REPO 34. GET COMPONENT BY ID - TOKEN INVALID ---', async(done) => {
+	test('--- GET COMPONENT BY ID - TOKEN INVALID ---', async(done) => {
 		
 		const getComponentById = {
 			method: 'GET',
@@ -207,7 +205,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- COMPONENT REPO 35. GET COMPONENT BY ID - COMPONENT NOT FOUND / ID NOT FOUND ---', async(done) => {	
+	test('--- GET COMPONENT BY ID - COMPONENT NOT FOUND / ID NOT FOUND ---', async(done) => {	
 		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
 		
 		const getComponentById = {
@@ -224,7 +222,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- COMPONENT REPO 36. GET COMPONENT BY ID - ID INVALID ---', async(done) => {	
+	test('--- GET COMPONENT BY ID - ID INVALID ---', async(done) => {	
 		var invalidComponentID = "&$$%&%$§";
 		
 		const getComponentById = {
@@ -241,7 +239,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- COMPONENT REPO 37. PATCH COMPONENT BY ID - COMPONENT NOT FOUND ---', async(done) => {	
+	test('--- PATCH COMPONENT BY ID - COMPONENT NOT FOUND ---', async(done) => {	
 		const getComponentById = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -256,7 +254,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- COMPONENT REPO 38. DELETE COMPONENT BY ID - TOKEN INVALED ---', async (done) => { 
+	test('--- DELETE COMPONENT BY ID - TOKEN INVALED ---', async (done) => { 
 		const deleteComponentById = {
 			method: 'DELETE',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -270,7 +268,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- COMPONENT REPO 39. DELETE COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async (done) => { 
+	test('--- DELETE COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async (done) => { 
 		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
 		const deleteComponentById = {
 			method: 'DELETE',
