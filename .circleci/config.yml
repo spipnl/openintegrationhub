@@ -151,16 +151,12 @@ workflows:
       - flow-repository:
           requires:
             - deps
-            - iam
       - metadata-repository:
           requires:
             - deps
-            - iam
       - component-repository:
           requires:
             - deps
-            - iam
       - audit-log:
           requires: 
             - deps
-            - iam
