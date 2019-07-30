@@ -14,7 +14,7 @@ let domainID = null;
 let componentID = null;
 
 
-describe('User Routes', () => {
+describe('Login', () => {
     jest.setTimeout(15000);
     test('--- 1. LOGIN & TOKEN ---', async (done) => {
         const jsonPayload = {
