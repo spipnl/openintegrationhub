@@ -214,7 +214,7 @@ describe('Metadata-Repository', () => {
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
             		},
-        		//body: newModel		
+        		body: formData		
 		};
 		
 		const response = await request(addDomainModel);
