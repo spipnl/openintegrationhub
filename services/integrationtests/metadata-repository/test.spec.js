@@ -3,7 +3,7 @@ const request = require('request-promise').defaults({ simple: false, resolveWith
 const username = process.env.username;
 const password = process.env.password;
 const importToken = require('../iam/test.spec.js');
-const fs = require('fs-extra');
+const fs = require('fs');
 
 let tokenUser = null; 
 let tokenAdmin = null;
@@ -150,18 +150,18 @@ describe('Metadata-Repository', () => {
 	test('--- PUT DOMAIN MODEL BY URI ---', async(done) => {   
 		const newModel = {
     				"data": {
-        "name": "test",
-        "description": "upload test",
-        "value": {
-            "$id": "testing",
-            "properties": {
-                "first_name": {
-                    "type": "string"
-                },
-                "given_name": {
-                    "type": "string"
-                }
-            			}
+        			"name": "test",
+        			"description": "upload test",
+        			"value": {
+            				"$id": "testing",
+            				"properties": {
+                					"first_name": {
+                    							"type": "string"
+                					},
+                					"given_name": {
+                    					"type": "string"
+                					}
+            				}
         			}
     			}
 		};
@@ -202,23 +202,14 @@ describe('Metadata-Repository', () => {
 		const uploadBulk = {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
-        		formData: {
-        				name: 'Jenn',
-        				file: {
-            					value: fs.createReadStream('valid.zip'),
-           					options: {
-                					filename: 'valid.zip',
-                					contentType: 'multipart/form-data'
-            					}
-        				}
-    			},
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: formData		
+                		"Authorization" : " Bearer " + tokenAdmin,
+				Content-Type: 'multipart/form-data'}
+            		},		
+		        form: fs.createReadStream('valid.zip')
 		};
 		
-		const response = await request(addDomainModel);
+		const response = await request(uploadBulk);
 		expect(response.statusCode).toEqual(200);	
     	done();
 	});
