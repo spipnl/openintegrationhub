@@ -206,7 +206,7 @@ describe('Metadata-Repository', () => {
                 		"Authorization" : " Bearer " + tokenAdmin,
 				contentType: 'multipart/form-data'
             		},		
-		        form: fs.createReadStream('valid.zip')
+		        form: fs.createReadStream('./valid.zip')
 		};
 		
 		const response = await request(uploadBulk);
