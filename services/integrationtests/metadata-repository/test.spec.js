@@ -204,7 +204,7 @@ describe('Metadata-Repository', () => {
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin,
-				Content-Type: 'multipart/form-data'}
+				Content-Type: 'multipart/form-data'
             		},		
 		        form: fs.createReadStream('valid.zip')
 		};
