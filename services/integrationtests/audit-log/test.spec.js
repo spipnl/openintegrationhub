@@ -1,4 +1,3 @@
-
 process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
 const username = process.env.username;
@@ -15,11 +14,11 @@ let status_flow = null;
 let domainID = null;
 let componentID = null;
 
-describe('User Routes', () => {
+describe('Audit-log', () => {
    jest.setTimeout(15000);
-	test('--- AUDIT LOG 9. GET ALL LOGS ---', async (done) => {
+	test('--- GET ALL LOGS ---', async (done) => {
 		tokenAdmin = importToken.token;
-		console.log("imported token for audit log: " + tokenAdmin);
+		//console.log("imported token for audit log: " + tokenAdmin);
 		const getAllLogs = {
 			method: 'GET',
 				uri: `http://auditlog.openintegrationhub.com/logs`,
@@ -34,7 +33,7 @@ describe('User Routes', () => {
 	done();
 	});
 
-	test('--- AUDIT LOG 10. ADD LOG ---', async (done) => { 
+	test('--- 10. ADD LOG ---', async (done) => { 
 		process.env.IAM_AUTH_TYPE = 'basic';
 		const createdLog = {
         		"service": "MyService",
