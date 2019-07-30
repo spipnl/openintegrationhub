@@ -15,11 +15,11 @@ let domainID = null;
 let componentID = null;
 let invalidToken = "034957430985";
 
-describe('User Routes', () => {
+describe('Metadata-Repository', () => {
    jest.setTimeout(15000);
-	test('--- METADATA REPO 21. GET ALL DOMAINS ---', async (done) => {
+	test('--- GET ALL DOMAINS ---', async (done) => {
 		tokenAdmin = importToken.token;
-		console.log("imported token for meta data: " + tokenAdmin);
+		//console.log("imported token for meta data: " + tokenAdmin);
 		const getAllDomains = {
 			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
@@ -33,7 +33,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- METADATA REPO 22. CREATE NEW DOMAIN ---', async (done) => {
+	test('--- CREATE NEW DOMAIN ---', async (done) => {
 		const toBeUploaded = {
   					"data": {
     						"name": "string",
@@ -69,7 +69,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- METADATA REPO 23. GET DOMAIN BY ID ---', async (done) => {
+	test('--- GET DOMAIN BY ID ---', async (done) => {
 		const getDomainByID = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
@@ -84,7 +84,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- METADATA REPO 24. PUT DOMAIN BY ID ---', async (done) => { 	
+	test('--- PUT DOMAIN BY ID ---', async (done) => { 	
 		const getDomainData = {
 			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
@@ -112,7 +112,7 @@ describe('User Routes', () => {
 	done();
 	});
 		
-	test('--- METADATA 25. IMPORT DOMAIN MODEL ---', async(done) => {   
+	test('--- IMPORT DOMAIN MODEL ---', async(done) => {   
 		const newModel = {
     				"data": {
         				"name": "test",
@@ -148,7 +148,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- METADATA REPO 25.1 PUT DOMAIN MODEL BY URI ---', async(done) => {   
+	test('--- PUT DOMAIN MODEL BY URI ---', async(done) => {   
 		const newModel = {
     				"data": {
         "name": "test",
@@ -184,7 +184,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- METADATA REPO 26. GET ALL DOMAIN MODEL SCHEMES ---', async(done) => {   	
+	test('--- GET ALL DOMAIN MODEL SCHEMES ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
@@ -199,7 +199,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- METADATA REPO 26.1 GET DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
+	test('--- GET DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
@@ -214,7 +214,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- METADATA REPO 26.2 DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
+	test('--- DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
         		method: 'DELETE',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
@@ -228,7 +228,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- METADATA REPO 40. GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	
+	test('--- GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	
 		const requestOptions = {
         		method: 'GET',
         		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
@@ -244,7 +244,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- METADATA REPO 41. GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
+	test('--- GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
 		var invalidDomainID = "034957430985";
 		const requestOptions = {
         		method: 'GET',
@@ -261,7 +261,7 @@ describe('User Routes', () => {
     	done();
 	});
 	
-	test('--- METADATA REPO 42. CREATE NEW DOMAIN - INVALID TOKEN ---', async (done) => {
+	test('--- CREATE NEW DOMAIN - INVALID TOKEN ---', async (done) => {
 		var invalidToken = "034957430985";
 		const toBeUploaded = {
   					"data": {
@@ -294,7 +294,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- METADATA REPO 43. GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
+	test('--- GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
 		var invalidDomainID ="lksfhdslfh";
 		const getDomainByID = {
         		method: 'GET',
@@ -309,7 +309,7 @@ describe('User Routes', () => {
 	done();
 	});
 	
-	test('--- METADATA REPO 44. PUT DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => { 	
+	test('--- PUT DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => { 	
 		var invalidDomainID ="lksfhdslfh";
 		const getDomainData = {
 			method: 'GET',
