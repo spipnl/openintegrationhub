@@ -142,9 +142,7 @@ describe('Metadata-Repository', () => {
 		};
 		
 		const response = await request(addDomainModel);
-		//console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(200);
-		
+		expect(response.statusCode).toEqual(200);	
     	done();
 	});
 	
@@ -196,6 +194,31 @@ describe('Metadata-Repository', () => {
 		const response = await request(requestOptions);
 		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
+    	done();
+	});
+	
+	test('--- IMPORT BULK OF MODELS ---', async(done) => {   	
+		const uploadBulk = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+        		formData: {
+        				name: 'Jenn',
+        				file: {
+            					value: fs.createReadStream('valid.zip'),
+           					options: {
+                					filename: 'valid.zip',
+                					contentType: 'application/zip'
+            					}
+        				}
+    			},
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin, 
+            		},
+        		//body: newModel		
+		};
+		
+		const response = await request(addDomainModel);
+		expect(response.statusCode).toEqual(200);	
     	done();
 	});
 	
