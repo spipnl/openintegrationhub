@@ -81,6 +81,18 @@ jobs:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/flow-repository
     steps: *yarn_test_steps
+  metadata-repository:
+    docker: *node_env
+    working_directory: ~/oih/services/integrationtests/metadata-repository
+    steps: *yarn_test_steps
+  component-repository:
+    docker: *node_env
+    working_directory: ~/oih/services/integrationtests/component-repository
+    steps: *yarn_test_steps 
+  audit-log:
+    docker: *node_env
+    working_directory: ~/oih/services/integrationtests/audit-log
+    steps: *yarn_test_steps
   webhooks-test:
     docker: *node_mongo_env
     working_directory: ~/oih/services/webhooks
@@ -140,3 +152,18 @@ workflows:
           requires:
             - deps
             - iam
+      - metadata-repository:
+          requires:
+            - deps
+            - iam
+      - component-repository:
+          requires:
+            - deps
+            - iam
+      - audit-log:
+          requires:
+            - deps
+            - iam 
+               - flow-repository
+               - metadata-repository
+               - component-repository
