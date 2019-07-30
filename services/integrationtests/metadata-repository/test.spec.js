@@ -3,6 +3,8 @@ const request = require('request-promise').defaults({ simple: false, resolveWith
 const username = process.env.username;
 const password = process.env.password;
 const importToken = require('../iam/test.spec.js');
+
+var FormData = require('form-data');
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -208,7 +210,7 @@ describe('Metadata-Repository', () => {
                 		"Authorization" : " Bearer " + tokenAdmin,
 				contentType: 'multipart/form-data'
             		},		
-		        form: fs.createReadStream(path.dirname('valid.zip'))
+		        form: fs.createReadStream(path('/valid.zip'))
 		};
 		
 		const response = await request(uploadBulk);
