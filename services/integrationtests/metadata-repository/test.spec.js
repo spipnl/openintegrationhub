@@ -3,6 +3,7 @@ const request = require('request-promise').defaults({ simple: false, resolveWith
 const username = process.env.username;
 const password = process.env.password;
 const importToken = require('../iam/test.spec.js');
+const fs = require('fs-extra');
 
 let tokenUser = null; 
 let tokenAdmin = null;
