@@ -218,7 +218,7 @@ describe('Metadata-Repository', () => {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
-        			name: 'Jenn',
+        			name: 'valid.zip',
         			file: {
             				value: fs.createReadStream('/valid.zip'),
             				options: {
@@ -229,7 +229,6 @@ describe('Metadata-Repository', () => {
     			},
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin,
-				"Content-Type" : 'multipart/form-data'
             		}
 		};
 		
@@ -237,6 +236,13 @@ describe('Metadata-Repository', () => {
 		expect(response.statusCode).toEqual(200);	
     	done();
 	});
+	
+	
+	
+	
+	
+	
+	
 	
 	test('--- DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
