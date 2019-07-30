@@ -4,6 +4,8 @@ const username = process.env.username;
 const password = process.env.password;
 const importToken = require('../iam/test.spec.js');
 const fs = require('fs-extra');
+const path = require('path');
+
 
 let tokenUser = null; 
 let tokenAdmin = null;
@@ -206,7 +208,7 @@ describe('Metadata-Repository', () => {
                 		"Authorization" : " Bearer " + tokenAdmin,
 				contentType: 'multipart/form-data'
             		},		
-		        form: fs.createReadStream('./valid.zip')
+		        form: fs.createReadStream(path.dirname('valid.zip'))
 		};
 		
 		const response = await request(uploadBulk);
