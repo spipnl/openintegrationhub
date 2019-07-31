@@ -23,7 +23,7 @@ describe('Metadata-Repository', () => {
    jest.setTimeout(15000);
 	test('--- GET ALL DOMAINS ---', async (done) => {
 		tokenAdmin = importToken.token;
-		//console.log("imported token for meta data: " + tokenAdmin);
+		console.log("imported token for meta data: " + tokenAdmin);
 		const getAllDomains = {
 			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
@@ -234,8 +234,6 @@ describe('Metadata-Repository', () => {
 		};
 		const response = await request(uploadBulk);
 		console.log(JSON.stringify(response.body));
-		var cond = mongoose.Types.ObjectId.isValid(_id);
-		console.log(cond);
 		expect(response.statusCode).toEqual(200);	
     	done();
 	});
