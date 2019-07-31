@@ -8,7 +8,6 @@ var FormData = require('form-data');
 const fs = require('fs-extra');
 const path = require('path');
 
-
 let tokenUser = null; 
 let tokenAdmin = null;
 let flowID = null;
@@ -220,7 +219,7 @@ describe('Metadata-Repository', () => {
 			formData: {
         			name: 'valid.zip',
         			file: {
-            				value: fs.createReadStream('/valid.zip'),
+            				value: fs.createReadStream(path.resolve('~oih/services/integrationtests/metadata-repository/valid.zip')),
             				options: {
                 				filename: 'valid.zip',
                 				contentType: 'multipart/form-data'
@@ -231,12 +230,10 @@ describe('Metadata-Repository', () => {
                 		"Authorization" : " Bearer " + tokenAdmin,
             		}
 		};
-		
 		const response = await request(uploadBulk);
 		expect(response.statusCode).toEqual(200);	
     	done();
 	});
-	
 	
 	
 	
