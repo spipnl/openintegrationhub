@@ -232,6 +232,7 @@ describe('Metadata-Repository', () => {
             		}
 		};
 		const response = await request(uploadBulk);
+		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);	
     	done();
 	});
