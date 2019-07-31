@@ -207,6 +207,7 @@ describe('Metadata-Repository', () => {
             		}
 		};
 		const response = await request(requestOptions);
+		console.log(__dirname);
 		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
     	done();
@@ -219,7 +220,7 @@ describe('Metadata-Repository', () => {
 			formData: {
         			name: 'valid.zip',
         			file: {
-            				value: fs.createReadStream(path.resolve('oih/services/integrationtests/metadata-repository/valid.zip')),
+            				value: fs.createReadStream(path.resolve('valid.zip')),
             				options: {
                 				filename: 'valid.zip',
                 				contentType: 'multipart/form-data'
