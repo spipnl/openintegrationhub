@@ -219,7 +219,7 @@ describe('Metadata-Repository', () => {
 			formData: {
         			name: 'valid.zip',
         			file: {
-            				value: fs.createReadStream(path.resolve('~oih/services/integrationtests/metadata-repository/valid.zip')),
+            				value: fs.createReadStream(path.resolve('oih/services/integrationtests/metadata-repository/valid.zip')),
             				options: {
                 				filename: 'valid.zip',
                 				contentType: 'multipart/form-data'
