@@ -213,7 +213,8 @@ describe('Metadata-Repository', () => {
     	done();
 	});
 	
-	test('--- IMPORT BULK OF MODELS ---', async(done) => {   	
+	test('--- IMPORT BULK OF MODELS ---', async(done) => { 
+		
 		const uploadBulk = {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
@@ -233,6 +234,8 @@ describe('Metadata-Repository', () => {
 		};
 		const response = await request(uploadBulk);
 		console.log(JSON.stringify(response.body));
+		var cond = mongoose.Types.ObjectId.isValid(_id);
+		console.log(cond);
 		expect(response.statusCode).toEqual(200);	
     	done();
 	});
