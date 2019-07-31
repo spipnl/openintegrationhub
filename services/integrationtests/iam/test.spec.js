@@ -41,6 +41,7 @@ describe('Login', () => {
 
 	      tokenAdmin = await getToken(response);
 	      module.exports.token = tokenAdmin;
+	    console.log("token from IAM: " + tokenAdmin
 	      expect(response.statusCode).toEqual(200);
     done();
     });
