@@ -2,7 +2,10 @@ process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
 const username = process.env.username;
 const password = process.env.password;
-const importToken = require('../iam/test.spec.js');
+const 
+
+
+Token = require('../iam/test.spec.js');
 
 var FormData = require('form-data');
 const fs = require('fs-extra');
@@ -72,7 +75,7 @@ describe('Metadata-Repository', () => {
 	
 	done();
 	});
-	/*
+	
 	test('--- GET DOMAIN BY ID ---', async (done) => {
 		const getDomainByID = {
         		method: 'GET',
@@ -212,8 +215,8 @@ describe('Metadata-Repository', () => {
 		expect(response.statusCode).toEqual(200);
     	done();
 	});
-	*/
-	test('--- IMPORT BULK OF MODELS ---', async(done) => { 
+	
+	test('--- IMPORT  OF MODELS ---', async(done) => { 
 		const uploadBulk = {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
@@ -237,11 +240,6 @@ describe('Metadata-Repository', () => {
     	done();
 	});
 	
-	
-	
-	
-	
-	/*
 	test('--- DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
         		method: 'DELETE',
@@ -364,5 +362,78 @@ describe('Metadata-Repository', () => {
 		const response2 = await request(patchDomain);
 		expect(response2.statusCode).toEqual(404);
 	done();
-	});*/
+	});
+	
+	test('--- IMPORT  OF MODELS - INVALID INPUT ---', async(done) => { 
+		const uploadBulk = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+			formData: {
+        			name: 'valid.zip',
+        			file: {
+            				value: fs.createReadStream(path.resolve('metadata-repository/invalid.zip')),
+            				options: {
+                				filename: 'valid.zip',
+                				contentType: 'multipart/form-data'
+            					}
+        				}
+    			},
+			headers: {
+                		"Authorization" : " Bearer " + tokenAdmin,
+            		}
+		};
+		const response = await request(uploadBulk);
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(200);	
+    	done();
+	});
+	
+	test('--- IMPORT  OF MODELS - INVALID TOKEN ---', async(done) => { 
+		const uploadBulk = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+			formData: {
+        			name: 'valid.zip',
+        			file: {
+            				value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
+            				options: {
+                				filename: 'valid.zip',
+                				contentType: 'multipart/form-data'
+            					}
+        				}
+    			},
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken,
+            		}
+		};
+		const response = await request(uploadBulk);
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(200);	
+    	done();
+	});
+	
+	test('--- IMPORT  OF MODELS - INVALID ID ---', async(done) => { 
+		var invalidDomainID ="lksfhdslfh";
+		const uploadBulk = {
+        		method: 'POST',
+        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}/schemas/import`,
+			formData: {
+        			name: 'valid.zip',
+        			file: {
+            				value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
+            				options: {
+                				filename: 'valid.zip',
+                				contentType: 'multipart/form-data'
+            					}
+        				}
+    			},
+			headers: {
+                		"Authorization" : " Bearer " + invalidToken,
+            		}
+		};
+		const response = await request(uploadBulk);
+		console.log(JSON.stringify(response.body));
+		expect(response.statusCode).toEqual(200);	
+    	done();
+	});
 });
