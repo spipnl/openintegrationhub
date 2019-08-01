@@ -21,7 +21,7 @@ let invalidToken = "034957430985";
 
 describe('Metadata-Repository', () => {
    jest.setTimeout(15000);
-	/*test('--- GET ALL DOMAINS ---', async (done) => {
+	test('--- GET ALL DOMAINS ---', async (done) => {
 		tokenAdmin = importToken.token;
 		console.log("imported token for meta data: " + tokenAdmin);
 		const getAllDomains = {
@@ -35,7 +35,7 @@ describe('Metadata-Repository', () => {
 		const response = await request(getAllDomains);
 		expect(response.statusCode).toEqual(200); 
 	done();
-	});*/
+	});
 	
 	test('--- CREATE NEW DOMAIN ---', async (done) => {
 		const toBeUploaded = {
