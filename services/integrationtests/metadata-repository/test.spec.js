@@ -21,7 +21,7 @@ let invalidToken = "034957430985";
 
 describe('Metadata-Repository', () => {
    jest.setTimeout(15000);
-	test('--- GET ALL DOMAINS ---', async (done) => {
+	/*test('--- GET ALL DOMAINS ---', async (done) => {
 		tokenAdmin = importToken.token;
 		console.log("imported token for meta data: " + tokenAdmin);
 		const getAllDomains = {
@@ -35,7 +35,7 @@ describe('Metadata-Repository', () => {
 		const response = await request(getAllDomains);
 		expect(response.statusCode).toEqual(200); 
 	done();
-	});
+	});*/
 	
 	test('--- CREATE NEW DOMAIN ---', async (done) => {
 		const toBeUploaded = {
@@ -72,7 +72,7 @@ describe('Metadata-Repository', () => {
 	
 	done();
 	});
-	
+	/*
 	test('--- GET DOMAIN BY ID ---', async (done) => {
 		const getDomainByID = {
         		method: 'GET',
@@ -212,7 +212,7 @@ describe('Metadata-Repository', () => {
 		expect(response.statusCode).toEqual(200);
     	done();
 	});
-	
+	*/
 	test('--- IMPORT BULK OF MODELS ---', async(done) => { 
 		const uploadBulk = {
         		method: 'POST',
@@ -241,7 +241,7 @@ describe('Metadata-Repository', () => {
 	
 	
 	
-	
+	/*
 	test('--- DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
         		method: 'DELETE',
@@ -364,5 +364,5 @@ describe('Metadata-Repository', () => {
 		const response2 = await request(patchDomain);
 		expect(response2.statusCode).toEqual(404);
 	done();
-	});
+	});*/
 });
