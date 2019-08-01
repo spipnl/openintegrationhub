@@ -216,7 +216,7 @@ describe('Metadata-Repository', () => {
     	done();
 	});
 	
-	test('--- IMPORT  OF MODELS ---', async(done) => { 
+	test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
 		const uploadBulk = {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
@@ -364,7 +364,7 @@ describe('Metadata-Repository', () => {
 	done();
 	});
 	
-	test('--- IMPORT  OF MODELS - INVALID INPUT ---', async(done) => { 
+	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID INPUT ---', async(done) => { 
 		const uploadBulk = {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
@@ -388,7 +388,7 @@ describe('Metadata-Repository', () => {
     	done();
 	});
 	
-	test('--- IMPORT  OF MODELS - INVALID TOKEN ---', async(done) => { 
+	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID TOKEN ---', async(done) => { 
 		const uploadBulk = {
         		method: 'POST',
         		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
@@ -408,11 +408,11 @@ describe('Metadata-Repository', () => {
 		};
 		const response = await request(uploadBulk);
 		console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(200);	
+		expect(response.statusCode).toEqual(401);	
     	done();
 	});
 	
-	test('--- IMPORT  OF MODELS - INVALID ID ---', async(done) => { 
+	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID ID ---', async(done) => { 
 		var invalidDomainID ="lksfhdslfh";
 		const uploadBulk = {
         		method: 'POST',
@@ -433,7 +433,7 @@ describe('Metadata-Repository', () => {
 		};
 		const response = await request(uploadBulk);
 		console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(200);	
+		expect(response.statusCode).toEqual(401);	
     	done();
 	});
 });
