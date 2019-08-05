@@ -164,6 +164,6 @@ workflows:
       - audit-log:
           requires: 
             - iam
-      - attachment-storage-service
+      - attachment-storage-service:
           requires:
             - iam
