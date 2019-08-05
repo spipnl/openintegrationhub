@@ -39,9 +39,8 @@ describe('Attachment-Storage-Service', () => {
 	
     done();
   });
-  /*
+  
   test('--- GET MESSAGE BY ID ---', async (done) => {
-		tokenAdmin = importToken.token;
 		console.log("imported token for meta data: " + tokenAdmin);
 		const getMessageByID = {
 			method: 'GET',
@@ -58,7 +57,7 @@ describe('Attachment-Storage-Service', () => {
 	
 	test('--- DELETE A MESSAGE ---', async (done) => {
 		const deleteMessageById = {
-        		method: 'GET',
+        		method: 'DELETE',
         		uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
         		json: true,
 			headers: {
@@ -70,7 +69,7 @@ describe('Attachment-Storage-Service', () => {
 	
 	done();
 	});
-	
+	/*
 	test('--- CREATE REQUEST FOR MESSAGE BATCH DELETION ---', async (done) => { 	
 		const batchDelete = {
 			method: 'GET',
