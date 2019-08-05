@@ -93,6 +93,10 @@ jobs:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/audit-log
     steps: *yarn_test_steps
+  attachment-storage-service:
+    docker: *node_env
+    working_directory: ~/oih/services/integrationtests/attachment-storage-service
+    steps: *yarn_test_steps    
   webhooks-test:
     docker: *node_mongo_env
     working_directory: ~/oih/services/webhooks
@@ -159,4 +163,7 @@ workflows:
             - iam
       - audit-log:
           requires: 
+            - iam
+      - attachment-storage-service
+          requires:
             - iam
