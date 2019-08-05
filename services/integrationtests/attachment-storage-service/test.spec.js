@@ -16,43 +16,29 @@ let batchId = null;
 describe('Attachment-Storage-Service', () => {
    jest.setTimeout(15000);
 	
-  /*
-	test('--- CREATE A MESSAGE ---', async (done) => {
-		const toBeUploaded = {
-  					"data": {
-    						"name": "string",
-    						"description": "string",
-    						"public": true,
-  					}					
-		};
-		const createMessage = {
-        		method: 'POST',
-        		uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
-        		json: true,
-			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: toBeUploaded		
-		};		
-		const response = await request(createMessage);
-		
-		const getMessageID = async res => {
-			try {
-				var message_ID = await Promise.resolve(res.body.data.id);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return message_ID; 
-		};
-		messageID = await getDomainID(response);
-		//console.log(`message id: ${JSON.stringify(res.body)}`);
-		console.log(JSON.stringify(`message id: ${messageID}`));
-		expect(response.statusCode).toEqual(200);
-	
-	done();
-	});
   
+  test('--- CREATE A MESSAGE ---', async (done) => {
+    const toBeUploaded = {
+      "integrationtests": true,
+      "test": "create message test"
+    };
+    const createMessage = {
+      method: 'PUT',
+      uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
+      json: true,
+      headers: {
+        "Authorization" : " Bearer " + tokenAdmin, 
+      },
+      body: toBeUploaded		
+    };		
+		
+    const response = await request(createMessage);
+
+    expect(response.statusCode).toEqual(200);
+	
+    done();
+  });
+  /*
   test('--- GET MESSAGE BY ID ---', async (done) => {
 		tokenAdmin = importToken.token;
 		console.log("imported token for meta data: " + tokenAdmin);
