@@ -9,9 +9,8 @@ const path = require('path');
 let tokenUser = null; 
 let tokenAdmin = null;
 let token = null;
-let invalidToken = "034957430985";
+const invalidToken = "034957430985";
 const testUuid = "67f718b9-0b36-40b8-89d6-1899ad86f97e";
-let messageId = null;
 let batchId = null;
 
 describe('Attachment-Storage-Service', () => {
@@ -28,27 +27,27 @@ describe('Attachment-Storage-Service', () => {
 		};
 		const createMessage = {
         		method: 'POST',
-        		uri: `http://attachment-storage-service.openintegrationhub.com/objects/{testUuid}`,
+        		uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
             		},
         		body: toBeUploaded		
 		};		
-		const response = await request(getAllDomains);
+		const response = await request(createMessage);
 		
-		const getDomainID = async res => {
+		const getMessageID = async res => {
 			try {
-				var domain_ID = await Promise.resolve(res.body.data.id);
+				var message_ID = await Promise.resolve(res.body.data.id);
 			}
 			catch (error) {
 				console.log(error);
 			}
-			return domain_ID; 
+			return message_ID; 
 		};
-		domainID = await getDomainID(response);
-		//console.log(`domain id: ${JSON.stringify(res.body)}`);
-		console.log(JSON.stringify("domain id: " + domainID));
+		messageID = await getDomainID(response);
+		//console.log(`message id: ${JSON.stringify(res.body)}`);
+		console.log(JSON.stringify(`message id: ${messageID}`));
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -57,36 +56,36 @@ describe('Attachment-Storage-Service', () => {
   test('--- GET MESSAGE BY ID ---', async (done) => {
 		tokenAdmin = importToken.token;
 		console.log("imported token for meta data: " + tokenAdmin);
-		const getAllDomains = {
+		const getMessageByID = {
 			method: 'GET',
-			uri: `http://attachment-storage-service.openintegrationhub.com/objects/{messageId}`,
+			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
 			json: true,
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
 				}
 		};
-		const response = await request(getAllDomains);
+		const response = await request(getMessageByID);
 		expect(response.statusCode).toEqual(200); 
 	done();
 	});
 	
 	test('--- DELETE A MESSAGE ---', async (done) => {
-		const getDomainByID = {
+		const deleteMessageById = {
         		method: 'GET',
-        		uri: `http://attachment-storage-service.openintegrationhub.com/objects/{messageId}`,
+        		uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
             		}		
 		};		
-		const response = await request(getDomainByID);
+		const response = await request(deleteMessageById);
 		expect(response.statusCode).toEqual(200);
 	
 	done();
 	});
 	
 	test('--- CREATE REQUEST FOR MESSAGE BATCH DELETION ---', async (done) => { 	
-		const getDomainData = {
+		const batchDelete = {
 			method: 'GET',
 			uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete`,
 			json: true,
@@ -94,7 +93,7 @@ describe('Attachment-Storage-Service', () => {
 				"Authorization" : " Bearer " + tokenAdmin, 
 			}
 		};
-		const response = await request(getDomainData);
+		const response = await request(batchDelete);
 		const domainDesc = "short desc update";
 		const newDescription = "new description: " + domainDesc;
 		response.body.data.description = newDescription;
@@ -132,7 +131,7 @@ describe('Attachment-Storage-Service', () => {
     				}
 		};
 		
-		const addDomainModel = {
+		const batchDeleteStatus = {
         		method: 'POST',
         		uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete/{batchId}`,
         		json: true,
@@ -142,7 +141,7 @@ describe('Attachment-Storage-Service', () => {
         		body: newModel		
 		};
 		
-		const response = await request(addDomainModel);
+		const response = await request(batchDeleteStatus);
 		expect(response.statusCode).toEqual(200);	
     	done();
 	});
