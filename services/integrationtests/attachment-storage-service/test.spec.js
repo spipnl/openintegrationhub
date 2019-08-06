@@ -248,7 +248,7 @@ describe('Attachment-Storage-Service', () => {
 			
 		const response = await request(createMessage);
 	
-		expect(response.statusCode).toEqual(404);
+		expect(response.statusCode).toEqual(400);
 		
 		done();
 	});
