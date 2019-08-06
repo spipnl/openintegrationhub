@@ -5,7 +5,6 @@ const request = require('request-promise').defaults({ simple: false, resolveWith
 
 const importToken = require('../iam/test.spec.js');
 
-
 let tokenAdmin = null;
 let flowID = null;
 let flowName = null;
@@ -187,7 +186,7 @@ describe('Flow-Repository', () => {
 	});
 
 	test('--- PATCH FLOW BY ID ---', async (done) => { 
-		var status2 = false;
+		let status2 = false;
 		while (status2 != true) {	
 			const checkStatus = {
 				method: 'GET',

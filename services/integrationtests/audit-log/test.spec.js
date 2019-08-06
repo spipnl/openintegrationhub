@@ -56,7 +56,7 @@ describe('Audit-log', () => {
 	
 	//-----------------------------------neg-audit-----------------------------------------------------
   
-	var invalidToken = tokenAdmin + "axsyfdas"
+	let invalidToken = tokenAdmin + "axsyfdas"
 	
 	test('--- MISSING AUTH ---', async (done) => {
 		const getAllLogs = {
