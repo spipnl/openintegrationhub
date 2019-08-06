@@ -96,6 +96,7 @@ describe('Attachment-Storage-Service', () => {
 		
 		const getBatchDeletionId = async res => {
 			let batchDelID = false;
+			console.log(`RESPONSE OBJECT IN TOTAL: ${JSON.stringify(res)}`);
 			try {
 				batchDelID = await Promise.resolve(res.body.data.id);
 				console.log(`My response is the following ${test}`);
