@@ -98,6 +98,8 @@ describe('Attachment-Storage-Service', () => {
 		const getBatchDeletionId = async res => {
 			try {
 				var batchDelID = await Promise.resolve(res.body.data.id);
+				console.log(`${await Promise.resolve(res.body.data)}`);
+
 			}
 			catch (error) {
 				console.log(error);
@@ -208,7 +210,6 @@ describe('Attachment-Storage-Service', () => {
 		const getBatchDeletionId = async res => {
 			try {
 				var batchDelID = await Promise.resolve(res.body.data.id);
-				console.log(`${await Promise.resolve(res.body.data);}`);
 			}
 			catch (error) {
 				console.log(error);
