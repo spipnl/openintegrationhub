@@ -7,7 +7,6 @@ const importToken = require('../iam/test.spec.js');
 
 Token = require('../iam/test.spec.js');
 
-const FormData = require('form-data');
 const fs = require('fs-extra');
 const path = require('path');
 
