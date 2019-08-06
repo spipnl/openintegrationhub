@@ -226,7 +226,7 @@ describe('Attachment-Storage-Service', () => {
 
 		const response = await request(batchDeleteStatus);
 		
-		expect(response.statusCode).toEqual(200);	
+		expect(response.statusCode).toEqual(401);	
 		done();
 	});
 

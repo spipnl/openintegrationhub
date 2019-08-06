@@ -1,18 +1,10 @@
+/* eslint-disable no-undef */
 process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
-const username = process.env.username;
-const password = process.env.password;
 const importToken = require('../iam/test.spec.js');
 
-let tokenUser = null; 
+
 let tokenAdmin = null;
-let flowID = null;
-let flowName = null;
-let flowStatus = null;
-let token = null;
-let status_flow = null;
-let domainID = null;
-let componentID = null;
 
 describe('Audit-log', () => {
    jest.setTimeout(15000);
@@ -36,30 +28,30 @@ describe('Audit-log', () => {
 	test('--- 10. ADD LOG ---', async (done) => { 
 		process.env.IAM_AUTH_TYPE = 'basic';
 		const createdLog = {
-        		"service": "MyService",
-  			"timeStamp": "1234567",
-  			"nameSpace": "outerSpace",
-  			"payload": {
-    				"tenant": "1",
-    				"source": "SomeSource",
-    				"object": "SomeObject",
-    				"action": "foo",
-    				"subject": "Test Subject",
-    				"details": "A human-readable detailed description"
-  			}
+			"service": "MyService",
+			"timeStamp": "1234567",
+			"nameSpace": "outerSpace",
+			"payload": {
+				"tenant": "1",
+				"source": "SomeSource",
+				"object": "SomeObject",
+				"action": "foo",
+				"subject": "Test Subject",
+				"details": "A human-readable detailed description"
+			}
 		};    
-        	const addLog = {
-        		method: 'POST',
-        		uri: `http://auditlog.openintegrationhub.com/logs`,
-        		json: true,
+		const addLog = {
+			method: 'POST',
+			uri: `http://auditlog.openintegrationhub.com/logs`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin 
-            		},
-        		body: createdLog		
+				"Authorization" : " Bearer " + tokenAdmin 
+			},
+			body: createdLog		
 		};
 		const response = await request(addLog);
 		expect(response.statusCode).toEqual(201);
-    	done();
+		done();
 	});
 	
 	//-----------------------------------neg-audit-----------------------------------------------------

@@ -1,25 +1,19 @@
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
 process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
-const username = process.env.username;
-const password = process.env.password;
 const importToken = require('../iam/test.spec.js');
 
 
 Token = require('../iam/test.spec.js');
 
-var FormData = require('form-data');
+const FormData = require('form-data');
 const fs = require('fs-extra');
 const path = require('path');
 
-let tokenUser = null; 
+
 let tokenAdmin = null;
-let flowID = null;
-let flowName = null;
-let flowStatus = null;
-let token = null;
-let status_flow = null;
 let domainID = null;
-let componentID = null;
 let invalidToken = "034957430985";
 
 describe('Metadata-Repository', () => {
@@ -42,26 +36,27 @@ describe('Metadata-Repository', () => {
 	
 	test('--- CREATE NEW DOMAIN ---', async (done) => {
 		const toBeUploaded = {
-  					"data": {
-    						"name": "string",
-    						"description": "string",
-    						"public": true,
-  					}					
+			"data": {
+				"name": "string",
+				"description": "string",
+				"public": true,
+			}					
 		};
 		const getAllDomains = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
-        		json: true,
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: toBeUploaded		
+				"Authorization" : " Bearer " + tokenAdmin, 
+			},
+			body: toBeUploaded		
 		};		
 		const response = await request(getAllDomains);
 		
 		const getDomainID = async res => {
+			let domain_ID = null;
 			try {
-				var domain_ID = await Promise.resolve(res.body.data.id);
+				domain_ID = await Promise.resolve(res.body.data.id);
 			}
 			catch (error) {
 				console.log(error);
@@ -69,8 +64,7 @@ describe('Metadata-Repository', () => {
 			return domain_ID; 
 		};
 		domainID = await getDomainID(response);
-		//console.log(`domain id: ${JSON.stringify(res.body)}`);
-		console.log(JSON.stringify("domain id: " + domainID));
+	
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -78,12 +72,12 @@ describe('Metadata-Repository', () => {
 	
 	test('--- GET DOMAIN BY ID ---', async (done) => {
 		const getDomainByID = {
-        		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-        		json: true,
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}		
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}		
 		};		
 		const response = await request(getDomainByID);
 		expect(response.statusCode).toEqual(200);
@@ -106,14 +100,31 @@ describe('Metadata-Repository', () => {
 		response.body.data.description = newDescription;
 
 		const patchDomain = {
-        		method: 'PUT',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-        		json: true,
-				headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: response 		
+			method: 'PUT',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			},
+			body: response 		
 		};
+
+		const responseFinal = await request(patchDomain);
+		expect(responseFinal.statusCode).toEqual(200);
+	
+	done();
+	});
+
+	test('--- DELETE DOMAIN BY ID ---', async (done) => {
+		const deleteDomainByID = {
+			method: 'DELETE',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}		
+		};		
+		const response = await request(deleteDomainByID);
 		expect(response.statusCode).toEqual(200);
 	
 	done();
@@ -121,198 +132,198 @@ describe('Metadata-Repository', () => {
 		
 	test('--- IMPORT DOMAIN MODEL ---', async(done) => {   
 		const newModel = {
-    				"data": {
-        				"name": "test",
-        				"description": "upload test",
-        				"value": {
-            					"$id": "testing",
-            					"properties": {
-                					"first_name": {
-                    						"type": "string"
-                					},
-                					"last_name": {
-                    						"type": "string"
-                						}
-            						}
-        					}
-    				}
+			"data": {
+				"name": "test",
+				"description": "upload test",
+				"value": {
+					"$id": "testing",
+					"properties": {
+						"first_name": {
+							"type": "string"
+						},
+						"last_name": {
+							"type": "string"
+						}
+					}
+				}
+			}
 		};
 		
 		const addDomainModel = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
-        		json: true,
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: newModel		
+				"Authorization" : " Bearer " + tokenAdmin, 
+			},
+			body: newModel		
 		};
 		
 		const response = await request(addDomainModel);
 		expect(response.statusCode).toEqual(200);	
-    	done();
+		done();
 	});
 	
 	test('--- PUT DOMAIN MODEL BY URI ---', async(done) => {   
 		const newModel = {
-    				"data": {
-        			"name": "test",
-        			"description": "upload test",
-        			"value": {
-            				"$id": "testing",
-            				"properties": {
-                					"first_name": {
-                    							"type": "string"
-                					},
-                					"given_name": {
-                    					"type": "string"
-                					}
-            				}
-        			}
-    			}
+			"data": {
+				"name": "test",
+				"description": "upload test",
+				"value": {
+					"$id": "testing",
+					"properties": {
+						"first_name": {
+							"type": "string"
+						},
+						"given_name": {
+							"type": "string"
+						}
+					}
+				}
+			}
 		};
 		const addDomainModel = {
-        		method: 'PUT',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
-        		json: true,
+			method: 'PUT',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: newModel		
+				"Authorization" : " Bearer " + tokenAdmin, 
+			},
+			body: newModel		
 		};
 		const response = await request(addDomainModel);
 		expect(response.statusCode).toEqual(200);	
-    	done();
+		done();
 	});
 	
 	test('--- GET ALL DOMAIN MODEL SCHEMES ---', async(done) => {   	
 		const requestOptions = {
-        		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
-        		json: true,
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
 		};
 		const response = await request(requestOptions);
 		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
-    	done();
+		done();
 	});
 	
 	test('--- GET DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
-        		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
-        		json: true,
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
 		};
 		const response = await request(requestOptions);
 		console.log(__dirname);
 		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
-    	done();
+		done();
 	});
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
 		const uploadBulk = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
-        			name: 'valid.zip',
-        			file: {
-            				value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
-            				options: {
-                				filename: 'valid.zip',
-                				contentType: 'multipart/form-data'
-            					}
-        				}
-    			},
+				name: 'valid.zip',
+				file: {
+					value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
+					options: {
+						filename: 'valid.zip',
+						contentType: 'multipart/form-data'
+					}
+				}
+			},
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin,
-            		}
+				"Authorization" : " Bearer " + tokenAdmin,
+			}
 		};
 		const response = await request(uploadBulk);
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);	
-    	done();
+		done();
 	});
 	
 	test('--- DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
 		const requestOptions = {
-        		method: 'DELETE',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
-        		json: true,
+			method: 'DELETE',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
 		};
 		const response = await request(requestOptions);
 		expect(response.statusCode).toEqual(204);
-    	done();
+		done();
 	});
 	
 	test('--- GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	
 		const requestOptions = {
-        		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
-        		json: true,
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/domains/${domainID}/schemas`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken, 
-            		}
+				"Authorization" : " Bearer " + invalidToken, 
+			}
 		};
 		
 		const response = await request(requestOptions);
 		expect(response.statusCode).toEqual(404);
 		//console.log(JSON.stringify(response.body));
-    	done();
+			done();
 	});
 	
 	test('--- GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
-		var invalidDomainID = "034957430985";
+		let invalidDomainID = "034957430985";
 		const requestOptions = {
-        		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/domains/${invalidDomainID}/schemas`,
-        		json: true,
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/domains/${invalidDomainID}/schemas`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
 		};
 		
 		const response = await request(requestOptions);
 		expect(response.statusCode).toEqual(404);
 		//console.log(JSON.stringify(response.body));
-    	done();
+		done();
 	});
 	
 	test('--- CREATE NEW DOMAIN - INVALID TOKEN ---', async (done) => {
-		var invalidToken = "034957430985";
+		let invalidToken = "034957430985";
 		const toBeUploaded = {
-  					"data": {
-    						"name": "string",
-    						"description": "string",
-    						"public": true,
-    						"owners": [
-      							{
-        						"id": "string",
-        						"type": "string"
-      							}
-    						],
-    						"id": "string",
-    						"createdAt": "2019-06-03T14:58:39.897Z",
-    						"updatedAt": "2019-06-03T14:58:39.897Z"
-  					}					
+			"data": {
+				"name": "string",
+				"description": "string",
+				"public": true,
+					"owners": [
+						{
+							"id": "string",
+							"type": "string"
+						}
+					],
+					"id": "string",
+					"createdAt": "2019-06-03T14:58:39.897Z",
+					"updatedAt": "2019-06-03T14:58:39.897Z"
+				}					
 		};
 		const getAllDomains = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
-        		json: true,
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken, 
-            		},
-        		body: toBeUploaded		
+				"Authorization" : " Bearer " + invalidToken, 
+			},
+			body: toBeUploaded		
 		};		
 		const response = await request(getAllDomains);
 		expect(response.statusCode).toEqual(401);
@@ -321,14 +332,14 @@ describe('Metadata-Repository', () => {
 	});
 	
 	test('--- GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
-		var invalidDomainID ="lksfhdslfh";
+		let invalidDomainID ="lksfhdslfh";
 		const getDomainByID = {
-        		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}`,
-        		json: true,
+			method: 'GET',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}		
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}		
 		};		
 		const response = await request(getDomainByID);
 		expect(response.statusCode).toEqual(404);
@@ -336,7 +347,7 @@ describe('Metadata-Repository', () => {
 	});
 	
 	test('--- PUT DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => { 	
-		var invalidDomainID ="lksfhdslfh";
+		let invalidDomainID ="lksfhdslfh";
 		const getDomainData = {
 			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
@@ -351,13 +362,13 @@ describe('Metadata-Repository', () => {
 		response.body.data.description = newDescription;
 
 		const patchDomain = {
-        		method: 'PUT',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}`,
-        		json: true,
-				headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: response 		
+			method: 'PUT',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			},
+			body: response 		
 		};
 		const response2 = await request(patchDomain);
 		expect(response2.statusCode).toEqual(404);
@@ -366,74 +377,74 @@ describe('Metadata-Repository', () => {
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID INPUT ---', async(done) => { 
 		const uploadBulk = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
-        			name: 'valid.zip',
-        			file: {
-            				value: fs.createReadStream(path.resolve('metadata-repository/invalid.zip')),
-            				options: {
-                				filename: 'valid.zip',
-                				contentType: 'multipart/form-data'
-            					}
-        				}
-    			},
+				name: 'valid.zip',
+				file: {
+					value: fs.createReadStream(path.resolve('metadata-repository/invalid.zip')),
+					options: {
+						filename: 'valid.zip',
+						contentType: 'multipart/form-data'
+					}
+				}
+			},
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin,
-            		}
+				"Authorization" : " Bearer " + tokenAdmin,
+			}
 		};
 		const response = await request(uploadBulk);
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);	
-    	done();
+		done();
 	});
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID TOKEN ---', async(done) => { 
 		const uploadBulk = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
-        			name: 'valid.zip',
-        			file: {
-            				value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
-            				options: {
-                				filename: 'valid.zip',
-                				contentType: 'multipart/form-data'
-            					}
-        				}
-    			},
+				name: 'valid.zip',
+				file: {
+					value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
+					options: {
+						filename: 'valid.zip',
+						contentType: 'multipart/form-data'
+					}
+				}
+			},
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken,
-            		}
+				"Authorization" : " Bearer " + invalidToken,
+			}
 		};
 		const response = await request(uploadBulk);
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);	
-    	done();
+		done();
 	});
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID ID ---', async(done) => { 
-		var invalidDomainID ="lksfhdslfh";
+		let invalidDomainID ="lksfhdslfh";
 		const uploadBulk = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}/schemas/import`,
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}/schemas/import`,
 			formData: {
-        			name: 'valid.zip',
-        			file: {
-            				value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
-            				options: {
-                				filename: 'valid.zip',
-                				contentType: 'multipart/form-data'
-            					}
-        				}
-    			},
+				name: 'valid.zip',
+				file: {
+					value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
+					options: {
+						filename: 'valid.zip',
+						contentType: 'multipart/form-data'
+					}
+				}
+			},
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken,
-            		}
+				"Authorization" : " Bearer " + invalidToken,
+			}
 		};
 		const response = await request(uploadBulk);
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);	
-    	done();
+		done();
 	});
 });
