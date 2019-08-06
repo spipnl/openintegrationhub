@@ -110,7 +110,7 @@ describe('Metadata-Repository', () => {
 			},
 			body: response.body.data 		
 		};
-		console.log(`putdom in PUT: ${putDomain}`);
+		console.log(`putdom in PUT: ${JSON.stringify(putDomain)}`);
 		const responseFinal = await request(putDomain);
 		expect(responseFinal.statusCode).toEqual(200);
 	
