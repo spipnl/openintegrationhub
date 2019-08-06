@@ -95,13 +95,15 @@ describe('Attachment-Storage-Service', () => {
 		const response = await request(batchDelete);
 		
 		const getBatchDeletionId = async res => {
+			let batchDelID = false;
 			try {
 				batchDelID = await Promise.resolve(res.body.data.id);
 				console.log(`My response is the following ${test}`);
 
 			}
 			catch (error) {
-				console.log(error);
+				console.log(batchDelID);
+				throw new Error(error);
 			}
 			return batchDelID; 
 		};
