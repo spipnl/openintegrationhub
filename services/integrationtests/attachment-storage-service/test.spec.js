@@ -105,7 +105,7 @@ describe('Attachment-Storage-Service', () => {
 			return batchDelID; 
 		};
 		batchDeletionID = await getBatchDeletionId(response);
-		
+		console.log(`BatchDeletionID in create request: ${batchDeletionID}`);
 		expect(response.statusCode).toEqual(202);
 			
 	done();
@@ -121,7 +121,7 @@ describe('Attachment-Storage-Service', () => {
                 		"Authorization" : " Bearer " + tokenAdmin, 
             		}
 		};
-		
+		console.log(`BatchDeletionID in get batch request: ${batchDeletionID}`);
 		const response = await request(batchDeleteStatus);
 		
 		expect(response.statusCode).toEqual(201);	
