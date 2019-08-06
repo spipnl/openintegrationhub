@@ -97,7 +97,7 @@ describe('Metadata-Repository', () => {
 
 		const newDescription = "new description: short desc update";
 		response.body.data.description = newDescription;
-		console.log(`The new response is: ${JSON.stringify(response)}`);
+		console.log(`The new response is: ${JSON.stringify(response.body.data)}`);
 		console.log(`DomainId in PUT: ${domainID}`);
 
 		const putDomain = {
