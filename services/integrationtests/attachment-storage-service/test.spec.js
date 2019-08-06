@@ -132,7 +132,6 @@ describe('Attachment-Storage-Service', () => {
 	});
   
 	test('--- CREATE A MESSAGE - INVALID TOKEN ---', async (done) => {
-		tokenAdmin = importToken.token;
 
 		const toBeUploaded = {
 			"integrationtests": true,
@@ -231,7 +230,6 @@ describe('Attachment-Storage-Service', () => {
 	});
 
 	test('--- CREATE A MESSAGE - INVALID ID ---', async (done) => {
-		tokenAdmin = importToken.token;
 	
 		const toBeUploaded = {
 			"integrationtests": true,

@@ -98,7 +98,8 @@ describe('Metadata-Repository', () => {
 		const domainDesc = "short desc update";
 		const newDescription = "new description: " + domainDesc;
 		response.body.data.description = newDescription;
-
+		console.log(`The new response is: ${JSON.stringify(response)}`);
+		console.log(`DomainId in PUT: ${domainID}`);
 		const patchDomain = {
 			method: 'PUT',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
@@ -111,21 +112,6 @@ describe('Metadata-Repository', () => {
 
 		const responseFinal = await request(patchDomain);
 		expect(responseFinal.statusCode).toEqual(200);
-	
-	done();
-	});
-
-	test('--- DELETE DOMAIN BY ID ---', async (done) => {
-		const deleteDomainByID = {
-			method: 'DELETE',
-			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-			json: true,
-			headers: {
-				"Authorization" : " Bearer " + tokenAdmin, 
-			}		
-		};		
-		const response = await request(deleteDomainByID);
-		expect(response.statusCode).toEqual(200);
 	
 	done();
 	});
@@ -158,7 +144,7 @@ describe('Metadata-Repository', () => {
 			},
 			body: newModel		
 		};
-		
+		console.log(`DomainId in IMPORT: ${domainID}`);
 		const response = await request(addDomainModel);
 		expect(response.statusCode).toEqual(200);	
 		done();
@@ -173,7 +159,7 @@ describe('Metadata-Repository', () => {
 					"$id": "testing",
 					"properties": {
 						"first_name": {
-							"type": "string"
+							"type": "number"
 						},
 						"given_name": {
 							"type": "string"
@@ -211,7 +197,7 @@ describe('Metadata-Repository', () => {
 		done();
 	});
 	
-	test('--- GET DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
+	test('--- GET DOMAIN MODEL SCHEME BY URI ---', async(done) => {   	
 		const requestOptions = {
 			method: 'GET',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
@@ -251,7 +237,7 @@ describe('Metadata-Repository', () => {
 		done();
 	});
 	
-	test('--- DELETE DOMAIN MODEL SCHEME BY ID ---', async(done) => {   	
+	test('--- DELETE DOMAIN MODEL SCHEME BY URI ---', async(done) => {   	
 		const requestOptions = {
 			method: 'DELETE',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
@@ -263,6 +249,21 @@ describe('Metadata-Repository', () => {
 		const response = await request(requestOptions);
 		expect(response.statusCode).toEqual(204);
 		done();
+	});
+
+	test('--- DELETE DOMAIN BY ID ---', async (done) => {
+		const deleteDomainByID = {
+			method: 'DELETE',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}		
+		};		
+		const response = await request(deleteDomainByID);
+		expect(response.statusCode).toEqual(200);
+	
+	done();
 	});
 	
 	test('--- GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	

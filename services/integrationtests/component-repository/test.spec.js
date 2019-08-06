@@ -248,7 +248,7 @@ describe('Component Repository', () => {
 		};
 		const response = await request(getComponentById);	
 		//console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(401);
+		expect(response.statusCode).toEqual(400);
 	done();
 	});
 	
