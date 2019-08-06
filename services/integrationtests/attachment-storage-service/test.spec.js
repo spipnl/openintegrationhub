@@ -14,7 +14,6 @@ let batchDeletionID = null;
 
 describe('Attachment-Storage-Service', () => {
    jest.setTimeout(15000);
-	
   
   test('--- CREATE A MESSAGE ---', async (done) => {
     tokenAdmin = importToken.token;
