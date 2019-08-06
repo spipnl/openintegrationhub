@@ -12,6 +12,7 @@ let token = null;
 const invalidToken = "034957430985";
 const testUuid = "67f718b9-0b36-40b8-89d6-1899ad86f97e";
 let batchId = null;
+let batchDeletionID = null;
 
 describe('Attachment-Storage-Service', () => {
    jest.setTimeout(15000);
@@ -93,7 +94,19 @@ describe('Attachment-Storage-Service', () => {
 		};
 		
 		const response = await request(batchDelete);
-		expect(response.statusCode).toEqual(201);
+		
+		const getBatchDeletionId = async res => {
+			try {
+				var batchDelID = await Promise.resolve(res.body.data.id);
+			}
+			catch (error) {
+				console.log(error);
+			}
+			return batchDelID; 
+		};
+		batchDeletionID = await getBatchDeletionId(response);
+		
+		expect(response.statusCode).toEqual(202);
 			
 	done();
 	});
@@ -102,7 +115,7 @@ describe('Attachment-Storage-Service', () => {
 		
 		const batchDeleteStatus = {
         		method: 'GET',
-        		uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete/${testUuid}`,
+        		uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete/${batchDeletionID}`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
@@ -110,6 +123,7 @@ describe('Attachment-Storage-Service', () => {
 		};
 		
 		const response = await request(batchDeleteStatus);
+		
 		expect(response.statusCode).toEqual(201);	
     	done();
 	});
