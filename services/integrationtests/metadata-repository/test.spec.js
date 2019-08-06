@@ -95,8 +95,8 @@ describe('Metadata-Repository', () => {
 			}
 		};
 		const response = await request(getDomainData);
-		const domainDesc = "short desc update";
-		const newDescription = "new description: " + domainDesc;
+
+		const newDescription = "new description: short desc update";
 		response.body.data.description = newDescription;
 		console.log(`The new response is: ${JSON.stringify(response)}`);
 		console.log(`DomainId in PUT: ${domainID}`);
@@ -108,7 +108,7 @@ describe('Metadata-Repository', () => {
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
 			},
-			body: response 		
+			body: response.body.data 		
 		};
 		console.log(`putdom in PUT: ${putDomain}`);
 		const responseFinal = await request(putDomain);
