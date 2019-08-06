@@ -7,7 +7,6 @@ const importToken = require('../iam/test.spec.js');
 Token = require('../iam/test.spec.js');
 
 let tokenAdmin = null;
-
 const invalidToken = "034957430985";
 const testUuid = "67f718b9-0b36-40b8-89d6-1899ad86f97e";
 let batchDeletionID = null;
@@ -97,15 +96,14 @@ describe('Attachment-Storage-Service', () => {
 		
 		const getBatchDeletionId = async res => {
 			try {
-				//let batchDelID = await Promise.resolve(res.body.data.id);
-				let test = await Promise.resolve(res.body.data);
+				batchDelID = await Promise.resolve(res.body.data.id);
 				console.log(`My response is the following ${test}`);
 
 			}
 			catch (error) {
 				console.log(error);
 			}
-			return test; 
+			return batchDelID; 
 		};
 		batchDeletionID = await getBatchDeletionId(response);
 		console.log(`BatchDeletionID in create request: ${batchDeletionID}`);

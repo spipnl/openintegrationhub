@@ -1,17 +1,11 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-console */
 process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
-const username = process.env.username;
-const password = process.env.password;
 const importToken = require('../iam/test.spec.js');
 
-let tokenUser = null; 
+
 let tokenAdmin = null;
-let flowID = null;
-let flowName = null;
-let flowStatus = null;
-let token = null;
-let status_flow = null;
-let domainID = null;
 let componentID = null;
 let invalidToken = "9807324598624kjhf";
 
@@ -21,45 +15,46 @@ describe('Component Repository', () => {
 		tokenAdmin = importToken.token;
 		//console.log("imported token for component repo: " + tokenAdmin);
 		const getAllComponents = {
-        		method: 'GET',
-        		uri: `http://component-repository.openintegrationhub.com/components/`,
-        		json: true,
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
 		};
 		const response = await request(getAllComponents);
 		expect(response.statusCode).toEqual(200);
-    	done();
+		done();
 	});
 	
 	test('--- CREATE NEW COMPONENT ---', async(done) => {   
 		const newComponent = {
-  					"data": {
-    					"name": "My Component",
-    					"description": "My Component",
-    					"access": "public",
-    					"descriptor": {},
-    					"distribution": {
-      						"type": "docker",
-      						"image": "openintegrationhub/email",
-      						"registrySecretId": "5b62c919fd98ea00112d52e7"
-    					},
-    					"owners": [
-      						{
-        					"id": "123",
-        					"type": "user"
-      						}
-    					]
-  					}
-		};
+			"data": {
+				"name": "My Component",
+				"description": "My Component",
+				"access": "public",
+				"descriptor": {},
+				"distribution": {
+					"type": "docker",
+					"image": "openintegrationhub/email",
+					"registrySecretId": "5b62c919fd98ea00112d52e7"
+				},
+				"owners": [
+					{
+					"id": "123",
+					"type": "user"
+					}
+				]
+				}
+			};
+
 		const createNewComponent = {
-        		method: 'POST',
-        		uri: `http://component-repository.openintegrationhub.com/components/`,
-        		json: true,
+			method: 'POST',
+			uri: `http://component-repository.openintegrationhub.com/components/`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
+				"Authorization" : " Bearer " + tokenAdmin, 
+			},
 			body: newComponent
 		};
 		
@@ -67,7 +62,7 @@ describe('Component Repository', () => {
 		
 		const getComponentID = async res => {
 			try {
-				var component_ID = await Promise.resolve(res.body.data.id);
+				component_ID = await Promise.resolve(res.body.data.id);
 			}
 			catch (error) {
 				console.log(error);
@@ -76,17 +71,17 @@ describe('Component Repository', () => {
 		};
 		componentID = await getComponentID(response);
 		expect(response.statusCode).toEqual(201);
-    	done();
+		done();
 	});
 	
 	test('--- GET COMPONENT BY ID ---', async(done) => {
 		const getComponentById = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
-        		json: true,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
 		};
 		const response = await request(getComponentById);	
 		expect(response.statusCode).toEqual(200);
@@ -104,21 +99,21 @@ describe('Component Repository', () => {
 				"Authorization" : " Bearer " + tokenAdmin, 
 			}
 		};
-		var response = await request(getComponentData);
+		let response = await request(getComponentData);
 		const newDescription = "new given desc ";
 
 		response.body.data.description = newDescription;
 			
 		const patchComponent = {
-        		method: 'PATCH',
-        		uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
-        		json: true,
+			method: 'PATCH',
+			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
+				"Authorization" : " Bearer " + tokenAdmin, 
+			},
 			body: response
 		};
-		const patchedComponent = await request(patchComponent);
+		await request(patchComponent);
 		expect(response.statusCode).toEqual(200);
 		done();	
 	done();	
@@ -142,52 +137,53 @@ describe('Component Repository', () => {
 	
 	test('--- GET ALL COMPONENTS - TOKEN INVALID ---', async(done) => {   
 		const getAllComponents = {
-        		method: 'GET',
-        		uri: `http://component-repository.openintegrationhub.com/components/`,
-        		json: true,
+			method: 'GET',
+			uri: `http://component-repository.openintegrationhub.com/components/`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken, 
-            		}
+				"Authorization" : " Bearer " + invalidToken, 
+			}
 		};
 		const response = await request(getAllComponents);
 		expect(response.statusCode).toEqual(401);
-    	done();
+		done();
 	});
 	
 	test('--- CREATE NEW COMPONENT - TOKEN INVALID ---', async(done) => {   
 		const newComponent = {
-  					"data": {
-    					"name": "My Component",
-    					"description": "My Component",
-    					"access": "public",
-    					"descriptor": {},
-    					"distribution": {
-      						"type": "docker",
-      						"image": "openintegrationhub/email",
-      						"registrySecretId": "5b62c919fd98ea00112d52e7"
-    					},
-    					"owners": [
-      						{
-        					"id": "123",
-        					"type": "user"
-      						}
-    					]
-  					}
-		};
+			"data": {
+				"name": "My Component",
+				"description": "My Component",
+				"access": "public",
+				"descriptor": {},
+				"distribution": {
+					"type": "docker",
+					"image": "openintegrationhub/email",
+					"registrySecretId": "5b62c919fd98ea00112d52e7"
+				},
+				"owners": [
+					{
+						"id": "123",
+						"type": "user"
+					}
+				]
+				}
+			};
+
 		const createNewComponent = {
-        		method: 'POST',
-        		uri: `http://component-repository.openintegrationhub.com/components/`,
-        		json: true,
+			method: 'POST',
+			uri: `http://component-repository.openintegrationhub.com/components/`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken, 
-            		},
+				"Authorization" : " Bearer " + invalidToken, 
+			},
 			body: newComponent
 		};
 		
 		const response = await request(createNewComponent);
 		//console.log("component id: " + componentID);
 		expect(response.statusCode).toEqual(401);
-    	done();
+		done();
 	});
 	
 	test('--- GET COMPONENT BY ID - TOKEN INVALID ---', async(done) => {
@@ -195,10 +191,10 @@ describe('Component Repository', () => {
 		const getComponentById = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
-        		json: true,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken, 
-            		}
+				"Authorization" : " Bearer " + invalidToken, 
+			}
 		};
 		const response = await request(getComponentById);	
 		expect(response.statusCode).toEqual(401);		
@@ -206,15 +202,15 @@ describe('Component Repository', () => {
 	});
 	
 	test('--- GET COMPONENT BY ID - COMPONENT NOT FOUND / ID NOT FOUND ---', async(done) => {	
-		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
+		const invalidComponentID = "5d09fe4a5b915f001bb4234a";
 		
 		const getComponentById = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${invalidComponentID}`,
-        		json: true,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
 		};
 		
 		const response = await request(getComponentById);	
@@ -223,15 +219,15 @@ describe('Component Repository', () => {
 	});
 	
 	test('--- GET COMPONENT BY ID - ID INVALID ---', async(done) => {	
-		var invalidComponentID = "&$$%&%$§";
+		const invalidComponentID = "&$$%&%$§";
 		
 		const getComponentById = {
 			method: 'GET',
 			uri: `http://component-repository.openintegrationhub.com/components/${invalidComponentID}`,
-        		json: true,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
 		};
 		
 		const response = await request(getComponentById);	
@@ -239,14 +235,16 @@ describe('Component Repository', () => {
 	done();
 	});
 	
-	test('--- PATCH COMPONENT BY ID - COMPONENT NOT FOUND ---', async(done) => {	
+	test('--- PATCH COMPONENT BY ID - COMPONENT NOT FOUND ---', async(done) => {
+		const invalidComponentID = "&$$%&%$§";
+
 		const getComponentById = {
 			method: 'GET',
-			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
-        		json: true,
+			uri: `http://component-repository.openintegrationhub.com/components/${invalidComponentID}`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken, 
-            		}
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
 		};
 		const response = await request(getComponentById);	
 		//console.log(JSON.stringify(response.body));
@@ -254,7 +252,7 @@ describe('Component Repository', () => {
 	done();
 	});
 	
-	test('--- DELETE COMPONENT BY ID - TOKEN INVALED ---', async (done) => { 
+	test('--- DELETE COMPONENT BY ID - TOKEN INVALID ---', async (done) => { 
 		const deleteComponentById = {
 			method: 'DELETE',
 			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
@@ -269,10 +267,10 @@ describe('Component Repository', () => {
 	});
 	
 	test('--- DELETE COMPONENT BY ID - COMPONENT NOT FOUND / ID INVALID ---', async (done) => { 
-		var invalidComponentID = "5d09fe4a5b915f001bb4234a";
+		const invalidComponentID = "5d09fe4a5b915f001bb4234a";
 		const deleteComponentById = {
 			method: 'DELETE',
-			uri: `http://component-repository.openintegrationhub.com/components/${componentID}`,
+			uri: `http://component-repository.openintegrationhub.com/components/${invalidComponentID}`,
 			json:	true,
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
