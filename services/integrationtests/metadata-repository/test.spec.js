@@ -233,7 +233,7 @@ describe('Metadata-Repository', () => {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
-				name: 'valid.zip',
+				name: 'valid',
 				file: {
 					value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
 					options: {
@@ -246,6 +246,7 @@ describe('Metadata-Repository', () => {
 				"Authorization" : " Bearer " + tokenAdmin,
 			}
 		};
+		console.log(`Requestion Options for bulk upload: ${uploadBulk}`);
 		const response = await request(uploadBulk);
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);	
