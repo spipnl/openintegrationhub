@@ -127,231 +127,99 @@ describe('Attachment-Storage-Service', () => {
 		expect(response.statusCode).toEqual(201);	
     	done();
 	});
-	/*
-  ---
   
-  	test('--- GET MESSAGE BY ID - INVALID ID ---', async (done) => {
-		tokenAdmin = importToken.token;
-		console.log("imported token for meta data: " + tokenAdmin);
-		const getAllDomains = {
-			method: 'GET',
-			uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
-			json: true,
-			headers: {
-				"Authorization" : " Bearer " + tokenAdmin, 
-				}
-		};
-		const response = await request(getAllDomains);
-		expect(response.statusCode).toEqual(200); 
-	done();
-	});
+  	test('--- CREATE A MESSAGE - INVALID TOKEN ---', async (done) => {
+    tokenAdmin = importToken.token;
+	  console.log(`tokenAdmin in attachments: ${invalidToken}`);
+    const toBeUploaded = {
+      "integrationtests": true,
+      "test": "create message test"
+    };
+    const createMessage = {
+      method: 'PUT',
+      uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
+      json: true,
+      headers: {
+        "Authorization" : " Bearer " + tokenAdmin, 
+      },
+      body: toBeUploaded		
+    };		
+		
+    const response = await request(createMessage);
+
+    expect(response.statusCode).toEqual(401);
+	
+    done();
+  });
   
   test('--- GET MESSAGE BY ID - INVALID TOKEN ---', async (done) => {
-		tokenAdmin = importToken.token;
-		console.log("imported token for meta data: " + tokenAdmin);
-		const getAllDomains = {
+		console.log("imported token for meta data: " + invalidToken);
+		const getMessageByID = {
 			method: 'GET',
-			uri: `http://metadata.openintegrationhub.com/api/v1/domains`,
+			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
 			json: true,
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
 				}
 		};
-		const response = await request(getAllDomains);
-		expect(response.statusCode).toEqual(200); 
+		const response = await request(getMessageByID);
+		expect(response.statusCode).toEqual(401); 
 	done();
 	});
 	
-	test('--- CREATE A MESSAGE - INVALID TOKEN ---', async (done) => {
-		const toBeUploaded = {
-  					"data": {
-    						"name": "string",
-    						"description": "string",
-    						"public": true,
-  					}					
-		};
-		const getAllDomains = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/`,
+	test('--- DELETE A MESSAGE - INVALID TOKEN ---', async (done) => {
+		const deleteMessageById = {
+        		method: 'DELETE',
+        		uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
         		json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: toBeUploaded		
+                		"Authorization" : " Bearer " + invalidToken, 
+            		}		
 		};		
-		const response = await request(getAllDomains);
+		const response = await request(deleteMessageById);
+		expect(response.statusCode).toEqual(401);
+	
+	done();
+	});
+	
+	test('--- CREATE REQUEST FOR MESSAGE BATCH DELETION - INVALID TOKEN ---', async (done) => { 	
 		
-		const getDomainID = async res => {
+		const toBeUploaded = {
+                  "conditions": [
+                    {
+                      "key": "integrationtests",
+                      "value": true
+                    }
+                  ]
+                };
+		
+		const batchDelete = {
+			method: 'POST',
+			uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + invalidToken, 
+			},
+			body: toBeUploaded
+		};
+		
+		const response = await request(batchDelete);
+		
+		const getBatchDeletionId = async res => {
 			try {
-				var domain_ID = await Promise.resolve(res.body.data.id);
+				var batchDelID = await Promise.resolve(res.body.data.id);
+				console.log(`${await Promise.resolve(res.body.data);}`);
 			}
 			catch (error) {
 				console.log(error);
 			}
-			return domain_ID; 
+			return batchDelID; 
 		};
-		domainID = await getDomainID(response);
-		//console.log(`domain id: ${JSON.stringify(res.body)}`);
-		console.log(JSON.stringify("domain id: " + domainID));
-		expect(response.statusCode).toEqual(200);
-	
-	done();
-	});
-	
-	test('--- DELETE A MESSAGE - INVALID ID---', async (done) => {
-		const getDomainByID = {
-        		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-        		json: true,
-			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}		
-		};		
-		const response = await request(getDomainByID);
-		expect(response.statusCode).toEqual(200);
-	
-	done();
-	});
-  
-  test('--- DELETE A MESSAGE - INVALID TOKEN---', async (done) => {
-		const getDomainByID = {
-        		method: 'GET',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-        		json: true,
-			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}		
-		};		
-		const response = await request(getDomainByID);
-		expect(response.statusCode).toEqual(200);
-	
-	done();
-	});
-	
-	test('--- CREATE REQUEST FOR MESSAGE BATCH DELETION - INVALID ID ---', async (done) => { 	
-		const getDomainData = {
-			method: 'GET',
-			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-			json: true,
-			headers: {
-				"Authorization" : " Bearer " + tokenAdmin, 
-			}
-		};
-		const response = await request(getDomainData);
-		const domainDesc = "short desc update";
-		const newDescription = "new description: " + domainDesc;
-		response.body.data.description = newDescription;
 
-		const patchDomain = {
-        		method: 'PUT',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-        		json: true,
-				headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: response 		
-		};
-		expect(response.statusCode).toEqual(200);
-	
+		batchDeletionID = await getBatchDeletionId(response);
+		console.log(`BatchDeletionID in create request: ${batchDeletionID}`);
+		expect(response.statusCode).toEqual(401);
+			
 	done();
 	});
-  
-  test('--- CREATE REQUEST FOR MESSAGE BATCH DELETION - INVALID TOKEN ---', async (done) => { 	
-		const getDomainData = {
-			method: 'GET',
-			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-			json: true,
-			headers: {
-				"Authorization" : " Bearer " + tokenAdmin, 
-			}
-		};
-		const response = await request(getDomainData);
-		const domainDesc = "short desc update";
-		const newDescription = "new description: " + domainDesc;
-		response.body.data.description = newDescription;
-
-		const patchDomain = {
-        		method: 'PUT',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-        		json: true,
-				headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: response 		
-		};
-		expect(response.statusCode).toEqual(200);
-	
-	done();
-	});
-		
-	test('--- GET BATCH DELETE REQUEST STATUS - INVALID ID ---', async(done) => {   
-		const newModel = {
-    				"data": {
-        				"name": "test",
-        				"description": "upload test",
-        				"value": {
-            					"$id": "testing",
-            					"properties": {
-                					"first_name": {
-                    						"type": "string"
-                					},
-                					"last_name": {
-                    						"type": "string"
-                						}
-            						}
-        					}
-    				}
-		};
-		
-		const addDomainModel = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
-        		json: true,
-			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: newModel		
-		};
-		
-		const response = await request(addDomainModel);
-		expect(response.statusCode).toEqual(200);	
-    	done();
-	});
-  
-  test('--- GET BATCH DELETE REQUEST STATUS - INVALID TOKEN ---', async(done) => {   
-		const newModel = {
-    				"data": {
-        				"name": "test",
-        				"description": "upload test",
-        				"value": {
-            					"$id": "testing",
-            					"properties": {
-                					"first_name": {
-                    						"type": "string"
-                					},
-                					"last_name": {
-                    						"type": "string"
-                						}
-            						}
-        					}
-    				}
-		};
-		
-		const addDomainModel = {
-        		method: 'POST',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas`,
-        		json: true,
-			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: newModel		
-		};
-		
-		const response = await request(addDomainModel);
-		expect(response.statusCode).toEqual(200);	
-    	done();
-	});
-  */
-  
-  console.log('tbd');
 });
