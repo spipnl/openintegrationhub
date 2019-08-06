@@ -239,7 +239,7 @@ describe('Component Repository', () => {
 		const invalidComponentID = "&$$%&%$§";
 
 		const getComponentById = {
-			method: 'GET',
+			method: 'PATCH',
 			uri: `http://component-repository.openintegrationhub.com/components/${invalidComponentID}`,
 			json: true,
 			headers: {
