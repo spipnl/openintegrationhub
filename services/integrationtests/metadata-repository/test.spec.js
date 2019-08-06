@@ -100,6 +100,20 @@ describe('Metadata-Repository', () => {
 		console.log(`The new response is: ${JSON.stringify(response.body.data)}`);
 		console.log(`DomainId in PUT: ${domainID}`);
 
+		responseBody = {
+			data:{
+				name: response.body.data.name,
+				description: response.body.data.description,
+				public: true,
+				owners: [
+					{
+						"id":"5bcee3048bbfec0010367bd7",
+						"type":"USER"
+					}
+				]
+			}
+		};
+
 		const putDomain = {
 			method: 'PUT',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
@@ -107,7 +121,7 @@ describe('Metadata-Repository', () => {
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
 			},
-			body: response.body.data 		
+			body: responseBody 		
 		};
 		console.log(`putdom in PUT: ${JSON.stringify(putDomain)}`);
 		const responseFinal = await request(putDomain);
