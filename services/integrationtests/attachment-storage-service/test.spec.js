@@ -9,6 +9,7 @@ Token = require('../iam/test.spec.js');
 let tokenAdmin = null;
 const invalidToken = "034957430985";
 const testUuid = "67f718b9-0b36-40b8-89d6-1899ad86f97e";
+const invalidTestUuid = "abc-def-geh";
 let batchDeletionID = null;
 
 describe('Attachment-Storage-Service', () => {
@@ -17,8 +18,7 @@ describe('Attachment-Storage-Service', () => {
   
   test('--- CREATE A MESSAGE ---', async (done) => {
     tokenAdmin = importToken.token;
-	// eslint-disable-next-line no-console
-	console.log(`tokenAdmin in attachments: ${tokenAdmin}`);
+
     const toBeUploaded = {
       "integrationtests": true,
       "test": "create message test"
@@ -41,8 +41,7 @@ describe('Attachment-Storage-Service', () => {
   });
   
   test('--- GET MESSAGE BY ID ---', async (done) => {
-		// eslint-disable-next-line no-console
-		console.log("imported token for meta data: " + tokenAdmin);
+
 		const getMessageByID = {
 			method: 'GET',
 			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
@@ -96,7 +95,7 @@ describe('Attachment-Storage-Service', () => {
 		
 		const getBatchDeletionId = async res => {
 			let batchDelID = false;
-			console.log(`RESPONSE OBJECT IN TOTAL: ${JSON.stringify(res)}`);
+
 			try {
 				batchDelID = await Promise.resolve(res.body.id);
 				console.log(`My response is the following ${test}`);
@@ -109,7 +108,7 @@ describe('Attachment-Storage-Service', () => {
 			return batchDelID; 
 		};
 		batchDeletionID = await getBatchDeletionId(response);
-		console.log(`BatchDeletionID in create request: ${batchDeletionID}`);
+
 		expect(response.statusCode).toEqual(202);
 			
 	done();
@@ -125,16 +124,16 @@ describe('Attachment-Storage-Service', () => {
 				"Authorization" : " Bearer " + tokenAdmin, 
 			}
 		};
-		console.log(`BatchDeletionID in get batch request: ${batchDeletionID}`);
+
 		const response = await request(batchDeleteStatus);
 		
-		expect(response.statusCode).toEqual(201);	
+		expect(response.statusCode).toEqual(200);	
 		done();
 	});
   
 	test('--- CREATE A MESSAGE - INVALID TOKEN ---', async (done) => {
 		tokenAdmin = importToken.token;
-		console.log(`tokenAdmin in attachments: ${invalidToken}`);
+
 		const toBeUploaded = {
 			"integrationtests": true,
 			"test": "create message test"
@@ -144,7 +143,7 @@ describe('Attachment-Storage-Service', () => {
 			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
 			json: true,
 			headers: {
-				"Authorization" : " Bearer " + tokenAdmin, 
+				"Authorization" : " Bearer " + invalidToken, 
 			},
 			body: toBeUploaded		
 		};		
@@ -157,18 +156,18 @@ describe('Attachment-Storage-Service', () => {
 	});
   
   test('--- GET MESSAGE BY ID - INVALID TOKEN ---', async (done) => {
-		console.log("imported token for meta data: " + invalidToken);
+
 		const getMessageByID = {
 			method: 'GET',
 			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
 			json: true,
 			headers: {
-				"Authorization" : " Bearer " + tokenAdmin, 
+				"Authorization" : " Bearer " + invalidToken, 
 				}
 		};
 		const response = await request(getMessageByID);
 		expect(response.statusCode).toEqual(401); 
-	done();
+		done();
 	});
 	
 	test('--- DELETE A MESSAGE - INVALID TOKEN ---', async (done) => {
@@ -209,20 +208,97 @@ describe('Attachment-Storage-Service', () => {
 		
 		const response = await request(batchDelete);
 		
-		const getBatchDeletionId = async res => {
-			try {
-				var batchDelID = await Promise.resolve(res.body.data.id);
-			}
-			catch (error) {
-				console.log(error);
-			}
-			return batchDelID; 
-		};
-
-		batchDeletionID = await getBatchDeletionId(response);
-		console.log(`BatchDeletionID in create request: ${batchDeletionID}`);
 		expect(response.statusCode).toEqual(401);
 			
 	done();
+	});
+
+	test('--- GET BATCH DELETE REQUEST STATUS - INVALID Token ---', async(done) => {   
+		
+		const batchDeleteStatus = {
+			method: 'GET',
+			uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete/${batchDeletionID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + invalidToken, 
+			}
+		};
+
+		const response = await request(batchDeleteStatus);
+		
+		expect(response.statusCode).toEqual(200);	
+		done();
+	});
+
+	test('--- CREATE A MESSAGE - INVALID ID ---', async (done) => {
+		tokenAdmin = importToken.token;
+	
+		const toBeUploaded = {
+			"integrationtests": true,
+			"test": "create message test"
+		};
+
+		const createMessage = {
+			method: 'PUT',
+			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${invalidTestUuid}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			},
+			body: toBeUploaded		
+		};		
+			
+		const response = await request(createMessage);
+	
+		expect(response.statusCode).toEqual(404);
+		
+		done();
+	});
+
+	test('--- GET MESSAGE BY ID - INVALID ID ---', async (done) => {
+
+		const getMessageByID = {
+			method: 'GET',
+			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${invalidTestUuid}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+		const response = await request(getMessageByID);
+		expect(response.statusCode).toEqual(404); 
+		done();
+	});
+	
+	test('--- DELETE A MESSAGE - INVALID ID ---', async (done) => {
+		const deleteMessageById = {
+			method: 'DELETE',
+			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${invalidTestUuid}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}		
+		};		
+		const response = await request(deleteMessageById);
+		expect(response.statusCode).toEqual(404);
+	
+	done();
+	});
+		
+	test('--- GET BATCH DELETE REQUEST STATUS - INVALID ID ---', async(done) => {   
+		
+		const batchDeleteStatus = {
+			method: 'GET',
+			uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete/${invalidTestUuid}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
+		};
+
+		const response = await request(batchDeleteStatus);
+		
+		expect(response.statusCode).toEqual(404);	
+		done();
 	});
 });
