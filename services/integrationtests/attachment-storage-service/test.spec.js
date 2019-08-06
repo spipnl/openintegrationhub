@@ -1,17 +1,15 @@
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
 process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
-const username = process.env.username;
-const password = process.env.password;
+
 const importToken = require('../iam/test.spec.js');
 Token = require('../iam/test.spec.js');
-const path = require('path');
 
-let tokenUser = null; 
 let tokenAdmin = null;
-let token = null;
+
 const invalidToken = "034957430985";
 const testUuid = "67f718b9-0b36-40b8-89d6-1899ad86f97e";
-let batchId = null;
 let batchDeletionID = null;
 
 describe('Attachment-Storage-Service', () => {
@@ -20,19 +18,20 @@ describe('Attachment-Storage-Service', () => {
   
   test('--- CREATE A MESSAGE ---', async (done) => {
     tokenAdmin = importToken.token;
-	  console.log(`tokenAdmin in attachments: ${tokenAdmin}`);
+	// eslint-disable-next-line no-console
+	console.log(`tokenAdmin in attachments: ${tokenAdmin}`);
     const toBeUploaded = {
       "integrationtests": true,
       "test": "create message test"
     };
     const createMessage = {
-      method: 'PUT',
-      uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
-      json: true,
-      headers: {
-        "Authorization" : " Bearer " + tokenAdmin, 
-      },
-      body: toBeUploaded		
+		method: 'PUT',
+		uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
+		json: true,
+		headers: {
+			"Authorization" : " Bearer " + tokenAdmin, 
+		},
+		body: toBeUploaded		
     };		
 		
     const response = await request(createMessage);
@@ -43,6 +42,7 @@ describe('Attachment-Storage-Service', () => {
   });
   
   test('--- GET MESSAGE BY ID ---', async (done) => {
+		// eslint-disable-next-line no-console
 		console.log("imported token for meta data: " + tokenAdmin);
 		const getMessageByID = {
 			method: 'GET',
@@ -50,7 +50,7 @@ describe('Attachment-Storage-Service', () => {
 			json: true,
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
-				}
+			}
 		};
 		const response = await request(getMessageByID);
 		expect(response.statusCode).toEqual(200); 
@@ -59,12 +59,12 @@ describe('Attachment-Storage-Service', () => {
 	
 	test('--- DELETE A MESSAGE ---', async (done) => {
 		const deleteMessageById = {
-        		method: 'DELETE',
-        		uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
-        		json: true,
+			method: 'DELETE',
+			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}		
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}		
 		};		
 		const response = await request(deleteMessageById);
 		expect(response.statusCode).toEqual(204);
@@ -75,13 +75,13 @@ describe('Attachment-Storage-Service', () => {
 	test('--- CREATE REQUEST FOR MESSAGE BATCH DELETION ---', async (done) => { 	
 		
 		const toBeUploaded = {
-                  "conditions": [
-                    {
-                      "key": "integrationtests",
-                      "value": true
-                    }
-                  ]
-                };
+			"conditions": [
+				{
+					"key": "integrationtests",
+					"value": true
+				}
+			]
+		};
 		
 		const batchDelete = {
 			method: 'POST',
@@ -117,43 +117,43 @@ describe('Attachment-Storage-Service', () => {
 	test('--- GET BATCH DELETE REQUEST STATUS ---', async(done) => {   
 		
 		const batchDeleteStatus = {
-        		method: 'GET',
-        		uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete/${batchDeletionID}`,
-        		json: true,
+			method: 'GET',
+			uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete/${batchDeletionID}`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		}
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}
 		};
 		console.log(`BatchDeletionID in get batch request: ${batchDeletionID}`);
 		const response = await request(batchDeleteStatus);
 		
 		expect(response.statusCode).toEqual(201);	
-    	done();
+		done();
 	});
   
-  	test('--- CREATE A MESSAGE - INVALID TOKEN ---', async (done) => {
-    tokenAdmin = importToken.token;
-	  console.log(`tokenAdmin in attachments: ${invalidToken}`);
-    const toBeUploaded = {
-      "integrationtests": true,
-      "test": "create message test"
-    };
-    const createMessage = {
-      method: 'PUT',
-      uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
-      json: true,
-      headers: {
-        "Authorization" : " Bearer " + tokenAdmin, 
-      },
-      body: toBeUploaded		
-    };		
-		
-    const response = await request(createMessage);
+	test('--- CREATE A MESSAGE - INVALID TOKEN ---', async (done) => {
+		tokenAdmin = importToken.token;
+		console.log(`tokenAdmin in attachments: ${invalidToken}`);
+		const toBeUploaded = {
+			"integrationtests": true,
+			"test": "create message test"
+		};
+		const createMessage = {
+			method: 'PUT',
+			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			},
+			body: toBeUploaded		
+		};		
+			
+		const response = await request(createMessage);
 
-    expect(response.statusCode).toEqual(401);
-	
-    done();
-  });
+		expect(response.statusCode).toEqual(401);
+		
+		done();
+	});
   
   test('--- GET MESSAGE BY ID - INVALID TOKEN ---', async (done) => {
 		console.log("imported token for meta data: " + invalidToken);
@@ -172,12 +172,12 @@ describe('Attachment-Storage-Service', () => {
 	
 	test('--- DELETE A MESSAGE - INVALID TOKEN ---', async (done) => {
 		const deleteMessageById = {
-        		method: 'DELETE',
-        		uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
-        		json: true,
+			method: 'DELETE',
+			uri: `http://attachment-storage-service.openintegrationhub.com/objects/${testUuid}`,
+			json: true,
 			headers: {
-                		"Authorization" : " Bearer " + invalidToken, 
-            		}		
+				"Authorization" : " Bearer " + invalidToken, 
+			}		
 		};		
 		const response = await request(deleteMessageById);
 		expect(response.statusCode).toEqual(401);
@@ -188,13 +188,13 @@ describe('Attachment-Storage-Service', () => {
 	test('--- CREATE REQUEST FOR MESSAGE BATCH DELETION - INVALID TOKEN ---', async (done) => { 	
 		
 		const toBeUploaded = {
-                  "conditions": [
-                    {
-                      "key": "integrationtests",
-                      "value": true
-                    }
-                  ]
-                };
+			"conditions": [
+				{
+					"key": "integrationtests",
+					"value": true
+				}
+			]
+		};
 		
 		const batchDelete = {
 			method: 'POST',

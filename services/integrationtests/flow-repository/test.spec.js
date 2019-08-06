@@ -1,18 +1,13 @@
 process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
-const username = process.env.username;
-const password = process.env.password;
+
 const importToken = require('../iam/test.spec.js');
 
-let tokenUser = null; 
+
 let tokenAdmin = null;
 let flowID = null;
 let flowName = null;
 let flowStatus = null;
-let token = null;
-let status_flow = null;
-let domainID = null;
-let componentID = null;
 let invalidToken = "034957430985";
 
 
@@ -175,7 +170,7 @@ describe('Flow-Repository', () => {
 			if (flowStatus == "active") {
 				status = true;
 			}
-		};
+		}
 			
 		const stopFlowById = {
 				method: 'POST',
@@ -215,7 +210,7 @@ describe('Flow-Repository', () => {
 			if (flowStatus == "inactive") {
 				status2 = true;
 			}
-		};
+		}
 		const getFlowData = {
 			method: 'GET',
 			uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
@@ -269,7 +264,7 @@ describe('Flow-Repository', () => {
 			if (flowStatus == "inactive") {
 				status3 = true;
 			}
-		};
+		}
 		const deleteFlowById = {
 				method: 'DELETE',
 					uri: `http://flow-repository.openintegrationhub.com/flows/${flowID}`,
