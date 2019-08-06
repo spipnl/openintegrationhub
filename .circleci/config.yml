@@ -17,6 +17,10 @@ aliases:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
       - run: yarn test
+  - &yarn_resotre_cache
+      - restore_cache:
+          keys:
+            - yarn-deps-{{ .Branch }}-{{ .Revision }}
   - &build_steps
       - setup_remote_docker
       - restore_cache:
@@ -76,27 +80,33 @@ jobs:
   iam:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/iam
-    steps: *yarn_test_steps
+    steps: *yarn_restore_cache
+    run: yarn test iam
   flow-repository:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/flow-repository
-    steps: *yarn_test_steps
+    steps: *yarn_restore_cache
+    run: yarn test flow-repository
   metadata-repository:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/metadata-repository
-    steps: *yarn_test_steps
+    steps: *yarn_restore_cache
+    run: yarn test metadata-repository
   component-repository:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/component-repository
-    steps: *yarn_test_steps 
+    steps: *yarn_restore_cache
+    run: yarn test component-repository
   audit-log:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/audit-log
-    steps: *yarn_test_steps
+    steps: *yarn_restore_cache
+    run: yarn test audit-log
   attachment-storage-service:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/attachment-storage-service
-    steps: *yarn_test_steps    
+    steps: *yarn_restore_cache
+    run: yarn test attachments-storage-service   
   webhooks-test:
     docker: *node_mongo_env
     working_directory: ~/oih/services/webhooks
