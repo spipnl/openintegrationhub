@@ -100,7 +100,8 @@ describe('Metadata-Repository', () => {
 		response.body.data.description = newDescription;
 		console.log(`The new response is: ${JSON.stringify(response)}`);
 		console.log(`DomainId in PUT: ${domainID}`);
-		const patchDomain = {
+
+		const putDomain = {
 			method: 'PUT',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
 			json: true,
@@ -109,8 +110,8 @@ describe('Metadata-Repository', () => {
 			},
 			body: response 		
 		};
-
-		const responseFinal = await request(patchDomain);
+		console.log(`putdom in PUT: ${putDomain}`);
+		const responseFinal = await request(putDomain);
 		expect(responseFinal.statusCode).toEqual(200);
 	
 	done();
