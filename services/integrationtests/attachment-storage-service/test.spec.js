@@ -70,69 +70,50 @@ describe('Attachment-Storage-Service', () => {
 	
 	done();
 	});
-	/*
+	
 	test('--- CREATE REQUEST FOR MESSAGE BATCH DELETION ---', async (done) => { 	
+		
+		const toBeUploaded = {
+                  "conditions": [
+                    {
+                      "key": "integrationtests",
+                      "value": true
+                    }
+                  ]
+                };
+		
 		const batchDelete = {
-			method: 'GET',
+			method: 'POST',
 			uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete`,
 			json: true,
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
-			}
+			},
+			body: toBeUploaded
 		};
+		
 		const response = await request(batchDelete);
-		const domainDesc = "short desc update";
-		const newDescription = "new description: " + domainDesc;
-		response.body.data.description = newDescription;
-
-		const patchDomain = {
-        		method: 'PUT',
-        		uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-        		json: true,
-				headers: {
-                		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: response 		
-		};
-		expect(response.statusCode).toEqual(200);
-	
+		expect(response.statusCode).toEqual(201);
+			
 	done();
 	});
 		
 	test('--- GET BATCH DELETE REQUEST STATUS ---', async(done) => {   
-		const newModel = {
-    				"data": {
-        				"name": "test",
-        				"description": "upload test",
-        				"value": {
-            					"$id": "testing",
-            					"properties": {
-                					"first_name": {
-                    						"type": "string"
-                					},
-                					"last_name": {
-                    						"type": "string"
-                						}
-            						}
-        					}
-    				}
-		};
 		
 		const batchDeleteStatus = {
-        		method: 'POST',
-        		uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete/{batchId}`,
+        		method: 'GET',
+        		uri: `http://attachment-storage-service.openintegrationhub.com/batch/delete/${testUuid}`,
         		json: true,
 			headers: {
                 		"Authorization" : " Bearer " + tokenAdmin, 
-            		},
-        		body: newModel		
+            		}
 		};
 		
 		const response = await request(batchDeleteStatus);
-		expect(response.statusCode).toEqual(200);	
+		expect(response.statusCode).toEqual(201);	
     	done();
 	});
-  
+	/*
   ---
   
   	test('--- GET MESSAGE BY ID - INVALID ID ---', async (done) => {
