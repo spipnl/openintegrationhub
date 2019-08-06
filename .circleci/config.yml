@@ -17,7 +17,7 @@ aliases:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
       - run: yarn test
-  - &yarn_resotre_cache
+  - &yarn_restore_cache
       - restore_cache:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
