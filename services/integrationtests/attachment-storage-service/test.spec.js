@@ -97,7 +97,7 @@ describe('Attachment-Storage-Service', () => {
 		
 		const getBatchDeletionId = async res => {
 			try {
-				let batchDelID = await Promise.resolve(res.body.data.id);
+				//let batchDelID = await Promise.resolve(res.body.data.id);
 				let test = await Promise.resolve(res.body.data);
 				console.log(`My response is the following ${test}`);
 
@@ -105,7 +105,7 @@ describe('Attachment-Storage-Service', () => {
 			catch (error) {
 				console.log(error);
 			}
-			return batchDelID; 
+			return test; 
 		};
 		batchDeletionID = await getBatchDeletionId(response);
 		console.log(`BatchDeletionID in create request: ${batchDeletionID}`);
