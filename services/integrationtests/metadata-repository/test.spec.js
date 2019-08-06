@@ -168,7 +168,7 @@ describe('Metadata-Repository', () => {
 				}
 			}
 		};
-		const addDomainModel = {
+		const putDomainModel = {
 			method: 'PUT',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/testing`,
 			json: true,
@@ -177,7 +177,8 @@ describe('Metadata-Repository', () => {
 			},
 			body: newModel		
 		};
-		const response = await request(addDomainModel);
+		console.log(`request options in put domain model by uri: ${JSON.stringify(newModel)}`);
+		const response = await request(putDomainModel);
 		expect(response.statusCode).toEqual(200);	
 		done();
 	});
@@ -251,21 +252,6 @@ describe('Metadata-Repository', () => {
 		done();
 	});
 
-	test('--- DELETE DOMAIN BY ID ---', async (done) => {
-		const deleteDomainByID = {
-			method: 'DELETE',
-			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
-			json: true,
-			headers: {
-				"Authorization" : " Bearer " + tokenAdmin, 
-			}		
-		};		
-		const response = await request(deleteDomainByID);
-		expect(response.statusCode).toEqual(200);
-	
-	done();
-	});
-	
 	test('--- GET ALL DOMAIN MODELS - INVALID TOKEN ---', async(done) => {   	
 		const requestOptions = {
 			method: 'GET',
@@ -358,8 +344,7 @@ describe('Metadata-Repository', () => {
 			}
 		};
 		const response = await request(getDomainData);
-		const domainDesc = "short descr update";
-		const newDescription = "new description: " + domainDesc;
+		const newDescription = "new description: short descr update";
 		response.body.data.description = newDescription;
 
 		const patchDomain = {
@@ -447,5 +432,20 @@ describe('Metadata-Repository', () => {
 		console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);	
 		done();
+	});
+
+	test('--- DELETE DOMAIN BY ID ---', async (done) => {
+		const deleteDomainByID = {
+			method: 'DELETE',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
+			json: true,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin, 
+			}		
+		};		
+		const response = await request(deleteDomainByID);
+		expect(response.statusCode).toEqual(200);
+	
+	done();
 	});
 });
