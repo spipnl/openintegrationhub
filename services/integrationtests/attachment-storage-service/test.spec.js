@@ -66,7 +66,7 @@ describe('Attachment-Storage-Service', () => {
             		}		
 		};		
 		const response = await request(deleteMessageById);
-		expect(response.statusCode).toEqual(200);
+		expect(response.statusCode).toEqual(204);
 	
 	done();
 	});
