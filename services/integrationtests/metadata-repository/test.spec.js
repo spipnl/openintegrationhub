@@ -107,8 +107,8 @@ describe('Metadata-Repository', () => {
 				public: true,
 				owners: [
 					{
-						"id":"5bcee3048bbfec0010367bd7",
-						"type":"USER"
+						"id":response.body.data.owners[0].id,
+						"type":response.body.data.owners[0].type
 					}
 				]
 			}
