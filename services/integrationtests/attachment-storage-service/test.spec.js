@@ -19,6 +19,7 @@ describe('Attachment-Storage-Service', () => {
   
   test('--- CREATE A MESSAGE ---', async (done) => {
     tokenAdmin = importToken.token;
+	  console.log(`tokenAdmin in attachments: ${tokenAdmin}`);
     const toBeUploaded = {
       "integrationtests": true,
       "test": "create message test"
