@@ -246,9 +246,9 @@ describe('Metadata-Repository', () => {
 				"Authorization" : " Bearer " + tokenAdmin,
 			}
 		};
-		console.log(`Requestion Options for bulk upload: ${uploadBulk}`);
+		console.log(`Requestion Options for bulk upload: ${JSON.stringify(uploadBulk)}`);
 		const response = await request(uploadBulk);
-		console.log(JSON.stringify(response.body));
+		console.log(`The response for bulk import is: ${JSON.stringify(response)}`);
 		expect(response.statusCode).toEqual(200);	
 		done();
 	});
