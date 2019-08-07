@@ -239,18 +239,16 @@ describe('Metadata-Repository', () => {
 		console.log(`form test response: ${JSON.stringify(response)}`);
 		*/
 		
+		let form = new formData();
+		
 		const data = fs.readFileSync('metadata-repository/valid.zip', 'binary');
 		const buffer = Buffer.from(data, 'binary');
-
-		const formData = {
-			my_field: 'my_value',
-			my_file: buffer,
-		};
+		form.append('file', buffer);
 
 		const uploadBulk = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
-			formData: formData,
+			formData: form,
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin,
 			}
