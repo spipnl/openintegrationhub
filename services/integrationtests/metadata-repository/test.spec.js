@@ -231,12 +231,33 @@ describe('Metadata-Repository', () => {
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
 
-		let form = new FormData();
+		/*let form = new FormData();
 		form.append('u_field', 'my value');
 		form.append('u_data', new Buffer(10));
 		form.append('u_file', fs.createReadStream('metadata-repository/valid.zip'));
 		const response = form.submit('http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import');
 		console.log(`form test response: ${JSON.stringify(response)}`);
+		*/
+		const formData = {
+			my_field: 'my_value',
+			my_file: fs.createReadStream('metadata-repository/valid.zip'),
+		};
+
+		const uploadBulk = {
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+			formData: formData,
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin,
+			}
+		};
+		/*	request.post({url:'http://service.com/upload', formData: formData}, function(err, httpResponse, body) {
+			if (err) {
+			return console.error('upload failed:', err);
+			}
+			console.log('Upload successful!  Server responded with:', body);
+			});
+		*/
 		/*const uploadBulk = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
@@ -254,16 +275,6 @@ describe('Metadata-Repository', () => {
 				"Authorization" : " Bearer " + tokenAdmin,
 			}
 		};*/
-		const uploadBulk = {
-			method: 'POST',
-			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
-			formData: {
-				value: fs.createReadStream('metadata-repository/valid.zip'),
-			},
-			headers: {
-				"Authorization" : " Bearer " + tokenAdmin,
-			}
-		};
 
 		console.log(`Requestion Options for bulk upload: ${JSON.stringify(uploadBulk)}`);
 		const response = await request(uploadBulk);
