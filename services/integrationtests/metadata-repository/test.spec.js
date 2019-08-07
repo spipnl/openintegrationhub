@@ -238,9 +238,13 @@ describe('Metadata-Repository', () => {
 		const response = form.submit('http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import');
 		console.log(`form test response: ${JSON.stringify(response)}`);
 		*/
+		
+		const data = fs.readFileSync('metadata-repository/valid.zip', 'binary');
+		const buffer = Buffer.from(data, 'binary');
+
 		const formData = {
 			my_field: 'my_value',
-			my_file: fs.createReadStream('metadata-repository/valid.zip'),
+			my_file: buffer,
 		};
 
 		const uploadBulk = {
