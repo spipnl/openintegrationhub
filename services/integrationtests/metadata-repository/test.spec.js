@@ -3,6 +3,7 @@
 process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
 const importToken = require('../iam/test.spec.js');
+const formData = require('form-data');
 
 
 Token = require('../iam/test.spec.js');
@@ -229,6 +230,13 @@ describe('Metadata-Repository', () => {
 	});
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
+
+		let form = new FormData();
+		form.append('u_field', 'my value');
+		form.append('u_data', new Buffer(10));
+		form.append('u_file', fs.createReadStream('metadata-repository/valid.zip'));
+		const response = form.submit('http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import');
+		console.log(`form test response: ${JSON.stringify(response)}`);
 		/*const uploadBulk = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
