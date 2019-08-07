@@ -229,7 +229,7 @@ describe('Metadata-Repository', () => {
 	});
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
-		const uploadBulk = {
+		/*const uploadBulk = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
@@ -245,7 +245,18 @@ describe('Metadata-Repository', () => {
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin,
 			}
+		};*/
+		const uploadBulk = {
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+			formData: {
+				value: fs.createReadStream('metadata-repository/valid.zip'),
+			},
+			headers: {
+				"Authorization" : " Bearer " + tokenAdmin,
+			}
 		};
+
 		console.log(`Requestion Options for bulk upload: ${JSON.stringify(uploadBulk)}`);
 		const response = await request(uploadBulk);
 		console.log(`The response for bulk import is: ${JSON.stringify(response)}`);
