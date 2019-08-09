@@ -266,9 +266,9 @@ describe('Metadata-Repository', () => {
 		*/
 
 		let form = new formData();
-		const data = fs.readFileSync('metadata-repository/valid.zip');
-
-		form.append('archive', data);
+		let test = fs.createReadStream('metadata-repository/valid.zip');
+		
+		form.append('archive', test);
 
 		const headers = {
 			"Authorization" : " Bearer " + tokenAdmin,
@@ -277,7 +277,7 @@ describe('Metadata-Repository', () => {
 		}
 		console.log(JSON.stringify(headers));
 		console.log(form);
-		const response = await axios.post(`http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`, form, headers);
+		const response = await axios.post(`http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`, {form}, headers);
 		console.log(`HEY HO LET'S GO: ${response}`);
 		expect(response.status).toEqual(200);	
 		done();		
