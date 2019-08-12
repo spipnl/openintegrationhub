@@ -1,6 +1,7 @@
 {
 	"scripts": {
-		"test": "jest"
+		"test": "jest",
+		"test-iam": "jest /iam"
 	},
 	"devDependencies": {
 		"@types/file-saver": "^0.0.1",
