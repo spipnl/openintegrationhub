@@ -18,7 +18,7 @@ let invalidToken = "034957430985";
 
 describe('Metadata-Repository', () => {
    jest.setTimeout(15000);
-	test.only('--- GET ALL DOMAINS ---', async (done) => {
+	test('--- GET ALL DOMAINS ---', async (done) => {
 		tokenAdmin = importToken.token;
 		
 		console.log("imported token for meta data: " + tokenAdmin);
@@ -35,7 +35,7 @@ describe('Metadata-Repository', () => {
 	done();
 	});
 	
-	test.only('--- CREATE NEW DOMAIN ---', async (done) => {
+	test('--- CREATE NEW DOMAIN ---', async (done) => {
 		const toBeUploaded = {
 			"data": {
 				"name": "string",
@@ -230,9 +230,9 @@ describe('Metadata-Repository', () => {
 		done();
 	});
 	
-	test.only('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
+	/*test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
 
-		/*const filename = __dirname + 'valid.zip';
+		const filename = __dirname + 'valid.zip';
 		const readstream = fs.createReadStream(filename);
 		
 		form.append('archive', readstream);
@@ -280,9 +280,9 @@ describe('Metadata-Repository', () => {
 		const response = await axios.post(`http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`, form, headers);
 		console.log(`HEY HO LET'S GO: ${response}`);
 		expect(response.status).toEqual(200);
-		*/
+		
 		done();		
-	});
+	}); */
 	
 	test('--- DELETE DOMAIN MODEL SCHEME BY URI ---', async(done) => {   	
 		const requestOptions = {
@@ -480,7 +480,7 @@ describe('Metadata-Repository', () => {
 		done();
 	});
 
-	test.only('--- DELETE DOMAIN BY ID ---', async (done) => {
+	test('--- DELETE DOMAIN BY ID ---', async (done) => {
 		const deleteDomainByID = {
 			method: 'DELETE',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,
