@@ -99,8 +99,8 @@ describe('Metadata-Repository', () => {
 
 		const newDescription = "new description: short desc update";
 		response.body.data.description = newDescription;
-		console.log(`The new response is: ${JSON.stringify(response.body.data)}`);
-		console.log(`DomainId in PUT: ${domainID}`);
+		//console.log(`The new response is: ${JSON.stringify(response.body.data)}`);
+		//console.log(`DomainId in PUT: ${domainID}`);
 
 		responseBody = {
 			data:{
@@ -125,7 +125,7 @@ describe('Metadata-Repository', () => {
 			},
 			body: responseBody 		
 		};
-		console.log(`putdom in PUT: ${JSON.stringify(putDomain)}`);
+		//console.log(`putdom in PUT: ${JSON.stringify(putDomain)}`);
 		const responseFinal = await request(putDomain);
 		expect(responseFinal.statusCode).toEqual(200);
 	
@@ -160,7 +160,7 @@ describe('Metadata-Repository', () => {
 			},
 			body: newModel		
 		};
-		console.log(`DomainId in IMPORT: ${domainID}`);
+		//console.log(`DomainId in IMPORT: ${domainID}`);
 		const response = await request(addDomainModel);
 		expect(response.statusCode).toEqual(200);	
 		done();
@@ -193,7 +193,7 @@ describe('Metadata-Repository', () => {
 			},
 			body: newModel		
 		};
-		console.log(`request options in put domain model by uri: ${JSON.stringify(newModel)}`);
+		//console.log(`request options in put domain model by uri: ${JSON.stringify(newModel)}`);
 		const response = await request(putDomainModel);
 		expect(response.statusCode).toEqual(200);	
 		done();
@@ -224,7 +224,7 @@ describe('Metadata-Repository', () => {
 			}
 		};
 		const response = await request(requestOptions);
-		console.log(__dirname);
+		//console.log(__dirname);
 		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 		done();
@@ -426,7 +426,7 @@ describe('Metadata-Repository', () => {
 			}
 		};
 		const response = await request(uploadBulk);
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);	
 		done();
 	});
@@ -450,7 +450,7 @@ describe('Metadata-Repository', () => {
 			}
 		};
 		const response = await request(uploadBulk);
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);	
 		done();
 	});
@@ -475,7 +475,7 @@ describe('Metadata-Repository', () => {
 			}
 		};
 		const response = await request(uploadBulk);
-		console.log(JSON.stringify(response.body));
+		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(401);	
 		done();
 	});
