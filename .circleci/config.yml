@@ -42,7 +42,7 @@ aliases:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
       - run: yarn test-audit-log
-  - &yarn_test_steps_attachement-storage-service
+  - &yarn_test_steps_attachment-storage-service
       - restore_cache:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
