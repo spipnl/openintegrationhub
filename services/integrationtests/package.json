@@ -5,7 +5,7 @@
 		"test-flow-repository": "jest ./flow-repository",
 		"test-component-repository": "jest ./component-repository",
 		"test-audit-log": "jest ./audit-log",
-		"test-attachement-storage-service": "jest ./attachement-storage-service"
+		"test-attachment-storage-service": "jest ./attachment-storage-service"
 	},
 	"devDependencies": {
 		"@types/file-saver": "^0.0.1",
