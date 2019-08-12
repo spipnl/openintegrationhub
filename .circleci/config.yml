@@ -26,27 +26,27 @@ aliases:
       - restore_cache:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
-      - run: yarn test  
+      - run: yarn test-flow-repository
   - &yarn_test_steps_metadata-repository
       - restore_cache:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
-      - run: yarn test
+      - run: yarn test-metadata-repository
   - &yarn_test_steps_component-repository
       - restore_cache:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
-      - run: yarn test     
+      - run: yarn test-component-repository     
   - &yarn_test_steps_audit-log
       - restore_cache:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
-      - run: yarn test
+      - run: yarn test-audit-log
   - &yarn_test_steps_attachment-storage-service
       - restore_cache:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
-      - run: yarn test      
+      - run: yarn test-attachment-storage-service      
 
   - &build_steps
       - setup_remote_docker
