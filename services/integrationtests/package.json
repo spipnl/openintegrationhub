@@ -1,7 +1,12 @@
 {
 	"scripts": {
 		"test": "jest",
-		"test-iam": "jest ./iam"
+		"test-iam": "jest ./iam",
+		"test-flow-repository": "jest ./flow-repository",
+		"test-metadata-repository": "jest ./metadata-repository",
+		"test-component-repository": "jest ./component-repository",
+		"test-audit-log": "jest ./audit-log",
+		"test-attachement-storage-service": "jest ./attachement-storage-service"
 	},
 	"devDependencies": {
 		"@types/file-saver": "^0.0.1",
