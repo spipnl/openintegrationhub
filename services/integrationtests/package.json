@@ -1,6 +1,7 @@
 {
 	"scripts": {
-		"test": "jest ./iam",
+		"test": "jest"
+		"test-iam": "jest ./iam",
 		"test-flow-repository": "jest ./flow-repository",
 		"test-component-repository": "jest ./component-repository",
 		"test-audit-log": "jest ./audit-log",
