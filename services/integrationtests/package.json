@@ -6,6 +6,7 @@
 		"test-component-repository": "jest ./component-repository",
 		"test-audit-log": "jest ./audit-log",
 		"test-attachment-storage-service": "jest ./attachment-storage-service"
+		"test-metadata-repository": "jest ./metadata-repository",
 	},
 	"devDependencies": {
 		"@types/file-saver": "^0.0.1",
