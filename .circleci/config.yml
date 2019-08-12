@@ -186,9 +186,6 @@ workflows:
       - flow-repository:
           requires:
             - iam 
-      - metadata-repository:
-          requires:
-            - iam
       - component-repository:
           requires:
             - iam
