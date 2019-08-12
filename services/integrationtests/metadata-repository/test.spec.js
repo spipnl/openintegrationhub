@@ -4,7 +4,7 @@ process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
 const importToken = require('../iam/test.spec.js');
 const formData = require('form-data');
-const axios = require('axios');
+//const axios = require('axios');
 
 
 Token = require('../iam/test.spec.js');
