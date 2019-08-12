@@ -12,6 +12,11 @@ aliases:
   - &only_master_filter
     branches:
       only: master
+  - &yarn_test_steps
+      - restore_cache:
+          keys:
+            - yarn-deps-{{ .Branch }}-{{ .Revision }}
+      - run: yarn test    
   - &yarn_test_steps_iam
       - restore_cache:
           keys:
