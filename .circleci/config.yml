@@ -17,6 +17,12 @@ aliases:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
       - run: yarn test
+      - run: yarn test iam
+      - run: yarn test flow-repository
+      - run: yarn test metadata-repository
+      - run: yarn test component-repository
+      - run: yarn test audit-log
+      - run: yarn test attachment-storage-service
   - &build_steps
       - setup_remote_docker
       - restore_cache:
