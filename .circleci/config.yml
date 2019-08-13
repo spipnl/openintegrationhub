@@ -262,6 +262,7 @@ workflows:
       - iam:
           requires:
             - deps
+            - test
             - deploy
       - flow-repository:
           requires:
