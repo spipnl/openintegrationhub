@@ -229,7 +229,6 @@ workflows:
           requires:
             - webhooks-test
             - iam-test
-            - web-ui-test
             - meta-data-repository-test
             - component-orchestrator-test
             - scheduler-test
