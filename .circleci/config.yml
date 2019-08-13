@@ -180,9 +180,81 @@ workflows:
   pipeline:
     jobs:
       - deps
+      - webhooks-test:
+          requires:
+            - lib-webhooks-test
+      - iam-test:
+          requires:
+            - deps
+      - web-ui-test:
+          requires:
+            - deps
+      - meta-data-repository-test:
+          requires:
+            - deps
+      - component-orchestrator-test:
+          requires:
+            - lib-component-orchestrator-test
+      - scheduler-test:
+          requires:
+            - lib-scheduler-test
+      - secret-service-lib-test:
+          requires:
+            - deps
+      - flow-repository-test:
+          requires:
+            - deps
+      - audit-log-test:
+          requires:
+            - deps
+      - lib-backend-commons-lib-test:
+          requires:
+            - deps
+      - lib-component-orchestrator-test:
+          requires:
+            - lib-backend-commons-lib-test
+      - lib-scheduler-test:
+          requires:
+            - lib-backend-commons-lib-test
+      - lib-webhooks-test:
+          requires:
+            - lib-backend-commons-lib-test
+      - lib-component-repository-test:
+          requires:
+            - lib-backend-commons-lib-test
+      - data-hub-test:
+          requires:
+            - lib-backend-commons-lib-test
+      - ils-test:
+          requires:
+            - deps
+      - test:
+          requires:
+            - webhooks-test
+            - iam-test
+            - web-ui-test
+            - meta-data-repository-test
+            - component-orchestrator-test
+            - scheduler-test
+            - secret-service-lib-test
+            - flow-repository-test
+            - audit-log-test
+            - lib-component-repository-test
+            - data-hub-test
+            - ils-test
+      - build:
+          requires:
+            - test
+          filters: *only_master_filter
+      - deploy:
+          requires:
+            - build
+          filters: *only_master_filter
+       
       - iam:
           requires:
             - deps
+            - deploy
       - flow-repository:
           requires:
             - iam 
