@@ -186,9 +186,6 @@ workflows:
       - iam-test:
           requires:
             - deps
-      - web-ui-test:
-          requires:
-            - deps
       - meta-data-repository-test:
           requires:
             - deps
