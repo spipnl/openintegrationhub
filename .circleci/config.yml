@@ -277,7 +277,7 @@ workflows:
       - metadata-repository:
           requires:
             - iam
-      - test:
+      - end:
           requires:
             - iam
             - component-repository
