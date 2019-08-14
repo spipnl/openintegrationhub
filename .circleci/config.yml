@@ -241,7 +241,7 @@ workflows:
       - ils-test:
           requires:
             - deps 
-      - build:
+      - test: 
           requires:
             - webhooks-test
             - iam-test
@@ -254,6 +254,9 @@ workflows:
             - lib-component-repository-test
             - data-hub-test
             - ils-test
+      - build:
+          requires:
+            - test
           filters: *only_master_filter
       - deploy:
           requires:
@@ -261,7 +264,6 @@ workflows:
           filters: *only_master_filter
       - iam:
           requires:
-            - build
             - deploy
       - flow-repository:
           requires:
