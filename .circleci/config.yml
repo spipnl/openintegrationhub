@@ -88,7 +88,7 @@ jobs:
           key: yarn-deps-{{ .Branch }}-{{ .Revision }}
           paths:
             - ~/oih
-  test:
+  unit-tests-completed:
     docker: *node_env
     steps:
       - run: echo OK
@@ -241,7 +241,7 @@ workflows:
       - ils-test:
           requires:
             - deps
-      - test:
+      - unit-tests-completed:
           requires:
             - webhooks-test
             - iam-test
