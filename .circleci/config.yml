@@ -264,7 +264,7 @@ workflows:
           filters: *only_master_filter
       - iam:
           requires:
-            - deploy
+            - test
       - flow-repository:
           requires:
             - iam 
