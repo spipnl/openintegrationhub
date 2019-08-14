@@ -280,6 +280,6 @@ workflows:
             - iam
             - component-repository
             - audit-log
-            - attachment-story-service
+            - attachment-storage-service
             - flow-repository
             - metadata-repository
