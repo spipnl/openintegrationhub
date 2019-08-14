@@ -92,6 +92,10 @@ jobs:
     docker: *node_env
     steps:
       - run: echo OK
+  end:
+    docker: *node_env
+    steps:
+      - run: echo OK
   build:
     docker: *node_env
     working_directory: ~/oih
