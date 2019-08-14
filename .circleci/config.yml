@@ -239,7 +239,6 @@ workflows:
             - deps
       - build:
           requires:
-            - test
           filters: *only_master_filter
       - deploy:
           requires:
@@ -247,7 +246,6 @@ workflows:
           filters: *only_master_filter
       - iam:
           requires:
-            - deps
             - webhooks-test
             - iam-test
             - meta-data-repository-test
