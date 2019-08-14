@@ -240,8 +240,8 @@ workflows:
             - lib-backend-commons-lib-test
       - ils-test:
           requires:
-            - deps 
-      - test: 
+            - deps
+      - test:
           requires:
             - webhooks-test
             - iam-test
@@ -265,6 +265,7 @@ workflows:
       - iam:
           requires:
             - test
+            - deploy
       - flow-repository:
           requires:
             - iam 
