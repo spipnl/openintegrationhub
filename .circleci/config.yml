@@ -252,6 +252,7 @@ workflows:
             - ils-test
       - build:
           requires:
+            - test
           filters: *only_master_filter
       - deploy:
           requires:
