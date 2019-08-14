@@ -240,8 +240,8 @@ workflows:
             - lib-backend-commons-lib-test
       - ils-test:
           requires:
-            - deps
-      - test:
+            - deps 
+      - build:
           requires:
             - webhooks-test
             - iam-test
@@ -254,9 +254,6 @@ workflows:
             - lib-component-repository-test
             - data-hub-test
             - ils-test
-      - build:
-          requires:
-            - test
           filters: *only_master_filter
       - deploy:
           requires:
@@ -264,7 +261,7 @@ workflows:
           filters: *only_master_filter
       - iam:
           requires:
-            - test
+            - build
             - deploy
       - flow-repository:
           requires:
