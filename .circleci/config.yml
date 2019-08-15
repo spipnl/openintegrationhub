@@ -188,10 +188,7 @@ jobs:
     docker: *node_mongo_env
     working_directory: ~/oih/services/data-hub
     steps: *yarn_test_steps
-  ils-test:
-    docker: *node_env
-    working_directory: ~/oih/services/ils
-    steps: *yarn_test_steps
+
 workflows:
   pipeline:
     jobs:
@@ -238,9 +235,6 @@ workflows:
       - data-hub-test:
           requires:
             - lib-backend-commons-lib-test
-      - ils-test:
-          requires:
-            - deps
       - test:
           requires:
             - webhooks-test
@@ -253,7 +247,6 @@ workflows:
             - audit-log-test
             - lib-component-repository-test
             - data-hub-test
-            - ils-test
       - build:
           requires:
             - test
