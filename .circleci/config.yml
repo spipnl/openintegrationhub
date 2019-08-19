@@ -169,7 +169,7 @@ jobs:
     working_directory: ~/oih/lib/component-orchestrator
     steps: *yarn_test_steps
   lib-component-repository-test:
-    docker: *node_env
+    docker: *node_mongo_env
     working_directory: ~/oih/lib/component-repository
     steps: *yarn_test_steps
   lib-scheduler-test:
