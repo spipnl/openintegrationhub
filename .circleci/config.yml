@@ -180,10 +180,6 @@ jobs:
     docker: *node_env
     working_directory: ~/oih/lib/webhooks
     steps: *yarn_test_steps
-  lib-component-repository-test:
-    docker: *node_mongo_env
-    working_directory: ~/oih/lib/component-repository
-    steps: *yarn_test_steps
   flow-repository-test:
     docker: *node_env
     working_directory: ~/oih/services/flow-repository
