@@ -224,7 +224,7 @@ describe('Metadata-Repository', () => {
 		console.log(`MyDomainID: ${domainID}`);
 		const file = fs.createReadStream('metadata-repository/valid.zip');
 
-		var options = {
+		const zipFile = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
@@ -235,7 +235,7 @@ describe('Metadata-Repository', () => {
 				'Authorization' : " Bearer " + tokenAdmin
 			}
 		};
-		const response = await request(options);
+		const response = await request(zipFile);
 
 		expect(response.statusCode).toEqual(200);	
 		done();	
@@ -368,7 +368,7 @@ describe('Metadata-Repository', () => {
 		console.log(`MyDomainID: ${domainID}`);
 		const file = fs.createReadStream('metadata-repository/invalid.zip');
 
-		var options = {
+		const  options = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
