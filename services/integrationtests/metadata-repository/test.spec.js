@@ -218,13 +218,11 @@ describe('Metadata-Repository', () => {
 			}
 		};
 		const response = await request(requestOptions);
-		//console.log(__dirname);
-		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
 	
-	/*test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
+	test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
 
 		const filename = __dirname + 'valid.zip';
 		const readstream = fs.createReadStream(filename);
@@ -276,7 +274,7 @@ describe('Metadata-Repository', () => {
 		expect(response.status).toEqual(200);
 		
 		done();		
-	}); */
+	});
 	
 	test('--- DELETE DOMAIN MODEL SCHEME BY URI ---', async(done) => {   	
 		const requestOptions = {
@@ -420,7 +418,6 @@ describe('Metadata-Repository', () => {
 			}
 		};
 		const response = await request(uploadBulk);
-		//console.log(JSON.stringify(response.body));
 		expect(response.statusCode).toEqual(200);	
 		done();
 	});
