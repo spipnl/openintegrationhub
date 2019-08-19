@@ -8,7 +8,7 @@ it('renders without crashing', () => {
     mount(
         <Provider store={global.configureStore()}>
             <MemoryRouter>
-                <Component auth={{ isLoggedIn: true }}/>
+                <Component />
             </MemoryRouter>
         </Provider>,
     );

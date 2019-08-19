@@ -11,12 +11,43 @@ aliases:
     command: yarn
   - &only_master_filter
     branches:
-      only: mastery
+      only: master
   - &yarn_test_steps
       - restore_cache:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
-      - run: yarn test
+      - run: yarn test    
+  - &yarn_test_steps_iam
+      - restore_cache:
+          keys:
+            - yarn-deps-{{ .Branch }}-{{ .Revision }}
+      - run: yarn test-iam
+  - &yarn_test_steps_flow-repository
+      - restore_cache:
+          keys:
+            - yarn-deps-{{ .Branch }}-{{ .Revision }}
+      - run: yarn test-flow-repository
+  - &yarn_test_steps_metadata-repository
+      - restore_cache:
+          keys:
+            - yarn-deps-{{ .Branch }}-{{ .Revision }}
+      - run: yarn test-metadata-repository
+  - &yarn_test_steps_component-repository
+      - restore_cache:
+          keys:
+            - yarn-deps-{{ .Branch }}-{{ .Revision }}
+      - run: yarn test-component-repository     
+  - &yarn_test_steps_audit-log
+      - restore_cache:
+          keys:
+            - yarn-deps-{{ .Branch }}-{{ .Revision }}
+      - run: yarn test-audit-log
+  - &yarn_test_steps_attachment-storage-service
+      - restore_cache:
+          keys:
+            - yarn-deps-{{ .Branch }}-{{ .Revision }}
+      - run: yarn test-attachment-storage-service      
+
   - &build_steps
       - setup_remote_docker
       - restore_cache:
@@ -61,6 +92,10 @@ jobs:
     docker: *node_env
     steps:
       - run: echo OK
+  end:
+    docker: *node_env
+    steps:
+      - run: echo OK
   build:
     docker: *node_env
     working_directory: ~/oih
@@ -76,27 +111,27 @@ jobs:
   iam:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/iam
-    steps: *yarn_test_steps
+    steps: *yarn_test_steps_iam
   flow-repository:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/flow-repository
-    steps: *yarn_test_steps
+    steps: *yarn_test_steps_flow-repository
   metadata-repository:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/metadata-repository
-    steps: *yarn_test_steps
+    steps: *yarn_test_steps_metadata-repository
   component-repository:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/component-repository
-    steps: *yarn_test_steps 
+    steps: *yarn_test_steps_component-repository 
   audit-log:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/audit-log
-    steps: *yarn_test_steps
+    steps: *yarn_test_steps_audit-log
   attachment-storage-service:
     docker: *node_env
     working_directory: ~/oih/services/integrationtests/attachment-storage-service
-    steps: *yarn_test_steps    
+    steps: *yarn_test_steps_attachment-storage-service    
   webhooks-test:
     docker: *node_mongo_env
     working_directory: ~/oih/services/webhooks
@@ -133,6 +168,10 @@ jobs:
     docker: *node_env
     working_directory: ~/oih/lib/component-orchestrator
     steps: *yarn_test_steps
+  lib-component-repository-test:
+    docker: *node_mongo_env
+    working_directory: ~/oih/lib/component-repository
+    steps: *yarn_test_steps
   lib-scheduler-test:
     docker: *node_env
     working_directory: ~/oih/lib/scheduler
@@ -140,10 +179,6 @@ jobs:
   lib-webhooks-test:
     docker: *node_env
     working_directory: ~/oih/lib/webhooks
-    steps: *yarn_test_steps
-  lib-component-repository-test:
-    docker: *node_mongo_env
-    working_directory: ~/oih/lib/component-repository
     steps: *yarn_test_steps
   flow-repository-test:
     docker: *node_env
@@ -186,8 +221,26 @@ workflows:
       - secret-service-lib-test:
           requires:
             - deps
-      - flow-repository:
+      - flow-repository-test:
           requires:
+<<<<<<< HEAD
+=======
+            - deps
+      - audit-log-test:
+          requires:
+            - deps
+      - lib-backend-commons-lib-test:
+          requires:
+            - deps
+      - lib-component-orchestrator-test:
+          requires:
+            - lib-backend-commons-lib-test
+      - lib-scheduler-test:
+          requires:
+            - lib-backend-commons-lib-test
+      - lib-webhooks-test:
+          requires:
+>>>>>>> f7f326522018da7368fded74d7c419466f8fda90
             - lib-backend-commons-lib-test
       - lib-component-repository-test:
           requires:
@@ -213,6 +266,24 @@ workflows:
             - data-hub-test
             - ils-test
       - build:
+<<<<<<< HEAD
+=======
+          requires:
+            - test
+          filters: *only_master_filter
+      - deploy:
+          requires:
+            - build
+          filters: *only_master_filter
+      - iam:
+          requires:
+            - test
+            - deploy
+      - flow-repository:
+          requires:
+            - iam 
+      - component-repository:
+>>>>>>> f7f326522018da7368fded74d7c419466f8fda90
           requires:
             - iam
       - audit-log:
@@ -221,3 +292,14 @@ workflows:
       - attachment-storage-service:
           requires:
             - iam
+      - metadata-repository:
+          requires:
+            - iam
+      - end:
+          requires:
+            - iam
+            - component-repository
+            - audit-log
+            - attachment-storage-service
+            - flow-repository
+            - metadata-repository

@@ -1,0 +1,76 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: oih-dev-ingress
+  namespace: oih-dev-ns
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "oih-dev-ingress"
+    kubernetes.io/ingress.class: "gce"
+spec:
+  rules:
+  - host: iam.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: iam
+          servicePort: 3099
+  - host: skm.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: secret-service
+          servicePort: 3000
+  - host: flow-repository.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: flow-repository
+          servicePort: 3001
+  - host: auditlog.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: audit-log
+          servicePort: 3007
+  - host: metadata.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: meta-data-repository
+          servicePort: 3000
+  - host: component-repository.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: component-repository-service
+          servicePort: 1234
+  - host: webhooks.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: webhooks-service
+          servicePort: 1234
+  - host: web-ui.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: web-ui
+          servicePort: 3000
+  - host: attachment-storage-service.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: attachment-storage-service
+          servicePort: 3002
+  - host: data-hub.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: data-hub-service
+          servicePort: 1234
+  - host: ils.oih-dev.de
+    http:
+      paths:
+      - backend:
+          serviceName: ils
+          servicePort: 3003
