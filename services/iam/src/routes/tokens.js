@@ -18,7 +18,7 @@ const log = Logger.getLogger(`${CONF.general.loggingNameSpace}/token`, {
 const auditLog = Logger.getAuditLogger(`${CONF.general.loggingNameSpace}/token-router`);
 
 /**
- * Get all Tokens
+ * Get all tokens
  */
 router.get('/', auth.isAdmin, async (req, res, next) => {
 
@@ -30,6 +30,9 @@ router.get('/', auth.isAdmin, async (req, res, next) => {
 
     try {
         const docs = await TokenDAO.find(query);
+        docs.forEach((elem) => {
+            elem.token = elem.token.replace(/.(?=.{4,}$)/g, '*');
+        });
         return res.send(docs);
     } catch (err) {
         return next({ status: 500, message: CONSTANTS.ERROR_CODES.DEFAULT });
@@ -43,10 +46,11 @@ router.post('/', auth.can([RESTRICTED_PERMISSIONS['iam.token.create']]), async (
 
     const account = await AccountDAO.findOne({ _id: req.body.accountId, status: CONSTANTS.STATUS.ACTIVE });
     const tokenLifespan = req.body.expiresIn;
+    const inquirer = req.body.inquirer || req.user.userid;
 
     if (!account) {
         // User is either disabled or does not exist anymore
-        return next({ status: 403, message: CONSTANTS.ERROR_CODES.FORBIDDEN });
+        return next({ status: 404, message: CONSTANTS.ERROR_CODES.FORBIDDEN });
     }
 
     if (req.body.customPermissions && !auth.hasPermissions({
@@ -56,7 +60,7 @@ router.post('/', auth.can([RESTRICTED_PERMISSIONS['iam.token.create']]), async (
         return next({ status: 403, message: CONSTANTS.ERROR_CODES.FORBIDDEN });
     }
 
-    if (!req.body.inquirer) {
+    if (!inquirer) {
         return next({ status: 400, message: 'Missing inquirer' });
     }
 
@@ -64,7 +68,7 @@ router.post('/', auth.can([RESTRICTED_PERMISSIONS['iam.token.create']]), async (
         ...account,
         purpose: req.body.purpose || 'accountToken',
         initiator: req.user.userid,
-        inquirer: req.body.inquirer,
+        inquirer,
         accountId: account._id.toString(),
         description: req.body.description || '',
         permissions: Array.from(new Set((account.permissions || []).concat(req.body.customPermissions || []))),
@@ -116,7 +120,7 @@ router.post('/introspect', auth.can([RESTRICTED_PERMISSIONS['iam.token.introspec
         }
 
     } catch (err) {
-        console.log(err);
+        log.error(err);
         return next({ status: 500, message: CONSTANTS.ERROR_CODES.DEFAULT });
     }
 });

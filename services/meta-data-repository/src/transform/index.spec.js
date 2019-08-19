@@ -4,10 +4,10 @@ const readdirp = require('readdirp');
 const { SchemaValidationError, SchemaReferenceError } = require('../error');
 
 const {
+    transformURI,
     transformSchema,
     validateSchema,
     resolveRelativePath,
-    transformURI,
     URIfromId,
 } = require('./');
 
@@ -31,7 +31,7 @@ describe('transform', () => {
 
         expect(
             transformURI({ domain: 'foo', id: 'https://github.com/bar/blub/bar/0/Fooo.json' }),
-        ).toBe('domains/foo/schemas/Fooo.json');
+        ).toBe('domains/foo/schemas/bar/blub/bar/0/Fooo.json');
 
         expect(
             transformURI({ domain: 'foo', id: 'Fooo' }),
@@ -39,19 +39,15 @@ describe('transform', () => {
 
         expect(
             transformURI({ domain: 'foo', id: 'Fooo/blub' }),
-        ).toBe('domains/foo/schemas/blub');
+        ).toBe('domains/foo/schemas/Fooo/blub');
 
         expect(
             transformURI({ domain: 'foo', id: 'file:///Fooo/bar' }),
-        ).toBe('domains/foo/schemas/bar');
+        ).toBe('domains/foo/schemas/Fooo/bar');
 
         expect(
             transformURI({ domain: 'foo', id: 'C:\\Fooo\\bar' }),
-        ).toBe('domains/foo/schemas/bar');
-
-        expect(
-            transformURI({ domain: 'foo', id: 'C:\\Fooo\\bar' }),
-        ).toBe('domains/foo/schemas/bar');
+        ).toBe('domains/foo/schemas/Fooo/bar');
 
         expect(
             transformURI({
@@ -76,17 +72,16 @@ describe('transform', () => {
         ).toBe('domains/foo/schemas/Relation.json');
     });
 
-    test('validateSchema - valid', async (done) => {
-        readdirp({ root: path.resolve(__dirname, '../../test/data/valid'), fileFilter: '*.json' }, async (err, res) => {
-            for (const file of res.files) {
-                validateSchema({
-                    schema: await fs.readFile(file.fullPath, 'utf-8'),
-                    filePath: file.fullPath,
-                });
-            }
-            expect(true).toEqual(true);
-            done();
-        });
+    test('validateSchema - valid', async () => {
+        const files = await readdirp.promise(path.resolve(__dirname, '../../test/data/valid'), { fileFilter: '*.json' });
+
+        for (const file of files) {
+            validateSchema({
+                schema: await fs.readFile(file.fullPath, 'utf-8'),
+                filePath: file.fullPath,
+            });
+        }
+        expect(true).toEqual(true);
     });
 
     test('validateSchema - invalid', async () => {
@@ -124,21 +119,19 @@ describe('transform', () => {
         expect(true).toEqual(true);
     });
 
-    test('transformSchema - valid', async (done) => {
+    test('transformSchema - valid', async () => {
         const root = path.resolve(__dirname, '../../test/data/valid/');
-        readdirp({ root, fileFilter: '*.json' }, async (err, res) => {
-            for (const file of res.files) {
-                await transformSchema({
-                    schema: await fs.readFile(file.fullPath, 'utf-8'),
-                    jsonRefsOptions: {
-                        location: file.fullPath,
-                        root,
-                    },
-                });
-            }
-            expect(true).toEqual(true);
-            done();
-        });
+        const files = await readdirp.promise(root, { fileFilter: '*.json' });
+        for (const file of files) {
+            await transformSchema({
+                schema: await fs.readFile(file.fullPath, 'utf-8'),
+                jsonRefsOptions: {
+                    location: file.fullPath,
+                    root,
+                },
+            });
+        }
+        expect(true).toEqual(true);
     });
 
     test('transformSchema - invalid', async () => {

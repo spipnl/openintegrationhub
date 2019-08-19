@@ -8,8 +8,10 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
+const { can } = require('@openintegrationhub/iam-utils');
 const config = require('../../config/index');
-const { publishAuditLog } = require('../../utils/eventBus');
+const { publishQueue } = require('../../utils/eventBus');
+const { validate } = require('../../utils/validator');
 
 const storage = require(`./${config.storage}`); // eslint-disable-line
 
@@ -23,14 +25,8 @@ const log = require('../../config/logger'); // eslint-disable-line
 const Flow = require('../../models/flow');
 
 // Gets all flows
-router.get('/', jsonParser, async (req, res) => {
-  const credentials = res.locals.credentials[1];
-  let response;
+router.get('/', jsonParser, can(config.flowReadPermission), async (req, res) => {
   let error = false;
-
-  if (!res.locals.admin && credentials.length <= 0) {
-    res.status(403).send({ errors: [{ message: 'User does not have permissions to view flows', code: 403 }] });
-  }
 
   let pageSize = 10;
   let pageNumber = 1;
@@ -70,17 +66,15 @@ router.get('/', jsonParser, async (req, res) => {
   if (req.query.filter && req.query.filter.type !== undefined) {
     if (req.query.filter.type in filterTypes) {
       filters.type = req.query.filter.type;
-    } else if (!res.headersSent) {
-      res.status(400).send({ errors: 'Invalid filter[type] parameter' });
-      return;
+    } else {
+      return res.status(400).send({ errors: [{ message: 'Invalid filter[type] parameter' }] });
     }
   }
 
   // filter[user]
   if (req.query.filter && req.query.filter.user !== undefined) {
-    if (!res.locals.admin && (!res.headersSent)) {
-      res.status(403).send({ errors: [{ message: 'Filtering by user is only available to admins', code: 403 }] });
-      return;
+    if (!config.oihAdminRoles.includes(req.user.role)) {
+      return res.status(403).send({ errors: [{ message: 'Filtering by user is only available to admins', code: 403 }] });
     }
     filters.user = req.query.filter.user;
   }
@@ -99,9 +93,8 @@ router.get('/', jsonParser, async (req, res) => {
     }
     if (!(sortField in sortableFields)) error = true;
 
-    if (error && !res.headersSent) {
-      res.status(400).send({ errors: [{ message: 'Invalid sort parameter', code: 400 }] });
-      return;
+    if (error) {
+      return res.status(400).send({ errors: [{ message: 'Invalid sort parameter', code: 400 }] });
     }
   }
 
@@ -111,219 +104,178 @@ router.get('/', jsonParser, async (req, res) => {
     searchString = searchString.replace(/(^[\s]+|[\s]$)/img, '');
   }
 
-  if (res.locals.admin) {
-    response = await storage.getFlows('admin', pageSize, pageNumber, searchString, filters, sortField, sortOrder); // eslint-disable-line
-  } else {
-    response = await storage.getFlows(credentials, pageSize, pageNumber, searchString, filters, sortField, sortOrder); // eslint-disable-line
-  }
+  const response = await storage.getFlows(req.user, pageSize, pageNumber, searchString, filters, sortField, sortOrder);
 
   if (response.data.length === 0 && !res.headersSent) {
     return res.status(404).send({ errors: [{ message: 'No flows found', code: 404 }] });
-  } if (!res.headersSent) {
-    response.meta.page = pageNumber;
-    response.meta.perPage = pageSize;
-    response.meta.totalPages = Math.ceil(response.meta.total / pageSize);
-    res.json(response);
   }
+
+
+  response.meta.page = pageNumber;
+  response.meta.perPage = pageSize;
+  response.meta.totalPages = Math.ceil(response.meta.total / pageSize);
+  res.json(response);
 });
 
 // Adds a new flow to the repository
-router.post('/', jsonParser, async (req, res) => {
+router.post('/', jsonParser, can(config.flowWritePermission), async (req, res) => {
   const newFlow = req.body;
-  const credentials = res.locals.credentials[0];
 
-  if (!res.locals.admin && credentials.length <= 0) {
-    return res.status(403).send({ errors: [{ message: 'User does not have permissions to write flows', code: 403 }] });
-  }
-
-  // Automatically adds the current user as an owner.
+  // Automatically adds the current user as an owner, if not already included.
   if (!newFlow.owners) {
     newFlow.owners = [];
   }
-  newFlow.owners.push({ id: credentials[0], type: 'user' });
+  if (newFlow.owners.findIndex(o => (o.id === req.user.sub)) === -1) {
+    newFlow.owners.push({ id: req.user.sub, type: 'user' });
+  }
 
   const storeFlow = new Flow(newFlow);
+  const errors = validate(storeFlow);
 
-  if (!res.headersSent) {
-    try {
-      const response = await storage.addFlow(storeFlow);
+  if (errors && errors.length > 0) {
+    return res.status(400).send({ errors });
+  }
 
-      const ev = {
-        name: 'flowCreated',
-        payload: {
-          tenant: credentials[1] ? credentials[1] : '',
-          source: credentials[0] ? credentials[0] : '',
-          object: 'flow',
-          action: 'createFlow',
-          subject: response.id,
-          details: `A new flow with the id ${response.id} was created`,
-        },
-      };
+  try {
+    const response = await storage.addFlow(storeFlow);
 
-      await publishAuditLog(ev);
+    const ev = {
+      headers: {
+        name: 'flowrepo.flow.created',
+      },
+      payload: {
+        tenant: (req.user.currentContext) ? req.user.currentContext.tenant : '',
+        user: req.user.sub,
+        flowId: response.id,
+      },
+    };
 
-      return res.status(201).send({ data: response, meta: {} });
-    } catch (err) {
-      log.error(err);
-      return res.status(500).send({ errors: [{ message: err }] });
-    }
+    await publishQueue(ev);
+
+    return res.status(201).send({ data: response, meta: {} });
+  } catch (err) {
+    log.error(err);
+    return res.status(500).send({ errors: [{ message: err }] });
   }
 });
 
 // Updates a flow with body data
-router.patch('/:id', jsonParser, async (req, res) => {
+router.patch('/:id', jsonParser, can(config.flowWritePermission), async (req, res) => {
   const updateData = req.body;
-  const readCredentials = res.locals.credentials[1];
-  const writeCredentials = res.locals.credentials[0];
 
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return res.status(400).send({ errors: 'Invalid id' });
   }
 
-  // Get the flow to retrieve the updated version and version history
-  const oldFlow = await storage.getFlowById(req.params.id, readCredentials);
+  // Get the current flow
+  const oldFlow = await storage.getFlowById(req.params.id, req.user);
+
   if (!oldFlow) {
-    res.status(404).send({ errors: [{ message: 'Flow not found', code: 404 }] });
-  } else {
-    if (config.usePermissions) {
-      let permitted = false;
+    return res.status(404).send({ errors: [{ message: 'Flow not found', code: 404 }] });
+  }
 
-      // Checks whether the user has write permissions for this flow by attempting to match credentials to the flow's owners.
-      for (let i = 0; i < oldFlow.owners.length; i += 1) {
-        if (writeCredentials.includes(oldFlow.owners[i].id)) {
-          permitted = true;
-          break;
-        }
-      }
-      if (!permitted) {
-        res.status(403).send({ errors: [{ message: 'User does not have write permissions for this flow', code: 403 }] });
-      }
-    }
+  if (oldFlow.status !== 'inactive') {
+    return res.status(409).send({ errors: [{ message: `Flow is not inactive. Current status: ${oldFlow.status}`, code: 409 }] });
+  }
 
-    const updateFlow = Object.assign(oldFlow, updateData);
-    updateFlow._id = updateFlow.id;
-    delete updateFlow.id;
+  const updateFlow = Object.assign(oldFlow, updateData);
+  updateFlow._id = updateFlow.id;
+  delete updateFlow.id;
 
-    // Re-adds the current user to the owners array if they're missing
-    if (!updateFlow.owners.some(e => e.id === writeCredentials[0])) {
-      updateFlow.owners.push({ id: writeCredentials[0], type: 'user' });
-    }
+  // Re-adds the current user to the owners array if they're missing
+  if (!updateFlow.owners) {
+    updateFlow.owners = [];
+  }
+  if (updateFlow.owners.findIndex(o => (o.id === req.user.sub)) === -1) {
+    updateFlow.owners.push({ id: req.user.sub, type: 'user' });
+  }
 
-    const storeFlow = new Flow(updateFlow);
+  const storeFlow = new Flow(updateFlow);
 
-    if (!res.headersSent) {
-      try {
-        const response = await storage.updateFlow(storeFlow, writeCredentials);
-        if (!response) {
-          res.status(404).send({ errors: 'Flow not found' });
-        } else {
-          const ev = {
-            name: 'flowUpdated',
-            payload: {
-              tenant: writeCredentials[1] ? writeCredentials[1] : '',
-              source: writeCredentials[0] ? writeCredentials[0] : '',
-              object: 'flow',
-              action: 'updateFlow',
-              subject: response.id,
-              details: `A flow with the id ${response.id} was updated`,
-            },
-          };
+  const errors = validate(storeFlow);
 
-          await publishAuditLog(ev);
+  if (errors && errors.length > 0) {
+    return res.status(400).send({ errors });
+  }
 
-          res.status(200).send({ data: response, meta: {} });
-        }
-      } catch (err) {
-        res.status(500).send({ errors: [{ message: err }] });
-      }
-    }
+  try {
+    const response = await storage.updateFlow(storeFlow, req.user);
+    const ev = {
+      headers: {
+        name: 'flowrepo.flow.modified',
+      },
+      payload: {
+        tenant: (req.user.currentContext) ? req.user.currentContext.tenant : '',
+        user: req.user.sub,
+        flowId: response.id,
+      },
+    };
+
+    await publishQueue(ev);
+
+    res.status(200).send({ data: response, meta: {} });
+  } catch (err) {
+    res.status(500).send({ errors: [{ message: err }] });
   }
 });
 
 // Gets a flow by id
-router.get('/:id', jsonParser, async (req, res) => {
+router.get('/:id', jsonParser, can(config.flowReadPermission), async (req, res) => {
   const flowId = req.params.id;
-  const credentials = res.locals.credentials[1];
-  let flow;
 
   if (!mongoose.Types.ObjectId.isValid(flowId)) {
     return res.status(400).send({ errors: [{ message: 'Invalid id', code: 400 }] });
   }
 
-  if (!res.locals.admin && credentials.length <= 0) {
-    return res.status(403).send({ errors: [{ message: 'User does not have permissions to view flows', code: 403 }] });
-  }
+  const flow = await storage.getFlowById(flowId, req.user);
 
-  if (res.locals.admin) {
-    flow = await storage.getAnyFlowById(flowId);
+  if (!flow) {
+    res.status(404).send({ errors: [{ message: 'No flow found', code: 404 }] });
   } else {
-    flow = await storage.getFlowById(flowId, credentials);
-  }
-
-  if (!res.headersSent) {
-    if (!flow) {
-      res.status(404).send({ errors: [{ message: 'No flow found', code: 404 }] });
-    } else {
-      const response = {
-        data: flow,
-        meta: {},
-      };
-      res.status(200).send(response);
-    }
+    const response = {
+      data: flow,
+      meta: {},
+    };
+    res.status(200).send(response);
   }
 });
 
 
 // Deletes a flow
-router.delete('/:id', jsonParser, async (req, res) => {
+router.delete('/:id', can(config.flowWritePermission), jsonParser, async (req, res) => {
   const flowId = req.params.id;
-  const readCredentials = res.locals.credentials[1];
-  const writeCredentials = res.locals.credentials[0];
 
   if (!mongoose.Types.ObjectId.isValid(flowId)) {
     return res.status(400).send({ errors: 'Invalid id' });
   }
 
-  const oldFlow = await storage.getFlowById(flowId, readCredentials);
+  const oldFlow = await storage.getFlowById(flowId, req.user);
   if (!oldFlow) {
     return res.status(404).send({ errors: [{ message: 'Flow not found', code: 404 }] });
   }
-  if (config.usePermissions) {
-    let permitted = false;
 
-    // Checks whether the user has write permissions for this flow by attempting to match credentials to the flow's owners.
-    for (let i = 0; i < oldFlow.owners.length; i += 1) {
-      if (writeCredentials.includes(oldFlow.owners[i].id)) {
-        permitted = true;
-        break;
-      }
-    }
-    if (!permitted) {
-      return res.status(403).send({ errors: [{ message: 'User does not have write permissions for this flow', code: 403 }] });
-    }
+  if (oldFlow.status !== 'inactive') {
+    return res.status(409).send({ errors: [{ message: `Flow is not inactive. Current status: ${oldFlow.status}`, code: 409 }] });
   }
 
-  if (!res.headersSent) {
-    const response = await storage.deleteFlow(flowId, writeCredentials);
+  const response = await storage.deleteFlow(flowId, req.user);
 
-    if (!response) {
-      res.status(404).send({ errors: [{ message: 'Flow not found', code: 404 }] });
-    } else {
-      const ev = {
-        name: 'flowDeleted',
-        payload: {
-          tenant: writeCredentials[1] ? writeCredentials[1] : '',
-          source: writeCredentials[0] ? writeCredentials[0] : '',
-          object: 'flow',
-          action: 'deleteFlow',
-          subject: flowId,
-          details: `A flow with the id ${flowId} was deleted`,
-        },
-      };
+  if (!response) {
+    res.status(404).send({ errors: [{ message: 'Flow not found', code: 404 }] });
+  } else {
+    const ev = {
+      headers: {
+        name: 'flowrepo.flow.deleted',
+      },
+      payload: {
+        tenant: (req.user.currentContext) ? req.user.currentContext.tenant : '',
+        user: req.user.sub,
+        flowId,
+      },
+    };
 
-      await publishAuditLog(ev);
-      res.status(200).send({ msg: 'Flow was successfully deleted' });
-    }
+    await publishQueue(ev);
+    res.status(200).send({ msg: 'Flow was successfully deleted' });
   }
 });
 

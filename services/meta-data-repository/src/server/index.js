@@ -1,10 +1,21 @@
 const express = require('express');
+const { EventBus, EventBusManager } = require('@openintegrationhub/event-bus');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const cors = require('cors');
 const bodyParser = require('body-parser');
-const iamLib = require('@openintegrationhub/iam-utils');
+const swaggerUi = require('swagger-ui-express');
+const logger = require('@basaas/node-logger');
+const swaggerDocument = require('../../doc/openapi');
+
+const { isLocalRequest } = require('../util/common');
+
+const iamLib = require('./../module/iam');
 const DAO = require('../dao');
 const conf = require('../conf');
+
+const log = logger.getLogger(`${conf.logging.namespace}/server`);
+
 
 const jsonParser = bodyParser.json();
 
@@ -19,12 +30,16 @@ async function createCollections() {
 }
 
 module.exports = class Server {
-    constructor({ port, mongoDbConnection, dao }) {
+    constructor({
+        port, mongoDbConnection, dao, iam,
+    }) {
         this.port = port || conf.port;
+        this.eventBus = new EventBus({ serviceName: conf.loggingNameSpace, rabbitmqUri: process.env.RABBITMQ_URI });
         this.app = express();
         this.app.disable('x-powered-by');
+        this.iam = iam || iamLib;
         this.mongoDbConnection = mongoDbConnection;
-
+        this.setupCors();
         // apply adapter
         // dao
         if (dao) {
@@ -39,19 +54,21 @@ module.exports = class Server {
         }
 
         this.app.use(jsonParser);
+
         // base routes
         this.app.use('/', require('./../route/root'));
         this.app.use('/healthcheck', require('./../route/healtcheck'));
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: false }));
+
 
         const apiBase = express.Router();
+        apiBase.use('/domains', cors(this.corsOptions));
 
         apiBase.use((req, res, next) => {
-            if (req.connection.remoteAddress === req.connection.localAddress) {
-                if (req.method === 'GET' && req.originalUrl.match(/schemas.+/)) {
-                    return next();
-                }
+            if (isLocalRequest(req)) {
+                return next();
             }
-            iamLib.middleware(req, res, next);
+            this.iam.middleware(req, res, next);
         });
 
         // setup routes
@@ -61,6 +78,30 @@ module.exports = class Server {
 
         // error middleware
         this.app.use(require('./../middleware/error').default);
+    }
+
+    setupCors() {
+        this.corsOptions = {
+            credentials: true,
+            origin(origin, callback) {
+                const whiteList = [...conf.originWhitelist].concat([conf.baseUrl.replace(/^https?:\/\//, '')]);
+                if (whiteList.find(elem => origin.indexOf(elem) >= 0)) {
+                    callback(null, true);
+                } else {
+                    log.info({
+                        message: 'Blocked by CORS',
+                        origin,
+                        originWhitelist: whiteList,
+                    });
+                    callback(new Error('Not allowed by CORS'));
+                }
+            },
+        };
+
+        this.app.use((req, res, next) => {
+            req.headers.origin = req.headers.origin || req.headers.host;
+            next();
+        });
     }
 
     async setupDatabase() {
@@ -75,6 +116,7 @@ module.exports = class Server {
             keepAlive: 120,
             useCreateIndex: true,
             useNewUrlParser: true,
+            useFindAndModify: false,
         });
     }
 
@@ -83,6 +125,8 @@ module.exports = class Server {
 
         await this.setupDatabase();
         await createCollections();
+        await this.eventBus.connect();
+        EventBusManager.init({ eventBus: this.eventBus, serviceName: conf.loggingNameSpace });
         this.server = await this.app.listen(this.port);
     }
 

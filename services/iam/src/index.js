@@ -1,6 +1,6 @@
-const memwatch = require('memwatch-next');
 const mongoose = require('mongoose');
 const Logger = require('@basaas/node-logger');
+const { EventBus } = require('@openintegrationhub/event-bus');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const App = require('./app');
@@ -10,10 +10,6 @@ process.title = `node ${require('./../package.json').name} ${require('./../packa
 
 const log = Logger.getLogger(`${conf.general.loggingNameSpace}/init`, {
     level: 'info',
-});
-
-memwatch.on('leak', (info) => {
-    log.warn('POTENTIAL MEMORY LEAK', info);
 });
 
 function exitHandler(options, err) {
@@ -28,11 +24,16 @@ process.on('exit', exitHandler.bind(null, { cleanup: true }));
 // catches ctrl+c event
 process.on('SIGINT', exitHandler.bind(null, { exit: true }));
 
-// main task
-const mainApp = new App();
-
 (async () => {
     try {
+        // configuring the EventBus
+        const eventBus = new EventBus({ serviceName: conf.general.loggingNameSpace, rabbitmqUri: conf.general.rabbitmqUrl });
+
+        await eventBus.connect();
+
+        // main task
+        const mainApp = new App({ eventBus });
+
         await mainApp.setup(mongoose);
 
         if (conf.general.useHttps) {
@@ -44,6 +45,7 @@ const mainApp = new App();
 
         log.info(`${pjson.name} ${pjson.version} started`);
         log.info(`Listening on ${mainApp.app.get('port')}`);
+
     } catch (err) {
         log.error(err);
         process.exit(1);

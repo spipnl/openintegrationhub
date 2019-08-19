@@ -1,14 +1,14 @@
 const Logger = require('@basaas/node-logger');
 const passport = require('passport');
 const rp = require('request-promise');
-const jwtUtils = require('./../util/jwt');
+const { Event, EventBusManager } = require('@openintegrationhub/event-bus');
 const TokenUtils = require('./../util/tokens');
+
+const Account = require('../models/account');
 
 const basic = require('../oidc/helper/basic-auth-header');
 const CONSTANTS = require('../constants');
 const conf = require('../conf');
-const RolesDAO = require('./../dao/roles');
-const AccountsDAO = require('./../dao/roles');
 const { PERMISSIONS, RESTRICTED_PERMISSIONS } = require('./../access-control/permissions');
 
 const { oidc } = conf;
@@ -17,9 +17,17 @@ const log = Logger.getLogger(`${conf.general.loggingNameSpace}/auth`, {
     level: 'debug',
 });
 
-// TODO: SERVICE_ACCOUNT shouldn't have admin privileges
-const isAdminRole = role => role === CONSTANTS.ROLES.ADMIN;
-// || role === CONSTANTS.ROLES.SERVICE_ACCOUNT;
+const removeEmptyProps = (obj) => {
+    /* eslint-disable-next-line no-restricted-syntax */
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key) && obj[key] === undefined) {
+            delete obj[key];
+        }
+    }
+    return obj;
+};
+
+const isAdminRole = user => user.isAdmin;
 
 const allRequiredElemsExistsInArray = (array, requiredElems) => {
 
@@ -42,15 +50,14 @@ module.exports = {
             requiredPermissions = [requiredPermissions];
         }
 
-        const { role, permissions, currentContext } = user;
+        const { roles, permissions, tenant } = user;
         /* requester is either admin, or a service account with correct permissions or a user in context of a tenant with her permissions */
-        if (role === CONSTANTS.ROLES.ADMIN
-            || (role === CONSTANTS.ROLES.SERVICE_ACCOUNT
-                && permissions.length
-                && allRequiredElemsExistsInArray(permissions, requiredPermissions)
-            )
-            || (currentContext && currentContext.permissions.length && allRequiredElemsExistsInArray(currentContext.permissions, requiredPermissions))
-        ) {
+
+        if (permissions.find(permission => permission === RESTRICTED_PERMISSIONS.all)) {
+            return true;
+        }
+
+        if (allRequiredElemsExistsInArray(permissions, requiredPermissions)) {
             return true;
         }
 
@@ -81,14 +88,17 @@ module.exports = {
      * @param {Array} requiredPermissions
      * */
     hasTenantPermissions: requiredPermissions => async (req, res, next) => {
-        const { role, permissions, currentContext } = req.user;
 
-        /* requester is either admin, or a service account with correct permissions or a user in context of a tenant with her permissions */
-        if (currentContext
-            && currentContext.permissions.length
-            && (currentContext.permissions.find(perm => perm === PERMISSIONS['tenant.all'])
-                || allRequiredElemsExistsInArray(currentContext.permissions, requiredPermissions))
-        ) {
+        if (req.user.permissions.find(perm => perm === PERMISSIONS['tenant.all'])) {
+            return next();
+        }
+
+        const userHasPermissions = module.exports.hasPermissions({
+            requiredPermissions,
+            user: req.user,
+        });
+
+        if (userHasPermissions) {
             return next();
         } else {
             return next({
@@ -109,7 +119,7 @@ module.exports = {
     },
 
     authenticate: (req, res, next) => {
-        passport.authenticate('local', (err, user, passportErrorMsg) => {
+        passport.authenticate('local', async (err, user, passportErrorMsg) => {
 
             if (err) {
                 return next(err);
@@ -117,19 +127,42 @@ module.exports = {
 
             if (passportErrorMsg) {
                 if (passportErrorMsg.name === 'IncorrectPasswordError') {
+                    await Account.updateOne({
+                        username: req.body.username,
+                    }, {
+                        $inc: {
+                            'safeguard.failedLoginAttempts': 1,
+                        },
+                    });
                     return next({ status: 401, message: CONSTANTS.ERROR_CODES.PASSWORD_INCORRECT });
                 }
                 if (passportErrorMsg.name === 'IncorrectUsernameError') {
                     return next({ status: 401, message: CONSTANTS.ERROR_CODES.USER_NOT_FOUND });
+                }
+                if (req.body.username) {
+                    const event = new Event({
+                        headers: {
+                            name: 'iam.user.loginFailed',
+                        },
+                        payload: { user: req.body.username.toString() },
+                    });
+                    EventBusManager.getEventBus().publish(event);
                 }
             }
             if (!user) {
                 return next({ status: 401, message: CONSTANTS.ERROR_CODES.DEFAULT });
             }
 
-            req.logIn(user, (err) => {
+            req.logIn(user, async (err) => {
                 if (err) {
                     log.error('Failed to login user', err);
+                    const event = new Event({
+                        headers: {
+                            name: 'iam.user.loginFailed',
+                        },
+                        payload: { user: req.body.username.toString() },
+                    });
+                    EventBusManager.getEventBus().publish(event);
                     return next({ status: 500, message: CONSTANTS.ERROR_CODES.DEFAULT });
                 }
 
@@ -138,6 +171,15 @@ module.exports = {
                 } else {
                     req.session.cookie.expires = false; // Cookie expires at end of session
                 }
+
+                await Account.updateOne({
+                    username: req.body.username,
+                }, {
+                    $set: {
+                        'safeguard.lastLogin': new Date(),
+                        'safeguard.failedLoginAttempts': 0,
+                    },
+                });
 
                 req.session.save((err) => {
                     if (err) {
@@ -162,8 +204,11 @@ module.exports = {
 
         /** User has a valid cookie */
         if (req.user) {
+            req.user = req.user.toJSON();
             req.user.userid = req.user._id.toString();
-            req.user.auth = req.user;
+
+            req.user = await TokenUtils.resolveUserPermissions(req.user);
+
             return next();
         }
 
@@ -239,22 +284,15 @@ module.exports = {
             req.user.token = token;
             req.user.auth = payload;
             req.user.username = payload.username;
+            req.user.tenant = payload.tenant;
+            // req.user.accountType = payload.accountType;
             req.user.userid = payload._id && payload._id.toString();
-            req.user.memberships = payload.memberships || [];
-            req.user.currentContext = req.user.memberships.find(elem => elem.active === true);
+            // req.user.memberships = payload.memberships || [];
+            // req.user.currentContext = req.user.memberships.find(elem => elem.active === true);
             req.user.permissions = payload.permissions;
-            req.user.role = payload.role;
+            req.user.roles = payload.roles;
 
-            if (req.user.currentContext && req.user.currentContext.tenant) {
-                if (req.user.currentContext.roles) {
-                    let permissions = [];
-                    req.user.currentContext.roles.forEach((role) => {
-                        permissions = permissions.concat(role.permissions);
-                    });
-                    req.user.currentContext.permissions = req.user.currentContext.permissions.concat(permissions);
-                }
-                req.user.currentContext.tenant = req.user.currentContext.tenant.toString(); // TODO: DAO should return id as string instead of BSON objects
-            }
+            req.user = await TokenUtils.resolveUserPermissions(req.user);
 
             return next();
         } else {
@@ -266,7 +304,7 @@ module.exports = {
 
     isAdmin: (req, res, next) => {
 
-        if (isAdminRole(req.user.role)) {
+        if (req.user.isAdmin) {
             return next();
         }
 
@@ -274,7 +312,7 @@ module.exports = {
 
     },
 
-    hasContext: (req, res, next) => {
+    hasContext: (req, res, next) => { // TODO deprecate
 
         if (req.user.currentContext && req.user.currentContext.tenant) {
             return next();
@@ -284,7 +322,7 @@ module.exports = {
 
     },
 
-    paramsMatchesUserId: (req, res, next) => {
+    canEditUser: (req, res, next) => {
 
         if (module.exports.hasPermissions({ user: req.user, requiredPermissions: [RESTRICTED_PERMISSIONS['iam.account.update']] })) {
             return next();
@@ -299,7 +337,7 @@ module.exports = {
     },
 
     isLoggedIn: (req, res, next) => {
-        if (req.user.auth || (req.user.role === CONSTANTS.ROLES.SERVICE_ACCOUNT && req.user.userid)) {
+        if (req.user) {
             return next();
         }
 
@@ -326,4 +364,18 @@ module.exports = {
         return next({ status: 403, message: CONSTANTS.ERROR_CODES.FORBIDDEN });
 
     },
+
+    userIsAdmin: user => isAdminRole(user.role),
+
+    removeCriticalAccountFields: account => removeEmptyProps({
+        firstname: account.firstname,
+        lastname: account.lastname,
+        avatar: account.avatar,
+        phone: account.phone,
+    }),
+
+    removeCriticalTenantFields: tenant => removeEmptyProps({
+        name: tenant.name,
+    }),
+
 };

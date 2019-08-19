@@ -3,6 +3,7 @@ const JsonPointer = require('json-pointer');
 const Ajv = require('ajv');
 const url = require('url');
 const path = require('path');
+const find = require('lodash/find');
 const { SchemaReferenceError, SchemaValidationError } = require('../error');
 const conf = require('../conf');
 
@@ -21,14 +22,18 @@ function URIfromId(id) {
 
 function transformURI({ domain, id, options = {} }) {
     let { pathname } = url.parse(id);
+    const uriBase = `domains/${domain}/schemas`;
+
     // remove first slash if existing
     if (options.location) {
         pathname = options.location.replace(options.root, '');
-    } else {
-        pathname = path.basename(pathname);
+    } else if (!pathname) {
+        pathname = encodeURI(id).replace(/(#|\?)/g, '');
     }
 
-    return `domains/${domain}/schemas/${pathname}`.replace('//', '/');
+    pathname = pathname.replace(`${conf.apiBase}/${uriBase}`, '');
+
+    return `${uriBase}/${pathname}`.replace('//', '/');
 }
 
 function resolveRelativePath({ filePath, location, root }) {
@@ -46,6 +51,60 @@ function resolveRelativePath({ filePath, location, root }) {
         .replace(root, '');
 }
 
+async function processExternalSchema({
+    location,
+    domain,
+    schema,
+    jsonRefsOptions,
+}) {
+    module.exports.validateSchema({
+        schema,
+    });
+
+    console.log(location);
+    jsonRefsOptions.root = url.resolve(location, './');
+    console.log(url.resolve(location, '../'));
+    jsonRefsOptions.location = location;
+    console.log(jsonRefsOptions);
+
+    // jsonRefsOptions.root =
+    console.log(await module.exports.transformSchema({
+        domain,
+        schema,
+        jsonRefsOptions,
+    }));
+    console.log('schema processed');
+}
+
+function transformDbResult(result) {
+    if (result._doc) {
+        result = result._doc;
+    }
+
+    result = {
+        ...result._id ? {
+            id: result._id,
+        } : {},
+        ...result,
+    };
+
+
+    // delete keys
+    delete result._id;
+    delete result.__v;
+    return result;
+}
+
+function transformDbResults(results) {
+    if (typeof results === 'object') {
+        if (Array.isArray(results)) {
+            return results.map(entry => (transformDbResult(entry)));
+        }
+        return transformDbResult(results);
+    }
+    return results;
+}
+
 module.exports = {
     validateSchema({ schema, filePath }) {
         schema = typeof schema === 'string' ? JSON.parse(schema) : schema;
@@ -59,14 +118,39 @@ module.exports = {
         schema,
         domain,
         jsonRefsOptions = {},
+        token,
     }) {
         schema = typeof schema === 'string' ? JSON.parse(schema) : schema;
-        const fullBase = `${conf.baseUrl}:${conf.port}${conf.apiBase}`;
+
+        // default settings
+
         jsonRefsOptions.loaderOptions = {
             ...{
-                prepareRequest(req, callback) {
+                prepareRequest(req, cb) {
                     req.header['content-type'] = 'application/schema+json';
-                    callback(undefined, req);
+                    if (token) {
+                        req.header.Authorization = `Bearer ${token}`;
+                    }
+
+                    cb(undefined, req);
+                },
+                async processContent(res, cb) {
+                    let error;
+                    if (res.location.match('http')
+                        && !res.location.match(conf.baseUrl)
+                    ) {
+                        try {
+                            // await processExternalSchema({
+                            //     location: res.location,
+                            //     domain,
+                            //     schema: JSON.parse(res.text),
+                            //     jsonRefsOptions,
+                            // });
+                        } catch (err) {
+                            error = err;
+                        }
+                    }
+                    cb(error, JSON.parse(res.text));
                 },
             },
             ...jsonRefsOptions.loaderOptions,
@@ -76,18 +160,21 @@ module.exports = {
         const copy = { ...schema };
         let uri = '';
         const backReferences = [];
+
+
         // rewrite id
         if (copy.$id) {
             uri = transformURI({ id: copy.$id, domain, options: jsonRefsOptions });
-            copy.$id = `${fullBase}/${uri}`;
+            copy.$id = module.exports.buildSchemaURL(uri);
         } else if (copy.id) {
             uri = transformURI({ id: copy.id, domain, options: jsonRefsOptions });
-            copy.id = `${fullBase}/${uri}`;
+            copy.id = module.exports.buildSchemaURL(uri);
         }
 
         for (const key of Object.keys(refs)) {
             const refObj = refs[key];
             const { uriDetails } = refObj;
+
             if (refObj.error) {
                 // return original id
                 const id = schema.$id || schema.id || 'no-id';
@@ -110,12 +197,17 @@ module.exports = {
                     copy,
                     key.replace('#', ''),
                     {
-                        $ref: `${conf.baseUrl}:${conf.port}${transformedPath}${uriDetails.fragment ? `#${uriDetails.fragment}` : ''}`,
+                        $ref: `${module.exports.buildBaseUrl()}${transformedPath}${uriDetails.fragment ? `#${uriDetails.fragment}` : ''}`,
                     },
                 );
-                backReferences.push(transformedPath);
-            } else if (`${uriDetails.scheme}://${uriDetails.host}:${uriDetails.port}` === `${conf.baseUrl}:${conf.port}`) {
-                backReferences.push(uriDetails.path);
+
+                if (!backReferences.includes(transformedPath)) {
+                    backReferences.push(transformedPath);
+                }
+            } else if (`${uriDetails.scheme}://${uriDetails.host}${conf.urlsWithPort ? `:${uriDetails.port}` : ''}` === `${module.exports.buildBaseUrl()}`) {
+                if (!backReferences.includes(uriDetails.path)) {
+                    backReferences.push(uriDetails.path);
+                }
             }
         }
 
@@ -125,7 +217,20 @@ module.exports = {
         };
     },
 
-    resolveRelativePath,
+    buildURI({ domainId, uri }) {
+        return `${conf.apiBase}/domains/${domainId}/schemas/${uri}`;
+    },
+
+
+    buildBaseUrl() {
+        return `${conf.baseUrl}${conf.urlsWithPort ? `:${conf.port}` : ''}`;
+    },
+
+    buildSchemaURL(uri) {
+        return `${module.exports.buildBaseUrl()}${conf.apiBase}/${uri}`;
+    },
     transformURI,
+    transformDbResults,
+    resolveRelativePath,
     URIfromId,
 };

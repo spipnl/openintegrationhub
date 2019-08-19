@@ -1,9 +1,19 @@
 const mongoose = require('mongoose');
+const { Event, EventBusManager } = require('@openintegrationhub/event-bus');
 const Schema = require('../../model/Schema');
 
 async function getReferences(uri) {
     return (await Schema.find({ refs: uri })).map(elem => elem.uri);
 }
+
+// async function updateReferences({ oldUri, newUri }) {
+//     await Schema.updateMany({
+//         refs: oldUri,
+//     },
+//     {
+//         $set: { 'refs.$': newUri },
+//     });
+// }
 
 module.exports = {
     async startTransaction() {
@@ -27,15 +37,34 @@ module.exports = {
     },
 
     async create({ obj, options = {} }) {
-        return await Schema.create([obj], options);
+        const result = (await Schema.create([obj], options))[0];
+        const event = new Event({
+            headers: {
+                name: 'metadata.schema.created',
+            },
+            payload: { id: result._id },
+        });
+        EventBusManager.getEventBus().publish(event);
+        return result;
     },
-    async createUpdate({ obj, options = {} }) {
-        options = {
-            upsert: true,
-            ...options,
-        };
-        return await Schema.updateOne({ uri: obj.uri }, obj, options);
+    async updateByURI(obj) {
+        const uri = obj.uri;
+        delete obj.uri;
+
+        const result = await Schema.findOneAndUpdate({ uri }, obj, {
+            new: true,
+            runValidators: true,
+        });
+        const event = new Event({
+            headers: {
+                name: 'metadata.schema.modified',
+            },
+            payload: { id: result._id },
+        });
+        EventBusManager.getEventBus().publish(event);
+        return result;
     },
+
     async findByDomainAndEntity({
         domainId,
         entityId,
@@ -45,23 +74,34 @@ module.exports = {
             domainId,
             'owners.id': entityId,
         },
-        'name domainId description uri value owners',
+        null,
+        options);
+    },
+
+    async findByDomain({
+        domainId,
+        options = {},
+    }) {
+        return await Schema.find({
+            domainId,
+        },
+        null,
         options);
     },
     async findByURI({
         uri,
         options = {},
     }) {
-        const schema = await Schema.findOne({
+        let schema = await Schema.findOne({
             uri,
         }, null, options);
 
         if (!schema) {
             return null;
         }
-
+        schema = schema.toObject();
         schema.value = JSON.parse(schema.value);
-        return schema.toObject();
+        return schema;
     },
     async delete(uri) {
         const refs = await getReferences(uri);
@@ -70,6 +110,13 @@ module.exports = {
             await Schema.deleteOne({
                 uri,
             });
+            const event = new Event({
+                headers: {
+                    name: 'metadata.schema.deleted',
+                },
+                payload: { schema: uri },
+            });
+            EventBusManager.getEventBus().publish(event);
         } else {
             throw new Error(`${uri} referenced by ${refs.toString()}`);
         }
