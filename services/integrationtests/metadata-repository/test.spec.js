@@ -228,7 +228,7 @@ describe('Metadata-Repository', () => {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
-				name: 'achive',
+				name: 'archive',
 				file: {
 					value: fs.createReadStream('metadata-repository/valid.zip'),
 					options: {
@@ -242,9 +242,7 @@ describe('Metadata-Repository', () => {
 				"Authorization" : " Bearer " + tokenAdmin
 			}
 		};
-
 		const response = await request(options);
-		
 		expect(response.status).toEqual(200);	
 		done();		
 	});
