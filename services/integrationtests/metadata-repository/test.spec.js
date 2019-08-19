@@ -291,7 +291,6 @@ describe('Metadata-Repository', () => {
 	test('--- CREATE NEW DOMAIN - INVALID TOKEN ---', async (done) => {
 		let invalidToken = "034957430985";
 		const toBeUploaded = {
-			"data": {
 				"name": "string",
 				"description": "string",
 				"public": true,
@@ -302,9 +301,8 @@ describe('Metadata-Repository', () => {
 						}
 					],
 					"id": "string",
-					"createdAt": "2019-06-03T14:58:39.897Z",
-					"updatedAt": "2019-06-03T14:58:39.897Z"
-				}					
+				"createdAt": "2019-06-03T14:58:39.897Z",
+				"updatedAt": "2019-06-03T14:58:39.897Z"			
 		};
 		const getAllDomains = {
 			method: 'POST',
