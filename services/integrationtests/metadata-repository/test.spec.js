@@ -386,7 +386,7 @@ describe('Metadata-Repository', () => {
 	});
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID TOKEN ---', async(done) => { 
-		const file = fs.createReadStream('metadata-repository/invalid.tgz');
+		const file = fs.createReadStream('metadata-repository/invalid.zip');
 		const uploadBulk = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
@@ -405,7 +405,7 @@ describe('Metadata-Repository', () => {
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID ID ---', async(done) => { 
 		let invalidDomainID ="lksfhdslfh";
-		const file = fs.createReadStream('metadata-repository/invalid.tgz');
+		const file = fs.createReadStream('metadata-repository/invalid.zip');
 		const uploadBulk = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}/schemas/import`,
