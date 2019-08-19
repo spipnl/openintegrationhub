@@ -99,8 +99,6 @@ describe('Metadata-Repository', () => {
 
 		const newDescription = "new description: short desc update";
 		response.body.data.description = newDescription;
-		//console.log(`The new response is: ${JSON.stringify(response.body.data)}`);
-		//console.log(`DomainId in PUT: ${domainID}`);
 
 		responseBody = {
 			data:{
@@ -125,7 +123,7 @@ describe('Metadata-Repository', () => {
 			},
 			body: responseBody 		
 		};
-		//console.log(`putdom in PUT: ${JSON.stringify(putDomain)}`);
+
 		const responseFinal = await request(putDomain);
 		expect(responseFinal.statusCode).toEqual(200);
 	
@@ -203,7 +201,7 @@ describe('Metadata-Repository', () => {
 			}
 		};
 		const response = await request(requestOptions);
-		//console.log(JSON.stringify(response.body));
+
 		expect(response.statusCode).toEqual(200);
 		done();
 	});
@@ -223,30 +221,24 @@ describe('Metadata-Repository', () => {
 	});
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
+		console.log(`MyDomainID: ${domainID}`);
+		const file = fs.createReadStream('metadata-repository/valid.zip');
 
 		var options = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
-				name: 'achive',
-				file: {
-					value: fs.createReadStream('metadata-repository/valid.zip'),
-					options: {
-						filename: 'valid.zip',
-						contentType: 'application/x-zip-compressed'
-					}
-				}
+				'archive': file
 			},
 			headers: {
 				/* 'content-type': 'multipart/form-data' */ // Is set automatically
-				"Authorization" : " Bearer " + tokenAdmin
+				'Authorization' : " Bearer " + tokenAdmin
 			}
 		};
-
 		const response = await request(options);
-		
-		expect(response.status).toEqual(200);	
-		done();		
+
+		expect(response.statusCode).toEqual(200);	
+		done();	
 	});
 	
 	test('--- DELETE DOMAIN MODEL SCHEME BY URI ---', async(done) => {   	
@@ -275,15 +267,15 @@ describe('Metadata-Repository', () => {
 		
 		const response = await request(requestOptions);
 		expect(response.statusCode).toEqual(404);
-		//console.log(JSON.stringify(response.body));
-			done();
+
+		done();
 	});
 	
 	test('--- GET ALL DOMAIN MODELS - INVALID DOMAIN ID ---', async(done) => {  
 		let invalidDomainID = "034957430985";
 		const requestOptions = {
 			method: 'GET',
-			uri: `http://metadata.openintegrationhub.com/domains/${invalidDomainID}/schemas`,
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}/schemas`,
 			json: true,
 			headers: {
 				"Authorization" : " Bearer " + tokenAdmin, 
@@ -292,7 +284,7 @@ describe('Metadata-Repository', () => {
 		
 		const response = await request(requestOptions);
 		expect(response.statusCode).toEqual(404);
-		//console.log(JSON.stringify(response.body));
+
 		done();
 	});
 	
@@ -326,7 +318,7 @@ describe('Metadata-Repository', () => {
 		const response = await request(getAllDomains);
 		expect(response.statusCode).toEqual(401);
 	
-	done();
+		done();
 	});
 	
 	test('--- GET DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => {
@@ -341,7 +333,7 @@ describe('Metadata-Repository', () => {
 		};		
 		const response = await request(getDomainByID);
 		expect(response.statusCode).toEqual(404);
-	done();
+		done();
 	});
 	
 	test('--- PUT DOMAIN BY ID - INVALID DOMAIN ID ---', async (done) => { 	
@@ -369,70 +361,56 @@ describe('Metadata-Repository', () => {
 		};
 		const response2 = await request(patchDomain);
 		expect(response2.statusCode).toEqual(404);
-	done();
-	});
-	
-	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID INPUT ---', async(done) => { 
-		const uploadBulk = {
-			method: 'POST',
-			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
-			formData: {
-				name: 'valid.zip',
-				file: {
-					value: fs.createReadStream(path.resolve('metadata-repository/invalid.zip')),
-					options: {
-						filename: 'valid.zip',
-						contentType: 'multipart/form-data'
-					}
-				}
-			},
-			headers: {
-				"Authorization" : " Bearer " + tokenAdmin,
-			}
-		};
-		const response = await request(uploadBulk);
-		expect(response.statusCode).toEqual(200);	
 		done();
 	});
 	
+	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID INPUT ---', async(done) => { 
+		console.log(`MyDomainID: ${domainID}`);
+		const file = fs.createReadStream('metadata-repository/invalid.zip');
+
+		var options = {
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+			formData: {
+				'archive': file
+			},
+			headers: {
+				/* 'content-type': 'multipart/form-data' */ // Is set automatically
+				'Authorization' : " Bearer " + tokenAdmin
+			}
+		};
+		const response = await request(options);
+
+		expect(response.statusCode).toEqual(200);	
+		done();	
+	});
+	
 	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID TOKEN ---', async(done) => { 
+		const file = fs.createReadStream('metadata-repository/invalid.tgz');
 		const uploadBulk = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
-				name: 'valid.zip',
-				file: {
-					value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
-					options: {
-						filename: 'valid.zip',
-						contentType: 'multipart/form-data'
-					}
-				}
+				'archive': file
 			},
 			headers: {
 				"Authorization" : " Bearer " + invalidToken,
 			}
 		};
 		const response = await request(uploadBulk);
-		//console.log(JSON.stringify(response.body));
+
 		expect(response.statusCode).toEqual(401);	
 		done();
 	});
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID ID ---', async(done) => { 
 		let invalidDomainID ="lksfhdslfh";
+		const file = fs.createReadStream('metadata-repository/invalid.tgz');
 		const uploadBulk = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}/schemas/import`,
 			formData: {
-				name: 'valid.zip',
-				file: {
-					value: fs.createReadStream(path.resolve('metadata-repository/valid.zip')),
-					options: {
-						filename: 'valid.zip',
-						contentType: 'multipart/form-data'
-					}
-				}
+				'archive': file
 			},
 			headers: {
 				"Authorization" : " Bearer " + invalidToken,
@@ -456,6 +434,6 @@ describe('Metadata-Repository', () => {
 		const response = await request(deleteDomainByID);
 		expect(response.statusCode).toEqual(200);
 	
-	done();
+		done();
 	});
 });
