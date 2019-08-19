@@ -223,8 +223,6 @@ workflows:
             - deps
       - flow-repository-test:
           requires:
-<<<<<<< HEAD
-=======
             - deps
       - audit-log-test:
           requires:
@@ -240,7 +238,6 @@ workflows:
             - lib-backend-commons-lib-test
       - lib-webhooks-test:
           requires:
->>>>>>> f7f326522018da7368fded74d7c419466f8fda90
             - lib-backend-commons-lib-test
       - lib-component-repository-test:
           requires:
@@ -266,8 +263,6 @@ workflows:
             - data-hub-test
             - ils-test
       - build:
-<<<<<<< HEAD
-=======
           requires:
             - test
           filters: *only_master_filter
@@ -283,7 +278,6 @@ workflows:
           requires:
             - iam 
       - component-repository:
->>>>>>> f7f326522018da7368fded74d7c419466f8fda90
           requires:
             - iam
       - audit-log:
