@@ -134,7 +134,6 @@ describe('Metadata-Repository', () => {
 		
 	test('--- IMPORT DOMAIN MODEL ---', async(done) => {   
 		const newModel = {
-			"data": {
 				"name": "test",
 				"description": "upload test",
 				"value": {
@@ -148,7 +147,6 @@ describe('Metadata-Repository', () => {
 						}
 					}
 				}
-			}
 		};
 		
 		const addDomainModel = {
@@ -160,7 +158,6 @@ describe('Metadata-Repository', () => {
 			},
 			body: newModel		
 		};
-		//console.log(`DomainId in IMPORT: ${domainID}`);
 		const response = await request(addDomainModel);
 		expect(response.statusCode).toEqual(200);	
 		done();
@@ -168,7 +165,6 @@ describe('Metadata-Repository', () => {
 	
 	test('--- PUT DOMAIN MODEL BY URI ---', async(done) => {   
 		const newModel = {
-			"data": {
 				"name": "test",
 				"description": "upload test",
 				"value": {
@@ -182,7 +178,6 @@ describe('Metadata-Repository', () => {
 						}
 					}
 				}
-			}
 		};
 		const putDomainModel = {
 			method: 'PUT',
@@ -193,7 +188,6 @@ describe('Metadata-Repository', () => {
 			},
 			body: newModel		
 		};
-		//console.log(`request options in put domain model by uri: ${JSON.stringify(newModel)}`);
 		const response = await request(putDomainModel);
 		expect(response.statusCode).toEqual(200);	
 		done();
