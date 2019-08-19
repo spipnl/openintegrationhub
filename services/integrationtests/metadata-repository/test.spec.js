@@ -224,7 +224,7 @@ describe('Metadata-Repository', () => {
 	
 	test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
 
-		var options = {
+		var zipFile = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
 			formData: {
@@ -233,16 +233,15 @@ describe('Metadata-Repository', () => {
 					value: fs.createReadStream('metadata-repository/valid.zip'),
 					options: {
 						filename: 'valid.zip',
-						contentType: 'application/x-zip-compressed'
+						contentType: 'multipart/form-data'
 					}
 				}
 			},
-			headers: {
-				/* 'content-type': 'multipart/form-data' */ // Is set automatically
-				"Authorization" : " Bearer " + tokenAdmin
+			headers: {		
+				"Authorization" : " Bearer " + tokenAdmin,
 			}
 		};
-		const response = await request(options);
+		const response = await request(zipFile);
 		expect(response.status).toEqual(200);	
 		done();		
 	});
