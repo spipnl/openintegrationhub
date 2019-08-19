@@ -14,12 +14,6 @@ spec:
       - backend:
           serviceName: iam
           servicePort: 3099
-  - host: api.openintegrationhub.com
-    http:
-      paths:
-      - backend:
-          serviceName: example-api
-          servicePort: 8080
   - host: skm.openintegrationhub.com
     http:
       paths:
@@ -44,3 +38,39 @@ spec:
       - backend:
           serviceName: meta-data-repository
           servicePort: 3000
+  - host: component-repository.openintegrationhub.com
+    http:
+      paths:
+      - backend:
+          serviceName: component-repository-service
+          servicePort: 1234
+  - host: webhooks.openintegrationhub.com
+    http:
+      paths:
+      - backend:
+          serviceName: webhooks-service
+          servicePort: 1234
+  - host: web-ui.openintegrationhub.com
+    http:
+      paths:
+      - backend:
+          serviceName: web-ui
+          servicePort: 3000
+  - host: attachment-storage-service.openintegrationhub.com
+    http:
+      paths:
+      - backend:
+          serviceName: attachment-storage-service
+          servicePort: 3002
+  - host: data-hub.openintegrationhub.com
+    http:
+      paths:
+      - backend:
+          serviceName: data-hub-service
+          servicePort: 1234
+  - host: ils.openintegrationhub.com
+    http:
+      paths:
+      - backend:
+          serviceName: ils
+          servicePort: 3003

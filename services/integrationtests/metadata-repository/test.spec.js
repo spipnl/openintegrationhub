@@ -18,7 +18,7 @@ let invalidToken = "034957430985";
 
 describe('Metadata-Repository', () => {
    jest.setTimeout(15000);
-	test.only('--- GET ALL DOMAINS ---', async (done) => {
+	test('--- GET ALL DOMAINS ---', async (done) => {
 		tokenAdmin = importToken.token;
 		
 		console.log("imported token for meta data: " + tokenAdmin);
@@ -35,7 +35,7 @@ describe('Metadata-Repository', () => {
 	done();
 	});
 	
-	test.only('--- CREATE NEW DOMAIN ---', async (done) => {
+	test('--- CREATE NEW DOMAIN ---', async (done) => {
 		const toBeUploaded = {
 			"data": {
 				"name": "string",
@@ -134,7 +134,6 @@ describe('Metadata-Repository', () => {
 		
 	test('--- IMPORT DOMAIN MODEL ---', async(done) => {   
 		const newModel = {
-			"data": {
 				"name": "test",
 				"description": "upload test",
 				"value": {
@@ -148,7 +147,6 @@ describe('Metadata-Repository', () => {
 						}
 					}
 				}
-			}
 		};
 		
 		const addDomainModel = {
@@ -168,7 +166,6 @@ describe('Metadata-Repository', () => {
 	
 	test('--- PUT DOMAIN MODEL BY URI ---', async(done) => {   
 		const newModel = {
-			"data": {
 				"name": "test",
 				"description": "upload test",
 				"value": {
@@ -182,7 +179,6 @@ describe('Metadata-Repository', () => {
 						}
 					}
 				}
-			}
 		};
 		const putDomainModel = {
 			method: 'PUT',
@@ -230,55 +226,29 @@ describe('Metadata-Repository', () => {
 		done();
 	});
 	
-	test.only('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
+	test('--- BULK IMPORT  OF DOMAIN MODELS ---', async(done) => { 
 
-		/*const filename = __dirname + 'valid.zip';
-		const readstream = fs.createReadStream(filename);
-		
-		form.append('archive', readstream);
-		console.log(`My appended data: ${JSON.stringify(form)}`);
-
-		const uploadBulk = {
+		var options = {
 			method: 'POST',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
-			//form: form,
-			headers: {
-				"Authorization" : " Bearer " + tokenAdmin,
-				"Content-Type": `multipart/form-data`,
-			},
 			formData: {
-				name: 'archive',
+				name: 'achive',
 				file: {
-					value: fs.createReadStream(path.resolve(__dirname, './valid.zip')),
+					value: fs.createReadStream('metadata-repository/valid.zip'),
 					options: {
-						filename: 'valid.zip',ah lol m
+						filename: 'valid.zip',
 						contentType: 'application/x-zip-compressed'
 					}
 				}
 			},
-			simple: false,
-			resolveWithFullResponse: true
+			headers: {
+				/* 'content-type': 'multipart/form-data' */ // Is set automatically
+				"Authorization" : " Bearer " + tokenAdmin
+			}
 		};
-		
-		console.log(`Requestion Options for bulk upload: ${JSON.stringify(uploadBulk)}`);
-		const response = await request(uploadBulk);
-		console.log(`The response for bulk import is: ${JSON.stringify(response)}`);
-		*/
 
-		let form = new formData();
-		let test = fs.createReadStream('metadata-repository/valid.zip');
+		const response = await request(options);
 		
-		form.append('archive', test);
-
-		const headers = {
-			"Authorization" : " Bearer " + tokenAdmin,
-			"Content-Type": `multipart/form-data`
-		
-		}
-		console.log(JSON.stringify(headers));
-		console.log(form);
-		const response = await axios.post(`http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`, {form}, headers);
-		console.log(`HEY HO LET'S GO: ${response}`);
 		expect(response.status).toEqual(200);	
 		done();		
 	});
@@ -479,7 +449,7 @@ describe('Metadata-Repository', () => {
 		done();
 	});
 
-	test.only('--- DELETE DOMAIN BY ID ---', async (done) => {
+	test('--- DELETE DOMAIN BY ID ---', async (done) => {
 		const deleteDomainByID = {
 			method: 'DELETE',
 			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}`,

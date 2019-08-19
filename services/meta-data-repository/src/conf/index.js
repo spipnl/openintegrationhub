@@ -2,12 +2,17 @@ const path = require('path');
 const { optional, required } = require('./check-env');
 const { version, name } = require('../../package.json');
 
+const originwhitelist = optional('ORIGINWHITELIST') ? optional('ORIGINWHITELIST').split(',') : [];
+
 module.exports = {
     port: optional('PORT', 3000),
+    urlsWithPort: optional('URLS_WITH_PORT', 'true') === 'true',
     baseUrl: optional('BASE_URL', 'http://localhost'),
     apiBase: optional('API_BASE', '/api/v1'),
     userAuthType: optional('AUTH_TYPE', 'basic'),
     importFilePath: path.resolve(optional('IMPORT_FILE_PATH', 'temp')),
+    loggingNameSpace: 'metadata',
+    rabbitmqUrl: optional('RABBITMQ_URI', 'amqp://guest:guest@localhost:5672'),
     iam: {
         apiBase: optional('IAM_API_BASE', 'http://iam.openintegrationhub.com/api/v1'),
         introspectType: optional('INTROSPECT_TYPE', 'basic'),
@@ -18,6 +23,13 @@ module.exports = {
         oidcServiceClientId: optional('IAM_OIDC_SERVICE_CLIENT_ID', 'id'),
         oidcServiceClientSecret: optional('IAM_OIDC_SERVICE_CLIENT_SECRET', 'secret'),
     },
+    originWhitelist: originwhitelist.concat(optional('NODE_ENV') !== 'production' ? [
+        // development only
+        '127.0.0.1',
+        'localhost',
+    ] : [
+
+    ]),
     logging: {
         namespace: optional('LOGGING_NAMESPACE', name),
         level: optional('LOGGING_LEVEL', 'error'),

@@ -1,4 +1,5 @@
 const Domain = require('../../model/Domain');
+const Schema = require('../../model/Schema');
 
 module.exports = {
 
@@ -8,16 +9,17 @@ module.exports = {
     async countBy(query) {
         return await Domain.countDocuments(query);
     },
-    async create(obj) {
-        const domain = new Domain({ ...obj });
-        await domain.save();
-        return domain.toObject();
+
+    async create({ obj, options = {} }) {
+        return (await Domain.create([obj], options))[0];
+    },
+    async updateById(obj) {
+        return await Domain.findOneAndUpdate({ _id: obj.id }, obj, { new: true });
     },
 
     async findOne(query) {
         return await Domain.findOne(query);
     },
-
     async findByEntityWithPagination(
         id,
         props,
@@ -29,7 +31,8 @@ module.exports = {
         props);
     },
     async delete(id) {
-        return await Domain.deleteOne({
+        await Schema.deleteMany({ domainId: id });
+        await Domain.deleteOne({
             _id: id,
         });
     },

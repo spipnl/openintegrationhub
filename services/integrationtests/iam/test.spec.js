@@ -14,7 +14,7 @@ let token = null;
 
 describe('Login', () => {
     jest.setTimeout(15000);
-    test.only('--- 1. LOGIN & TOKEN ---', async (done) => {
+    test('--- 1. LOGIN & TOKEN ---', async (done) => {
         const jsonPayload = {
 			username,
 			password

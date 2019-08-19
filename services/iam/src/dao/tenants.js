@@ -1,4 +1,5 @@
 const Logger = require('@basaas/node-logger');
+const { Event, EventBusManager } = require('@openintegrationhub/event-bus');
 const Tenant = require('./../models/tenant');
 const CONF = require('./../conf');
 const AccountDAO = require('./accounts');
@@ -32,6 +33,14 @@ const TenantDAO = {
 
         auditLog.info('create.tenant', { data: savedEntity.toObject() });
 
+        const event = new Event({
+            headers: {
+                name: 'iam.tenant.created',
+            },
+            payload: { tenant: savedEntity.toObject(), id: savedEntity._id.toString() },
+        });
+        EventBusManager.getEventBus().publish(event);
+
         return savedEntity.toJSON();
 
     },
@@ -47,6 +56,13 @@ const TenantDAO = {
         }, updateOperation);
 
         log.debug('updated.tenant', { id, props });
+        const event = new Event({
+            headers: {
+                name: 'iam.tenant.modified',
+            },
+            payload: { id: id.toString() },
+        });
+        EventBusManager.getEventBus().publish(event);
         auditLog.info('update.tenant', { data: props, id });
 
     },
@@ -55,9 +71,18 @@ const TenantDAO = {
 
         log.debug('delete.tenant', { id });
 
+        await AccountDAO.delete({ tenant: id });
+
         await Tenant.deleteOne({ _id: id });
         log.debug('deleted.tenant', { id });
         auditLog.info('delete.tenant', { data: { id } });
+        const event = new Event({
+            headers: {
+                name: 'iam.tenant.deleted',
+            },
+            payload: { id: id.toString() },
+        });
+        EventBusManager.getEventBus().publish(event);
     },
 
     getUsersAssignedToTenant: async ({ id }) => AccountDAO.getUsersAssignedToTenant({ tenantId: id }),

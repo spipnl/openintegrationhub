@@ -4,7 +4,7 @@ aliases:
   - &node_env
     - image: circleci/node:8-stretch
   - &node_mongo_env
-    - image: circleci/node:8-stretch
+    - image: circleci/node:10-stretch
     - image: circleci/mongo:3.6
   - &run_npm_install
     name: Installing Dependencies
@@ -23,7 +23,7 @@ aliases:
           keys:
             - yarn-deps-{{ .Branch }}-{{ .Revision }}
       - run: |
-          git diff --no-commit-id --name-only -r `git log -n 3 --oneline --pretty=format:"%h" | tail -n1` > gitchanges.txt
+          git diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" --first-parent master | tail -n1` > gitchanges.txt
           cd ./scripts # needed for compatible with travis implementation
           node getChanges.js
           node build.js
@@ -105,6 +105,10 @@ jobs:
     docker: *node_env
     working_directory: ~/oih/services/iam
     steps: *yarn_test_steps
+  web-ui-test:
+    docker: *node_env
+    working_directory: ~/oih/services/web-ui
+    steps: *yarn_test_steps
   meta-data-repository-test:
     docker: *node_env
     working_directory: ~/oih/services/meta-data-repository
@@ -137,6 +141,10 @@ jobs:
     docker: *node_env
     working_directory: ~/oih/lib/webhooks
     steps: *yarn_test_steps
+  lib-component-repository-test:
+    docker: *node_mongo_env
+    working_directory: ~/oih/lib/component-repository
+    steps: *yarn_test_steps
   flow-repository-test:
     docker: *node_env
     working_directory: ~/oih/services/flow-repository
@@ -145,20 +153,66 @@ jobs:
     docker: *node_env
     working_directory: ~/oih/services/audit-log
     steps: *yarn_test_steps
+  data-hub-test:
+    docker: *node_mongo_env
+    working_directory: ~/oih/services/data-hub
+    steps: *yarn_test_steps
+  ils-test:
+    docker: *node_env
+    working_directory: ~/oih/services/ils
+    steps: *yarn_test_steps
 workflows:
   pipeline:
     jobs:
       - deps
-      - iam:
+      - webhooks-test:
+          requires:
+            - lib-webhooks-test
+      - iam-test:
+          requires:
+            - deps
+      - web-ui-test:
+          requires:
+            - deps
+      - meta-data-repository-test:
+          requires:
+            - deps
+      - component-orchestrator-test:
+          requires:
+            - lib-component-orchestrator-test
+      - scheduler-test:
+          requires:
+            - lib-scheduler-test
+      - secret-service-lib-test:
           requires:
             - deps
       - flow-repository:
           requires:
-            - iam 
-      - metadata-repository:
+            - lib-backend-commons-lib-test
+      - lib-component-repository-test:
           requires:
-            - iam
-      - component-repository:
+            - lib-backend-commons-lib-test
+      - data-hub-test:
+          requires:
+            - lib-backend-commons-lib-test
+      - ils-test:
+          requires:
+            - deps
+      - test:
+          requires:
+            - webhooks-test
+            - iam-test
+            - web-ui-test
+            - meta-data-repository-test
+            - component-orchestrator-test
+            - scheduler-test
+            - secret-service-lib-test
+            - flow-repository-test
+            - audit-log-test
+            - lib-component-repository-test
+            - data-hub-test
+            - ils-test
+      - build:
           requires:
             - iam
       - audit-log:

@@ -2,7 +2,8 @@
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
+const { Event, EventBus, EventBusManager } = require('@openintegrationhub/event-bus');
 const passport = require('passport');
 // const cors = require('cors');
 const Promise = require('bluebird');
@@ -51,8 +52,9 @@ const checkProto = (req, res, next) => {
 
 class App {
 
-    constructor() {
+    constructor(opts) {
         this.server = null;
+        this.eventBus = opts && opts.eventBus;
         this.app = express();
         this.app.set('port', conf.general.port);
         this.app.disable('x-powered-by');
@@ -72,6 +74,8 @@ class App {
             useCreateIndex: true,
         });
 
+        EventBusManager.init({ eventBus: this.eventBus, serviceName: conf.general.loggingNameSpace });
+
         registerModels();
         this.setupCors();
         this.setupMiddleware();
@@ -81,8 +85,8 @@ class App {
         }
 
         this.setupRoutes();
-        await App.createMasterAccount();
         await App.setupDefaultRoles();
+        await App.createMasterAccount();
 
     }
 
@@ -94,6 +98,9 @@ class App {
                 if (conf.general.originWhitelist.find(elem => origin.indexOf(elem) >= 0)) {
                     callback(null, true);
                 } else {
+                    log.info('Blocked by CORS');
+                    log.info(origin);
+                    log.info(conf.general.originWhitelist);
                     callback(new Error('Not allowed by CORS'));
                 }
             },
@@ -157,7 +164,7 @@ class App {
         });
 
         this.app.use(checkProto);
-        this.app.use('/', require('./../routes/general')); // eslint-disable-line global-require
+        this.app.use('/', cors(this.corsOptions), require('./../routes/general')); // eslint-disable-line global-require
         
         // setup SwaggerUI
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
@@ -170,7 +177,7 @@ class App {
         apiBase.use('/roles', require('./../routes/roles')); // eslint-disable-line global-require
 
         // TODO: if the client is not a browser, no origin or host will be provided
-        this.app.use(`/${conf.general.apiBase}`, apiBase);
+        this.app.use(`/${conf.general.apiBase}`, cors(this.corsOptions), apiBase);
 
         // static files
         this.app.use('/static', express.static(path.join(__dirname, '../../static')));
@@ -187,28 +194,21 @@ class App {
     }
     
     static async createMasterAccount() {   
-        if (!await Account.countDocuments()) {                       
+        if (!await Account.countDocuments()) {
+            const roles = await Roles.find({ isGlobal: true }).lean();
             const admin = new Account({
                 username: conf.accounts.admin.username,
                 firstname: conf.accounts.admin.firstname,
                 lastname: conf.accounts.admin.lastname,
-                role: CONSTANTS.ROLES.ADMIN,
+                // accountType: CONSTANTS.ROLES.ADMIN,
+                roles: [{
+                    _id: roles.find(role => role.name === CONSTANTS.ROLES.ADMIN)._id,
+                }],
                 status: CONSTANTS.STATUS.ACTIVE,
             });
 
             await admin.setPassword(conf.accounts.admin.password);
             await admin.save();
-
-            const serviceaccount = new Account({
-                username: conf.accounts.serviceAccount.username,
-                firstname: conf.accounts.serviceAccount.firstname,
-                lastname: conf.accounts.serviceAccount.lastname,
-                role: CONSTANTS.ROLES.SERVICE_ACCOUNT,
-                status: CONSTANTS.STATUS.ACTIVE,
-            });
-            await serviceaccount.setPassword(conf.accounts.serviceAccount.password);
-            await serviceaccount.save();
-            log.debug('Initial db setup done');
         } 
     }
 
@@ -243,9 +243,10 @@ class App {
         this.server = await httpsServer.listen(this.app.get('port'));
     }
 
-    stop() {
+    async stop() {
         if (this.server) {
             this.server.close();
+            await EventBusManager.destroy();
         }
     } 
 }

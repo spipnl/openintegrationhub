@@ -1,4 +1,5 @@
 const Logger = require('@basaas/node-logger');
+const { Event, EventBusManager } = require('@openintegrationhub/event-bus');
 const Account = require('./../models/account');
 const Role = require('./../models/role');
 const Permission = require('./../models/permission');
@@ -33,8 +34,21 @@ const RolesDAO = {
 
         await instance.save();
 
-        log.debug('created.role', Object.assign({}, data));
+        if (data.tenant) {
+            data.tenant = data.tenant.toString();
+        }
 
+        log.debug('created.role', Object.assign({}, data));
+        const event = new Event({
+            headers: {
+                name: 'iam.role.created',
+            },
+            payload: {
+                role: data.name,
+                tenant: data.tenant,
+            },
+        });
+        EventBusManager.getEventBus().publish(event);
         auditLog.info('create.role', { data });
         return instance.toJSON();
     },
@@ -48,6 +62,17 @@ const RolesDAO = {
         }, { $set: props });
 
         log.debug('updated.role', { id, props });
+        const event = new Event({
+            headers: {
+                name: 'iam.role.modified',
+            },
+            payload: {
+                role: id.toString(),
+                permissions: props.permissions,
+                tenant: props.tenant,
+            },
+        });
+        EventBusManager.getEventBus().publish(event);
         auditLog.info('update.role', { data: props, id });
 
         return updatedEntity.toJSON();
@@ -57,13 +82,23 @@ const RolesDAO = {
     delete: async ({ id, tenant }) => {
 
         await Account.updateMany({
-            memberships: { $elemMatch: { tenant } },
+            tenant,
         }, {
-            $pull: { 'memberships.$.roles': id },
+            $pull: { 'roles': id },
         });
 
         await Role.deleteOne({ _id: id, tenant });
 
+        const event = new Event({
+            headers: {
+                name: 'iam.role.deleted',
+            },
+            payload: {
+                role: id.toString(),
+                tenant,
+            },
+        });
+        EventBusManager.getEventBus().publish(event);
         log.debug('deleted.role', { id });
         auditLog.info('delete.role', { data: { id } });
 
@@ -93,6 +128,30 @@ const RolesDAO = {
         //     session.endSession();
         //     throw error;
         // }
+
+    },
+
+    userIsOwnerOfRole: async ({ roleId, user }) => {
+
+        if (user.isAdmin) {
+            return true;
+        }
+
+        const doc = Role.findOne({
+            _id: roleId,
+            tenant: user.tenant,
+        }).lean();
+
+        return !!doc;
+    },
+
+    getTenantRoles: async ({ roles, tenant }) => {
+
+        if (!roles) {
+            return Role.find({ tenant }).lean();
+        }
+
+        return Role.find({ tenant, _id: { $in: roles } }).lean();
 
     },
 
