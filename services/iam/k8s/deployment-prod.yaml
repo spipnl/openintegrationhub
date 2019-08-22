@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: iam
-  namespace: oih-dev-ns
+  namespace: oih-prod-ns
 spec:
   replicas: 1
   minReadySeconds: 10
