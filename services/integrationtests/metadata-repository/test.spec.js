@@ -400,25 +400,7 @@ describe('Metadata-Repository', () => {
 		expect(response.statusCode).toEqual(401);	
 		done();
 	});
-	
-	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID ID ---', async(done) => { 
-		let invalidDomainID ="lksfhdslfh";
-		const file = fs.createReadStream('metadata-repository/invalid.zip');
-		const uploadBulk = {
-			method: 'POST',
-			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${invalidDomainID}/schemas/import`,
-			formData: {
-				'archive': file
-			},
-			headers: {
-				"Authorization" : " Bearer " + invalidToken,
-			}
-		};
-		const response = await request(uploadBulk);
-		//console.log(JSON.stringify(response.body));
-		expect(response.statusCode).toEqual(401);	
-		done();
-	});
+
 
 	test('--- DELETE DOMAIN BY ID ---', async (done) => {
 		const deleteDomainByID = {
