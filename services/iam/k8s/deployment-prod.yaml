@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: iam
-        image: openintegrationhub/iam:latest
+        image: openintegrationhub/iam:prod
         env:
         - name: IAM_MONGODB_CONNECTION
           valueFrom:
