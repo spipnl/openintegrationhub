@@ -362,6 +362,27 @@ describe('Metadata-Repository', () => {
 		done();
 	});
 	
+	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID INPUT ---', async(done) => { 
+		console.log(`MyDomainID: ${domainID}`);
+		const file = fs.createReadStream('metadata-repository/invalid.zip');
+
+		const  options = {
+			method: 'POST',
+			uri: `http://metadata.openintegrationhub.com/api/v1/domains/${domainID}/schemas/import`,
+			formData: {
+				'archive': file
+			},
+			headers: {
+				/* 'content-type': 'multipart/form-data' */ // Is set automatically
+				'Authorization' : " Bearer " + tokenAdmin
+			}
+		};
+		const response = await request(options);
+
+		expect(response.statusCode).toEqual(200);	
+		done();	
+	});
+	
 	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID ID ---', async(done) => { 
 		let invalidDomainID ="lksfhdslfh";
 		const file = fs.createReadStream('metadata-repository/invalid.zip');
