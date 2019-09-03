@@ -11,7 +11,6 @@ describe('bulk', () => {
         // create archive
         const src = path.resolve(__dirname, '../../test/data/valid');
         const packDest = path.resolve(__dirname, '../../test-temp/temp.tgz');
-
         // pack
         await pack(
             'tgz',
@@ -19,7 +18,10 @@ describe('bulk', () => {
             packDest,
         );
 
-        const transformedSchemas = await processArchive(packDest);
+        const transformedSchemas = await processArchive({
+            archivePath: packDest,
+        });
+
         expect(transformedSchemas).toHaveLength(20);
 
         await fs.remove(path.dirname(packDest));
@@ -37,7 +39,7 @@ describe('bulk', () => {
             packDest,
         );
 
-        const transformedSchemas = await processArchive(packDest);
+        const transformedSchemas = await processArchive({ archivePath: packDest });
         expect(transformedSchemas).toHaveLength(20);
 
         await fs.remove(path.dirname(packDest));
@@ -45,8 +47,8 @@ describe('bulk', () => {
 
     test('processArchive - invalid', async () => {
         let packDest = path.resolve(__dirname, '../../test/data/invalid.zip');
-        await expect(processArchive(packDest)).rejects.toThrow();
+        await expect(processArchive({ archivePath: packDest })).rejects.toThrow();
         packDest = path.resolve(__dirname, '../../test/data/invalid.tgz');
-        await expect(processArchive(packDest)).rejects.toThrow();
+        await expect(processArchive({ archivePath: packDest })).rejects.toThrow();
     });
 });

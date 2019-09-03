@@ -100,7 +100,15 @@ router.post('/import', domainOwnerOrAllowed({
     const file = req.file;
     try {
         if (!file) throw 'No file submitted';
-        const transformedSchemas = await processArchive(file.path, req.domainId);
+        // start transaction
+        session = await SchemaDAO.startTransaction();
+
+
+        const transformedSchemas = await processArchive({
+            archivePath: file.path,
+            domainId: req.domainId,
+            session,
+        });
 
         let owner;
 
@@ -114,8 +122,7 @@ router.post('/import', domainOwnerOrAllowed({
             owner = owners[0].id;
         }
 
-        // start transaction
-        session = await SchemaDAO.startTransaction();
+
         for (const schema of transformedSchemas) {
             await SchemaDAO.create({
                 obj: {

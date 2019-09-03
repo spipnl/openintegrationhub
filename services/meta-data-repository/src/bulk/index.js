@@ -6,7 +6,7 @@ const { transformSchema } = require('../transform');
 const validateSchema = require('../transform/validate-schema');
 
 module.exports = {
-    async processArchive(archivePath, domainId) {
+    async processArchive({ archivePath, domainId, session }) {
         const fileType = getFileType(archivePath);
         const root = path.dirname(archivePath);
         if (fileType) {
@@ -29,6 +29,7 @@ module.exports = {
                         location: file.fullPath,
                         root,
                     },
+                    session,
                 }));
             }
 

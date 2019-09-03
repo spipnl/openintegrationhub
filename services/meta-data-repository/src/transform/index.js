@@ -96,7 +96,7 @@ module.exports = {
                     let schema;
 
                     try {
-                        if (res.location.match('http')
+                        if (res.location.match(/^https?/)
                         && !res.location.match(conf.baseUrl)
                         ) {
                         //
