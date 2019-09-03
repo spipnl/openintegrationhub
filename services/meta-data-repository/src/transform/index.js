@@ -3,7 +3,9 @@ const JsonPointer = require('json-pointer');
 const url = require('url');
 const path = require('path');
 // const find = require('lodash/find');
+const validateSchema = require('./validate-schema');
 const { SchemaReferenceError } = require('../error');
+
 const conf = require('../conf');
 
 function URIfromId(id) {
@@ -71,6 +73,42 @@ function transformDbResults(results) {
 }
 
 module.exports = {
+
+    async transformExternalSchema({
+        location,
+        domain,
+        parentSchema,
+        externalSchema,
+        jsonRefsOptions = {},
+        session,
+        token,
+    }) {
+        validateSchema({
+            schema: externalSchema,
+        });
+
+        console.log(location);
+        jsonRefsOptions.root = url.resolve(location, './');
+        // console.log(url.resolve(location, '../'));
+        jsonRefsOptions.location = location;
+
+
+        // console.log(jsonRefsOptions);
+        console.log(await module.exports.transformSchema({
+            schema: externalSchema,
+            domain,
+            jsonRefsOptions,
+            token,
+        }));
+
+        // jsonRefsOptions.root =
+        // console.log(await module.exports.transformSchema({
+        //     domain,
+        //     schema,
+        //     jsonRefsOptions,
+        // }));
+        console.log('schema processed');
+    },
     async transformSchema({
         schema,
         domain,
@@ -96,10 +134,12 @@ module.exports = {
                     let schema;
 
                     try {
+                        console.log(res.location);
                         if (res.location.match(/^https?/)
                         && !res.location.match(conf.baseUrl)
                         ) {
-                        //
+                            console.log(res);
+                            // await process;
                         }
                         schema = JSON.parse(res.text);
                     } catch (err) {
@@ -113,7 +153,8 @@ module.exports = {
             },
             ...jsonRefsOptions.loaderOptions,
         };
-
+        // console.log(schema);
+        console.log(jsonRefsOptions);
         const { refs } = await JsonRefs.resolveRefs(schema, jsonRefsOptions);
         const copy = { ...schema };
         let uri = '';
