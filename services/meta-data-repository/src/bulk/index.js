@@ -2,7 +2,8 @@ const path = require('path');
 const fs = require('fs-extra');
 const readdirp = require('readdirp');
 const { unpack, getFileType } = require('../packing');
-const { validateSchema, transformSchema } = require('../transform');
+const { transformSchema } = require('../transform');
+const validateSchema = require('../transform/validate-schema');
 
 module.exports = {
     async processArchive(archivePath, domainId) {

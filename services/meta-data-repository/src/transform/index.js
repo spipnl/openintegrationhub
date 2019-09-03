@@ -1,20 +1,10 @@
 const JsonRefs = require('json-refs');
 const JsonPointer = require('json-pointer');
-const Ajv = require('ajv');
 const url = require('url');
 const path = require('path');
 // const find = require('lodash/find');
-const { SchemaReferenceError, SchemaValidationError } = require('../error');
+const { SchemaReferenceError } = require('../error');
 const conf = require('../conf');
-
-const ajv = new Ajv({
-    schemaId: 'auto',
-    allErrors: true,
-    verbose: true,
-});
-
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 
 function URIfromId(id) {
     return url.parse(id).path;
@@ -51,31 +41,6 @@ function resolveRelativePath({ filePath, location, root }) {
         .replace(root, '');
 }
 
-async function processExternalSchema({
-    location,
-    domain,
-    schema,
-    jsonRefsOptions,
-}) {
-    module.exports.validateSchema({
-        schema,
-    });
-
-    console.log(location);
-    jsonRefsOptions.root = url.resolve(location, './');
-    console.log(url.resolve(location, '../'));
-    jsonRefsOptions.location = location;
-    console.log(jsonRefsOptions);
-
-    // jsonRefsOptions.root =
-    console.log(await module.exports.transformSchema({
-        domain,
-        schema,
-        jsonRefsOptions,
-    }));
-    console.log('schema processed');
-}
-
 function transformDbResult(result) {
     if (result._doc) {
         result = result._doc;
@@ -106,14 +71,6 @@ function transformDbResults(results) {
 }
 
 module.exports = {
-    validateSchema({ schema, filePath }) {
-        schema = typeof schema === 'string' ? JSON.parse(schema) : schema;
-        ajv.validateSchema(schema);
-        if (ajv.errors) {
-            throw new SchemaValidationError(`Validation failed for ${filePath || '/temp'} ${JSON.stringify(ajv.errors)}`);
-        }
-    },
-
     async transformSchema({
         schema,
         domain,

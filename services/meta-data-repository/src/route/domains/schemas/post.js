@@ -11,9 +11,10 @@ const conf = require('../../../conf');
 const { USER, TENANT } = require('../../../constant').ENTITY_TYPE;
 const { DomainDAO, SchemaDAO } = require('../../../dao');
 const {
-    transformSchema, validateSchema, URIfromId, transformDbResults,
+    transformSchema, URIfromId, transformDbResults,
 } = require('../../../transform');
 
+const validateSchema = require('../../../transform/validate-schema');
 const { getToken } = require('../../../util/common');
 
 const { processArchive } = require('../../../bulk');
@@ -40,7 +41,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/', domainOwnerOrAllowed({
-    permissions: [PERMISSIONS.common["metadata.domains.crud"]],
+    permissions: [PERMISSIONS.common['metadata.domains.crud']],
 }), async (req, res, next) => {
     try {
         const { name, description, value } = req.body;

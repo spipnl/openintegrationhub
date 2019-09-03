@@ -5,8 +5,9 @@ const { domainOwnerOrAllowed } = require('../../../middleware/permission');
 const conf = require('../../../conf');
 const { SchemaDAO } = require('../../../dao');
 const {
-    transformSchema, validateSchema, transformDbResults, buildURI,
+    transformSchema, transformDbResults, buildURI,
 } = require('../../../transform');
+const validateSchema = require('../../../transform/validate-schema');
 
 const { getToken } = require('../../../util/common');
 
