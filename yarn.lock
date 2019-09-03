@@ -1392,6 +1392,16 @@
     bunyan "1.8.12"
     lodash "4.17.11"
 
+"@openintegrationhub/event-bus@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@openintegrationhub/event-bus/-/event-bus-1.1.2.tgz#b5a920603b5ae81f68eef0ef7c4dac39ee4860af"
+  integrity sha512-os/WEW3X2CRkUEuKeEHJI8fFKI8wq7HeZKrOZowLv68yL5vjypbloJKC+NBiq50bYg8yrKtjO+BwaEezE7E8kw==
+  dependencies:
+    amqplib "0.5.2"
+    assert "1.4.1"
+    bunyan "1.8.12"
+    lodash "4.17.15"
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
