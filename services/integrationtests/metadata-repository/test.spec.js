@@ -379,11 +379,11 @@ describe('Metadata-Repository', () => {
 		};
 		const response = await request(options);
 
-		expect(response.statusCode).toEqual(200);	
+		expect(response.statusCode).toEqual(404);	
 		done();	
 	});
 	
-	test('--- BULK IMPORT  OF DOMAIN MODELS - INVALID ID ---', async(done) => { 
+	test('--- BULK IMPORT OF DOMAIN MODELS - INVALID ID ---', async(done) => { 
 		let invalidDomainID ="lksfhdslfh";
 		const file = fs.createReadStream('metadata-repository/invalid.zip');
 		const uploadBulk = {
