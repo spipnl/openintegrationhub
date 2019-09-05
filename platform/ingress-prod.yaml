@@ -1,10 +1,10 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: oih-dev-ingress
-  namespace: oih-dev-ns
+  name: oih-prod-ingress
+  namespace: oih-prod-ns
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: "oih-dev-ingress"
+    kubernetes.io/ingress.global-static-ip-name: "oih-prod-ingress"
     kubernetes.io/ingress.class: "gce"
 spec:
   rules:
