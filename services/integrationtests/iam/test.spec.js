@@ -2,12 +2,11 @@
 /* eslint-disable no-undef */
 process.env.AUTH_TYPE = 'basic';
 const request = require('request-promise').defaults({ simple: false, resolveWithFullResponse: true });
-/*const username = process.env.username;
+const username = process.env.username;
 const password = process.env.password;
-*/
 
-const username = "philipp.hoegner@cloudecosystem.org";
-const password = "_uRFRDTxZf4BB";
+//const username = "philipp.hoegner@cloudecosystem.org";
+//const password = "_uRFRDTxZf4BB";
 
 let tokenAdmin = null;
 let token = null;
