@@ -379,7 +379,7 @@ describe('Metadata-Repository', () => {
 		};
 		const response = await request(options);
 
-		expect(response.statusCode).toEqual(404);	
+		expect(response.statusCode).toEqual(200);	
 		done();	
 	});
 	
